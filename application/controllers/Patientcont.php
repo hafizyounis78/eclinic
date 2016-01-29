@@ -91,7 +91,7 @@ class Patientcont extends CI_Controller
 	function updatepatient()
 	{
 		$this->load->model('patientmodel');
-		$this->patientmodel->update_employee();
+		$this->patientmodel->update_patient();
 	}
 	/************************************************************/
 	
@@ -102,7 +102,7 @@ class Patientcont extends CI_Controller
 
 		
 	}
-	function employeegriddata()
+	function patientsgriddata()
 	{
 		$this->load->model('patientmodel');
 		$rec = $this->patientmodel->get_search_patient($_REQUEST);

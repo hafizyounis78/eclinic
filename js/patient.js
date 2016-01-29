@@ -104,7 +104,7 @@ function editePatient()
 		alert(action);
 						
 	$.ajax({
-			url: baseURL+"Surveycont/"+action,
+			url: baseURL+"Patientcont/"+action,
 			type: "POST",
 			data:  $("#Patient_form").serialize(),
 			error: function(xhr, status, error) {
@@ -117,9 +117,13 @@ function editePatient()
 				if(returndb != 0)
 				{
 					//$("#hdnSurveyId").val(returndb['survey_id']);
-					$("#hdnFileId")  .val(returndb['patient_file_id']);
-					
+					$("#hdnPatientFileId")  .val(returndb['patient_file_id']);
 					$("#hdnAction").val('updatepatient');
+					
+					var form = $('#Patient_form');
+					$('.alert-success', form).show();
+					$('.alert-danger', form).hide();
+					Metronic.scrollTo( $('.alert-danger', form), -200);
 					
 				}
 			}
@@ -155,7 +159,7 @@ var PatientFormValidation = function () {
                     },
 					dpDob: {
                         required: true,
-						greaterThanSixty : true
+						//greaterThanSixty : true
                     },
 					drpStatus: {
                         required: true
@@ -197,7 +201,7 @@ var PatientFormValidation = function () {
                     },
 					dpDob: {
 						required: "الرجاء إدخال تاريخ الميلاد",
-						greaterThanSixty: "عمر العضو يجب ان يكون أكبر من 60 سنة"
+						//greaterThanSixty: "عمر العضو يجب ان يكون أكبر من 60 سنة"
                     },
 					drpElderstatus: {
 						required: "الرجاء إختيار قيمة"

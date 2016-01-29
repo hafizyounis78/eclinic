@@ -4,7 +4,7 @@
 $ction ="addpatient";
 $page_title = "إضافة مريض";
 $readonly = '';
-if (isset($employee_info))
+if (isset($patient_info))
 {
 	unset($_SESSION['update']);
 	foreach($patient_info as $patient_row);
@@ -49,7 +49,7 @@ if (isset($employee_info))
                           * </span>
                           </label>
                           <div class="col-md-4">
-                              <input type="text" id="txtPatientId" name="txtPatientId" data-required="1" class="form-control" value="<?php if(isset($employee_row->emp_id)) echo $employee_row->emp_id;?>"/>
+                              <input type="text" id="txtPatientId" name="txtPatientId" data-required="1" class="form-control" value="<?php if(isset($patient_row->patient_id)) echo $patient_row->patient_id;?>"/>
                           </div>
                       </div>
                       

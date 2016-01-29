@@ -22,7 +22,7 @@ class Patientmodel extends CI_Model
 
 		$data['created_by'] = $_SESSION['username'];
 		date_default_timezone_set('Asia/Gaza');
-		$data['created_on'] = date("Y-m-d"); ;		 	
+		$data['created_on'] = date("Y-m-d");	 	
 		/*
 		// Insert file_tb
 		$filedata['elder_id'] = $txtElderId;
@@ -33,9 +33,9 @@ class Patientmodel extends CI_Model
 		
 		
 		$this->db->insert('patient_mr_tb ',$data);
-		$file_id = $this->db->insert_id();
+		$patientFile_id = $this->db->insert_id();
 		
-		$outdata['patient_file_id']   = $file_id;
+		$outdata['patient_file_id']   = $patientFile_id;
 
 		return $outdata;
 		
