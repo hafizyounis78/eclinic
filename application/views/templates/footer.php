@@ -112,6 +112,7 @@
 <script src="<?php echo base_url();?>js/user.js"></script>
 <script src="<?php echo base_url();?>js/employee.js"></script>
 <script src="<?php echo base_url();?>js/patient.js"></script>
+<script src="<?php echo base_url();?>js/visit.js"></script>
 <script src="<?php echo base_url();?>js/usertypepermession.js"></script>
 <script src="<?php echo base_url();?>js/report.js"></script>
 <script src="<?php echo base_url();?>js/sendsms.js"></script>
@@ -124,27 +125,18 @@
 		QuickSidebar.init(); // init quick sidebar
 		Demo.init(); // init demo features
 		TableManaged.init();
-		
+		/*******Forms Validation *******************/
 		UserFormValidation.init();
 		EmpFormValidation.init();
 		PatientFormValidation.init();
 	
 		
-		/*******Forms Validation *******************/
-		//ElderTabValidation.init();
-		//SurveyTabValidation.init();
-		//FamilyMemberTabValidation.init();
-	
-	
-		//HomeStatusTabValidation.init();
-		//ElderRoomTabValidation.init();
-		//ElderFamRelTabValidation.init();
-		//LifeImprovTabValidation.init();
-		/**************************/
-//		FormWizard.init();
+		
+		
 	//***************Ajax table*******************/
 		UserTableAjax.init();
 		EmpTableAjax.init();
+		PatientTableAjax.init();
 
 
 		//********** Report **********************/
@@ -155,7 +147,7 @@
 		ComponentsPickers.init();
 
 		//********** SMS **********************/
-		SMSFormValidation.init();
+	//	SMSFormValidation.init();
       });
    </script>
 <!-- END JAVASCRIPTS -->

@@ -74,12 +74,17 @@ class Usermodel extends CI_Model
 	function user_insart()
 	{
 		extract($_POST);
+		
+		date_default_timezone_set('Asia/Gaza');
+		$sdata = $this->session->userdata('logged_in');
+		
 		$data['user_name'] = $txtUsername;
 		$data['passward'] = MD5($txtPassword);
 		$data['employee_id'] = $hdnEmployeeId;
 		$data['is_active'] = $chbxIsactive;
 		$data['user_type_id'] = $drpUsertype;
-		//$data['created_by'] = $_SESSION['username'];
+		$data['created_on']  = date("Y-m-d H:i:s");
+		$data['created_by']  = $sdata['userid'];
 		
 		$this->db->insert('users_tb',$data);
 	}

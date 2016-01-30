@@ -1,70 +1,74 @@
 <?php
 
-class Patientmodel extends CI_Model
+class Visitmodel extends CI_Model
 {
-	function insert_patient()
+	function insert_visit()
 	{
 		extract($_POST);
 		$data['org_id']     	    = "1";
-		$data['patient_id'] 	  	= $txtPatientId;
-		$data['first_name'] 		= $txtFname;
-		$data['middle_name'] 		= $txtMname;
-		$data['third_name'] 		= $txtThname;
-		$data['last_name'] 			= $txtLname;
-		$data['dob'] 				= $dpDob;
-		$data['sex_id'] 			= $rdSex;
-		$data['status_id'] 			= $drpstatus;
-		$data['governorate_id'] 	= $drpGovernorate;
-		$data['region_id'] 			= $drpRegion;
-		$data['full_address'] 		= $drpFulladdress;
-		$data['phone'] 				= $txtPhone;
-		$data['mobile'] 		    = $txtMobile;
+		$data['clinic_id'] 		= 1;
+		$data['patient_file_id'] 	= $txtPatientFileId;
+		$data['visit_date'] 		= $dpVisitdate;
+		$data['visit_type_id'] 		= $drpVisitType;
+		date_default_timezone_set('Asia/Gaza');
+		$data['visit_time'] =date("H:i:s");
 		
-		$sdata = $this->session->userdata('logged_in');
+		/*$sdata = $this->session->userdata('logged_in');
 		$data['created_by'] = $sdata['userid'];
 		date_default_timezone_set('Asia/Gaza');
 		$data['created_on'] =date("Y-m-d H:i:s");	 	
-		/*
-		// Insert file_tb
-		$filedata['elder_id'] = $txtElderId;
-		$filedata['file_doc_id'] = $txtFiledocId;
-		$filedata['file_status_id'] = 170;
-		$filedata['created_by'] = $_SESSION['username'];
 		*/
 		
+		$this->db->insert('outpatient_visits_tb ',$data);
+		$visit_id = $this->db->insert_id();
 		
-		$this->db->insert('patient_mr_tb ',$data);
-		$patientFile_id = $this->db->insert_id();
+		$outdata['visit_id']   = $visit_id;
 		
-		$outdata['patient_file_id']   = $patientFile_id;
+		// Insert body_segment_tb
+		
+		$bodydata['outpatient_visit_id'] = $visit_id;
+		$bodydata['weight'] = $txtWeight;
+		$bodydata['length'] = $txtLength;
+		$bodydata['bmi'] = $txtBmi;
+		$this->db->insert('body_segment_tb',$bodydata);
+		
+		// Insert outpatient_nutrition_plan_tb
+		
+		$nutdata['outpatient_visit_id'] = $visit_id;
+		$nutdata['plan_id'] = $drpPlan;
+		$nutdata['start_date'] = $dpStartdate;
+		$nutdata['end_date'] = $dpEnddate;
+		$nutdata['notes'] = $txtNotes;
+		$this->db->insert('outpatient_nutrition_plan_tb',$nutdata);
 
 		return $outdata;
 		
 	}
 	
-	// Update Elder
-	function update_patient()
+	// Update visit
+	function update_visit()
 	{
 		extract($_POST);
-
-		$data['patient_id']     	= $txtPatientId;
-		$data['first_name'] 		= $txtFname;
-		$data['middle_name'] 		= $txtMname;
-		$data['third_name'] 		= $txtThname;
-		$data['last_name'] 			= $txtLname;
-		$data['dob'] 				= $dpDob;
-		$data['sex_id'] 			= $rdSex;
-		$data['status_id'] 			= $drpstatus;
-		$data['governorate_id'] 	= $drpGovernorate;
-		$data['region_id'] 			= $drpRegion;
-		$data['full_address'] 		= $drpFulladdress;
-		$data['phone'] 				= $txtPhone;
-		$data['mobile'] 	  	    = $txtMobile;
+			
 		
-		$this->db->where('patient_file_id',$hdnPatientFileId);
-		$this->db->update('patient_mr_tb',$data);
+		// Update body_segment_tb
 		
+		//$bodydata['outpatient_visit_id'] = $visit_id;
+		$bodydata['weight'] = $txtWeight;
+		$bodydata['length'] = $txtLength;
+		$bodydata['bmi'] = $txtBmi;
+		$this->db->where('outpatient_visit_id',$visit_id);
+		$this->db->update('body_segment_tb',$bodydata);
 		
+		// Update outpatient_nutrition_plan_tb
+		
+		$nutdata['outpatient_visit_id'] = $visit_id;
+		$nutdata['plan_id'] = $drpPlan;
+		$nutdata['start_date'] = $dpStartdate;
+		$nutdata['end_date'] = $dpEnddate;
+		$nutdata['notes'] = $txtNotes;
+		$this->db->where('outpatient_visit_id',$visit_id);
+		$this->db->update('outpatient_nutrition_plan_tb',$nutdata);
 		
 		return;
 		
@@ -72,9 +76,33 @@ class Patientmodel extends CI_Model
 
 	
 	
-	// Get Elder By ID
+	// Get vists By ID
 	
 	
+	function get_visit_by_id($visitId ='')
+	{
+		// Get elder id from POST otherwise get elder id from function arg $elderid
+		if ( !empty($_POST) )
+		{
+			extract($_POST);
+			$visitId= $visitId;
+		}
+		//outpatient_nutrition_plan_tb
+		//body_segment_tb
+		//outpatient_visits_tb
+		$myquery = "SELECT 	p.patient_file_id,p.patient_id,CONCAT(first_name,' ',middle_name,' ',third_name,' ',last_name) as name,visit.sub_constant_name as visit_desc
+					 FROM 	outpatient_visits_tb
+					 LEFT 	OUTER JOIN sub_constant_tb visit  ON outpatient_visits_tb.visit_type_id= visit.sub_constant_id
+					,patient_mr_tb p,body_segment_tb,outpatient_nutrition_plan_tb
+					 WHERE 	outpatient_visits_tb.patient_file_id=p.patient_file_id
+					 and 	outpatient_visits_tb.outpatient_visit_id=body_segment_tb.outpatient_visit_id
+					 and 	outpatient_visits_tb.outpatient_visit_id=outpatient_nutrition_plan_tb.outpatient_visit_id
+					 and 	outpatient_visits_tb.outpatient_visit_id=".$visitId;
+		
+		$res = $this->db->query($myquery);
+		return $res->result();
+		
+	}
 	function get_patient_by_id($patientFileId ='')
 	{
 		// Get elder id from POST otherwise get elder id from function arg $elderid
@@ -84,23 +112,16 @@ class Patientmodel extends CI_Model
 			$patientFileNo= $patientFileId;
 		}
 		
-		$myquery = "SELECT 	p.patient_file_id,p.patient_id,p.first_name, p.middle_name, 
-							p.third_name, p.last_name,
-							p.dob, p.sex_id, p.status_id, p.governorate_id,p.region_id,p.full_address,
-							reg.sub_constant_name as region_desc,
-							address.sub_constant_name as fulladdress,
-							p.phone,p.mobile
+		$myquery = "SELECT 	p.patient_file_id,p.patient_id,CONCAT(first_name,' ',middle_name,' ',third_name,' ',last_name) as name,
+							p.dob
 					 FROM 	patient_mr_tb p
-					 LEFT 	OUTER JOIN sub_constant_tb gov  ON p.governorate_id= gov.sub_constant_id
-					 LEFT 	OUTER JOIN sub_constant_tb reg  ON p.region_id= reg.sub_constant_id
-					 LEFT 	OUTER JOIN sub_constant_tb address  ON p.full_address= address.sub_constant_id
-							
-					WHERE p.patient_file_id = ".$patientFileId;
+					 WHERE p.patient_file_id = ".$patientFileId;
 		
 		$res = $this->db->query($myquery);
 		return $res->result();
 		
 	}
+
 
 	function get_patient_nutrition_info($patientid ='')
 	{
@@ -130,7 +151,7 @@ class Patientmodel extends CI_Model
 	}
 	
 	// Get All Elders
-	function get_search_patient($requestData)
+	function get_search_visits($requestData)
 	{
 		$columns = array( 
 			1 => 'patient_file_id',

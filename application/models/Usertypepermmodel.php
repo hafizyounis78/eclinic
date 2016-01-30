@@ -22,10 +22,14 @@ class Usertypepermmodel extends CI_Model
 	function user_menu_page_insert()
 	{
 		extract($_POST);
+		date_default_timezone_set('Asia/Gaza');
+		$sdata = $this->session->userdata('logged_in');
+		$created_on  = date("Y-m-d H:i:s");
+		$created_by  = $sdata['userid'];
 		
 		$myquery = "INSERT INTO user_menu_page_tb
-					(menu_page_id, user_type_id)
-					(SELECT menu_page_id,".$user_type_id."
+					(menu_page_id, user_type_id, created_on, created_by)
+					(SELECT menu_page_id,".$user_type_id.", '".$created_on."', ".$created_by." 
 					   FROM menu_page_tb
 					  WHERE menu_page_id IN (".implode(",",$values)."))";
 		

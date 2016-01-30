@@ -2,7 +2,7 @@
 
 
 //************* Governate change ******************//
-function governorate_change(){	
+function drpplan_change(){	
 
  	var governorate_code = $('#drpGovernorate').find('option:selected').val();
 	
@@ -29,31 +29,7 @@ function governorate_change(){
 		});//END $.ajax
 }
 //************* region change ******************//
-function region_change(){	
 
- 	var region_code = $('#drpRegion').find('option:selected').val();
-	
-	$.ajax({
-			url: baseURL+"Surveycont/get_fulladdress",
-			type: "POST",
-			data:  {regionCode:region_code},
-			error: function(xhr, status, error) {
-  				alert(xhr.responseText);
-			},
-			beforeSend: function(){},
-			complete: function(){},
-			success: function(returndb){
-				var i=0;
-				$('#drpFulladdress').empty();
-//				alert(returndb[0]['sub_constant_id']+returndb[0]['sub_constant_name']);
-				$('#drpFulladdress').append("<option>أختر ....</option>");
-				for (i=0;i<returndb.length;++i)
-			//	alert(returndb[i]['sub_constant_id']+returndb[i]['sub_constant_name']);
-				$('#drpFulladdress').append('<option value= "'+ returndb[i]['sub_constant_id'] + '">' + returndb[i]['sub_constant_name'] +'</option>');
-				
-			}
-		});//END $.ajax
-}
 // Calculate Age 
 function claculateAge()
 {
@@ -98,15 +74,15 @@ function claculateAge()
 }
 
 //********************Patient edit***********//
-function editePatient()
+function editeVisits()
 {
-	var action = $("#hdnAction").val();
+	var action = $("#hdnvAction").val();
 		alert(action);
 						
 	$.ajax({
-			url: baseURL+"Patientcont/"+action,
+			url: baseURL+"Visitcont/"+action,
 			type: "POST",
-			data:  $("#Patient_form").serialize(),
+			data:  $("#Visit_form").serialize(),
 			error: function(xhr, status, error) {
 				
 				alert(xhr.responseText);
@@ -119,9 +95,9 @@ function editePatient()
 					alert(returndb['patient_file_id']);
 					//$("#hdnSurveyId").val(returndb['survey_id']);
 					$("#hdnPatientFileId")  .val(returndb['patient_file_id']);
-					$("#hdnAction").val('updatepatient');
+					$("#hdnvAction").val('updatevisit');
 					
-					var form = $('#Patient_form');
+					var form = $('#Visit_form');
 					$('.alert-success', form).show();
 					$('.alert-danger', form).hide();
 					Metronic.scrollTo( $('.alert-danger', form), -200);
@@ -132,26 +108,7 @@ function editePatient()
 	
 }
 
-function gotoPatient(arg)
-{alert(arg);
-	$.ajax({
-			url: baseURL+"Patientcont/senddata",
-			type: "POST",
-			data:  {patientFileId : arg},
-			error: function(xhr, status, error) {
-  				//var err = eval("(" + xhr.responseText + ")");
-  				alert(xhr.responseText);
-			},
-			beforeSend: function(){},
-			complete: function(){},
-			success: function(returndb){
-				window.location.href = baseURL+"patientcont/patientform";
-				//alert(returndb);
-			}
-		});//END $.ajax
-}
-//******************gotovisits********************//
-function gotoPatientVisit(arg)
+function gotoVisit(arg)
 {alert(arg);
 	$.ajax({
 			url: baseURL+"Visitcont/senddata",
@@ -169,12 +126,11 @@ function gotoPatientVisit(arg)
 			}
 		});//END $.ajax
 }
-
 //****************Patient Validation
-var PatientFormValidation = function () {
+var VisitFormValidation = function () {
  var handleValidation = function() {
         
-            var form = $('#Patient_form');
+            var form = $('#Visit_form');
             var errormsg = $('.alert-danger', form);
             var successmsg = $('.alert-success', form);
 			
@@ -310,7 +266,7 @@ var PatientFormValidation = function () {
 
                 submitHandler: function (form) {
                     errormsg.hide();
-					editePatient();
+					editeVisit();
                     //form[0].submit(); // submit the form
                 }
 
@@ -328,7 +284,7 @@ return {
 }();
 
 //************* patient Ajax**************//
-var PatientTableAjax = function () {
+var VisitTableAjax = function () {
 
 // I removed Datepicker becuse it is not used here
 
@@ -337,7 +293,7 @@ var PatientTableAjax = function () {
         var grid = new Datatable();
 		
         grid.init({
-            src: $("#Patientdatatable_ajax"),
+            src: $("#Visitdatatable_ajax"),
             onSuccess: function (grid) {
                 // execute some code after table records loaded
 				//alert(grid);
@@ -361,7 +317,7 @@ var PatientTableAjax = function () {
                 ],
                 "pageLength": 10, // default record count per page
                 "ajax": {
-                    "url": baseURL+"Patientcont/patientsgriddata", // ajax source
+                    "url": baseURL+"Visitcont/visitsgriddata", // ajax source
 					"type": "POST"
                 },
                 "order": [

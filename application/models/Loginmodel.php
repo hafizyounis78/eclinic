@@ -12,7 +12,7 @@ class Loginmodel extends CI_Model
 		$this->db->where('passward', MD5($password));*/
 		
 		
-	$myquery = "SELECT  u.user_name, u.passward, u.employee_id, u.is_active, u.user_type_id, e.name
+	$myquery = "SELECT  u.user_id, u.user_name, u.passward, u.employee_id, u.is_active, u.user_type_id, e.name
 				  FROM  users_tb u, employee_tb e
 				 WHERE  u.employee_id = e.employee_id
 				   AND  u.user_name = '".$username."'
@@ -34,7 +34,7 @@ class Loginmodel extends CI_Model
 				 if ($row->is_active == 1)
 				 {
 					 $sess_array = array(
-					   //'id' => $row->id,
+					   'userid' => $row->user_id,
 					   'username' => $row->user_name,
 					   'name' => $row->name
 					 );

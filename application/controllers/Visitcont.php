@@ -1,5 +1,5 @@
 <?php
-class Patientcont extends CI_Controller 
+class Visitcont extends CI_Controller 
 {
 	public $data;
 	
@@ -44,76 +44,68 @@ class Patientcont extends CI_Controller
 		$_SESSION['update'] = $patientFileId;
 		
 	}
+	function newvisitdata()
+	{
+		extract($_POST);
+		$_SESSION['patientFileId'] = $patientFileId;
+		
+	}
 	/******************* USER FORM *****************************/
-	function patientform()
+	function visitform()
 	{
 		$this->load->model('constantmodel');
-		$this->data['status']          = $this->constantmodel->get_sub_constant(2);
-		$this->data['governorate']     = $this->constantmodel->get_sub_constant(22);
+		$this->data['visittype']= $this->constantmodel->get_sub_constant(40);
+		$this->data['plantype']= $this->constantmodel->get_sub_constant(2);
+		
 		
 		if(isset($_SESSION['update']))
-		{
-			$this->load->model('patientmodel');
-			$this->data['patient_info'] = $this->patientmodel->get_patient_by_id($_SESSION['update']);
-			foreach ($this->data['patient_info'] as $row);
-				{	
-					$this->data['region']     = $this->constantmodel->get_region_list($row->governorate_id);
-					$this->data['fulladdress']     = $this->constantmodel->get_region_list($row->region_id);
-				}
-			
-		}
+			{
+				$this->load->model('visitmodel');
+				$this->data['visit_info'] = $this->visitmodel->get_patient_by_id($_SESSION['patientFileId']);
+			}
+		
 	}
 	/***********************************************************/
-	function patient()
+	function visits()
 	{
 		$this->load->model('constantmodel');
-		$this->data['status']          = $this->constantmodel->get_sub_constant(2);
-		$this->data['governorate']     = $this->constantmodel->get_sub_constant(22);
+	//	$this->data['status']          = $this->constantmodel->get_sub_constant(2);
+		//$this->data['governorate']     = $this->constantmodel->get_sub_constant(22);
+		$this->data['visittype']          = $this->constantmodel->get_sub_constant(2);
 		
 		
 	}
 	/******************* ADD USER ******************************/
-	function addpatient()
+	function addvisit()
 	{
-		$this->load->model('patientmodel');
-		$output=$this->patientmodel->insert_patient();
+		$this->load->model('visitmodel');
+		$output=$this->visitmodel->insert_visit();
 		header('Access-Control-Allow-Origin: *');
 		header("Content-Type: application/json");
 		echo json_encode($output);
 		
 	}
 	
-	/************************************************************/
-	function check_id()
+	
+	/******************* Update visit ******************************/
+	function updatevisit()
 	{
-		$this->load->model('patientmodel');
-		$rec=$this->patientmodel->check_patient_id();
-		
-		
-		foreach($rec->result() as $row)
-		{
-  			echo $row->cn;
-		}
-	}
-	/******************* Update USER ******************************/
-	function updatepatient()
-	{
-		$this->load->model('patientmodel');
-		$this->patientmodel->update_patient();
+		$this->load->model('visitmodel');
+		$this->visitmodel->update_visit();
 	}
 	/************************************************************/
 	
 	/******************* USER DATA GRID *************************/
-	function patients()
+	function visit()
 	{
 		$this->load->model('constantmodel');
 
 		
 	}
-	function patientsgriddata()
+	function visitsgriddata()
 	{
-		$this->load->model('patientmodel');
-		$rec = $this->patientmodel->get_search_patient($_REQUEST);
+		$this->load->model('visitmodel');
+		$rec = $this->visitmodel->get_search_visit($_REQUEST);
 		
 		
 		$i = 1;
@@ -130,10 +122,8 @@ class Patientcont extends CI_Controller
 			/*$btn='<a href="'.base_url().'adduser/'.$row->user_name.'" class="btn default btn-xs purple">
 			  <i class="fa fa-edit"></i> تعديل </a>';*/
 			
-			$btn='<a class="btn default btn-xs purple" onclick="gotoPatient(\''.$row->patient_file_id.'\')">
-			  <i class="fa fa-edit"></i> تعديل </a>
-			  <a class="btn default btn-xs purple" onclick="gotoPatientVisit(\''.$row->patient_file_id.'\')">
-			  <i class="fa fa-edit"></i> زيارة جديدة </a>';
+			$btn='<a class="btn default btn-xs purple" onclick="gotoVisit(\''.$row->outpatient_visit_id.'\')">
+			  <i class="fa fa-edit"></i> تعديل </a>';
 			
 			$nestedData[] = $i++;
 			$nestedData[] = $row->patient_file_id;
@@ -142,7 +132,8 @@ class Patientcont extends CI_Controller
 			$nestedData[] = $row->phone;
 			$nestedData[] = $row->mobile;
 			$nestedData[] = $row->Patient_governorate;
-			$nestedData[] = $row->last_visit;
+			$nestedData[] = $row->visit_date;
+			$nestedData[] = $row->visit_type_desc;
 			//$nestedData[] = $active;
 			$nestedData[] = $btn;
 			
@@ -150,7 +141,7 @@ class Patientcont extends CI_Controller
 		} // End Foreach
 		
 		$totalFiltered = count($rec);
-		$totalData=$this->patientmodel->count_patients();
+		$totalData=$this->visitmodel->count_visits();
 		
 		//$records["draw"] = $sEcho;
 		$json_data = array(

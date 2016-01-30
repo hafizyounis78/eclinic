@@ -41,7 +41,7 @@ if (isset($patient_info))
                       </div>
                       <div>
                       <input id="hdnAction" name="hdnAction" type="hidden" value="<?php echo $ction;?>" />
-                      <input id="hdnPatientFileId" name="hdnPatientFileId" type="hidden" value="" />
+                      <input id="hdnPatientFileId" name="hdnPatientFileId" type="hidden" value="<?php if(isset($patient_row->patient_file_id)) echo $patient_row->patient_file_id;?>" />
                       </div>
                                            
                       <div class="form-group">
@@ -80,12 +80,15 @@ if (isset($patient_info))
                               <div class="input-group date date-picker" data-date-format="yyyy-mm-dd">
                                   <input type="text" class="form-control" readonly id="dpDob" name="dpDob"
                                   value="<?php if(isset($patient_row->dob)) echo $patient_row->dob;?>"
-                                  >
+                                 onchange="claculateAge();" >
                                   <span class="input-group-btn">
                                   <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
                                   </span>
                               </div>
                               <!-- /input-group -->
+                          </div>
+                          <div class="col-md-4">
+                               <label id="lblAge" class="control-label"></label>
                           </div>
                       </div>
                       
@@ -143,7 +146,8 @@ if (isset($patient_info))
                           * </span>
                           </label>
                           <div class="col-md-4">
-                              <select class="form-control select2me" id="drpGovernorate" name="drpGovernorate" onchange="governorate_change()">
+                              <select class="form-control " id="drpGovernorate" name="drpGovernorate" onchange="governorate_change()">
+                               <option value="">اختر...</option>
                                   <?php 
 								  foreach ($governorate as $governorate_row)
 								  {
@@ -171,7 +175,7 @@ if (isset($patient_info))
                       {
                           $selected = '';
                           
-                          if ($patient_row->region == $region_row->sub_constant_id)
+                          if ($patient_row->region_id == $region_row->sub_constant_id)
                             $selected = 'selected="selected"';
                           
                           echo ' <option value="'.$region_row->sub_constant_id.'" '.$selected.'>'
