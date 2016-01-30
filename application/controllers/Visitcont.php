@@ -44,24 +44,20 @@ class Visitcont extends CI_Controller
 		$_SESSION['update'] = $patientFileId;
 		
 	}
-	function newvisitdata()
-	{
-		extract($_POST);
-		$_SESSION['patientFileId'] = $patientFileId;
-		
-	}
+	
 	/******************* USER FORM *****************************/
 	function visitform()
 	{
 		$this->load->model('constantmodel');
-		$this->data['visittype']= $this->constantmodel->get_sub_constant(40);
+		$this->data['visittype']= $this->constantmodel->get_sub_constant(3);
 		$this->data['plantype']= $this->constantmodel->get_sub_constant(2);
 		
 		
 		if(isset($_SESSION['update']))
 			{
 				$this->load->model('visitmodel');
-				$this->data['visit_info'] = $this->visitmodel->get_patient_by_id($_SESSION['patientFileId']);
+				$this->data['patient_info'] = $this->visitmodel->get_patient_by_id($_SESSION['patientFileId']);
+				
 			}
 		
 	}

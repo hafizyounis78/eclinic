@@ -112,14 +112,15 @@ class Visitmodel extends CI_Model
 			$patientFileNo= $patientFileId;
 		}
 		
-		$myquery = "SELECT 	p.patient_file_id,p.patient_id,CONCAT(first_name,' ',middle_name,' ',third_name,' ',last_name) as name,
-							p.dob
+		$myquery = "SELECT 	patient_file_id,patient_id,CONCAT(first_name,' ',middle_name,' ',third_name,' ',last_name) as name,
+							dob
 					 FROM 	patient_mr_tb p
-					 WHERE p.patient_file_id = ".$patientFileId;
+					 WHERE  patient_file_id = ".$patientFileId;
 		
 		$res = $this->db->query($myquery);
+		print_r($res );
 		return $res->result();
-		
+
 	}
 
 

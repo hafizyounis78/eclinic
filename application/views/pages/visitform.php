@@ -8,7 +8,7 @@ if (isset($patient_info))
 {
 	unset($_SESSION['update']);
 	//foreach($patient_info as $patient_row);
-	foreach($visit_info as $visit_row);
+	foreach($patient_info as $patient_row);
 	//foreach($bodysegment_info as $bodysegment_row);
 	//foreach($nutrition_plan_info as $nutrition_plan_row);
 	$ction ="updatevisit";
@@ -55,7 +55,7 @@ if (isset($patient_info))
                               <input type="text" id="txtPatientFileId" name="txtPatientFileId" data-required="1" class="form-control input-xsmall" value="<?php if(isset($patient_row->patient_file_id)) echo $patient_row->patient_file_id;?>"/>
                           </div>
                           <div class="col-md-3">
-                           <input type="text" id="txtName" name="txtName" data-required="1" class="form-control" placeholder="الاسم" value="<?php if(isset($patient_row->first_name)) echo $patient_row->first_name;?>"/>
+                           <input type="text" id="txtpatientName" name="txtpatientName" data-required="1" class="form-control" placeholder="الاسم" value="<?php if(isset($patient_row->name)) echo $patient_row->name;?>"/>
                         </div>
                       </div>
                                            
@@ -85,7 +85,7 @@ if (isset($patient_info))
                             </label>
                             <div class="col-md-2">
                               <div class="input-group date date-picker" data-date-format="yyyy-mm-dd">
-                                  <input type="text" class="form-control" readonly id="dpVisitdate" name="dpVisitdate" value="<?php if(isset($visit_row->visit_date)) echo $visit_row->visit_date;?>">
+                                  <input type="text" class="form-control" readonly id="dpVisitdate" name="dpVisitdate" value="">
                                   <span class="input-group-btn">
                                   <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
                                   </span>
@@ -94,7 +94,7 @@ if (isset($patient_info))
                           </div>
                           <div class="col-md-2">
                                 <div class="input-group">
-                                    <input type="text" id="txtVisittime" name="txtVisittime"  value="<?php if(isset($visit_row->visit_time)) echo $visit_row->visit_time;?>" 
+                                    <input type="text" id="txtVisittime" name="txtVisittime"  value="" 
                                     class="form-control timepicker timepicker-24" >
                                     <span class="input-group-btn">
                                     <button class="btn default" type="button"><i class="fa fa-clock-o"></i></button>
@@ -112,13 +112,9 @@ if (isset($patient_info))
                                   <?php 
 								  foreach ($visittype as $row)
 								  {
-									  $selected = '';
 									  
-									  if ($visit_row->visit_type_id == $row->sub_constant_id)
-									  	$selected = 'selected="selected"';
-									  
-									  echo ' <option value="'.$status_row->sub_constant_id.'" '.$selected.'>'
-									  						 .$status_row->sub_constant_name.'</option>';
+									  echo ' <option value="'.$row->sub_constant_id.'" >'
+									  						 .$row->sub_constant_name.'</option>';
 								  }
 								  ?>
                               </select>
@@ -132,7 +128,7 @@ if (isset($patient_info))
                           </label>
                           <div class="col-md-4">
                               <input type="text" id="txtWeight" name="txtWeight" class="form-control"
-                               value="<?php if(isset($patient_row->weight)) echo $patient_row->weight;?>"
+                               value=""
                               />
                           </div>
                       </div>
@@ -142,7 +138,7 @@ if (isset($patient_info))
                           </label>
                           <div class="col-md-4">
                               <input type="text" id="txtLength" name="txtLength" class="form-control"
-                              value="<?php if(isset($patient_row->length)) echo $patient_row->length;?>"
+                              value=""
                               />
                           </div>
                       </div>
@@ -153,7 +149,7 @@ if (isset($patient_info))
                           </label>
                           <div class="col-md-4">
                               <input type="text" id="txtBmi" name="txtBmi"  readonly class="form-control"
-                              value="<?php if(isset($patient_row->bmi)) echo $patient_row->bmi;?>"
+                              value=""
                               />
                           </div>
                       </div>
@@ -169,15 +165,33 @@ if (isset($patient_info))
 								  {
 									  
 									  
-									  echo ' <option value="'.$status_row->sub_constant_id.'" >'
-									  						 .$status_row->sub_constant_name.'</option>';
+									  echo ' <option value="'.$row->sub_constant_id.'" >'
+									  						 .$row->sub_constant_name.'</option>';
 								  }
 								  ?>
                               </select>
                           </div>
                       </div>
                        
-
+					<div class="form-group">
+                          <label class="control-label col-md-3">تـاريخ بدء الخطة <span class="required">
+                          * </span>
+                          </label>
+                          <div class="col-md-4">
+                              <div class="input-group date date-picker" data-date-format="yyyy-mm-dd">
+                                  <input type="text" class="form-control" readonly id="dpDob" name="dpDob"
+                                  value="<?php if(isset($patient_row->dob)) echo $patient_row->dob;?>"
+                                 onchange="claculateAge();" >
+                                  <span class="input-group-btn">
+                                  <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                  </span>
+                              </div>
+                              <!-- /input-group -->
+                          </div>
+                          <div class="col-md-4">
+                               <label id="lblAge" class="control-label"></label>
+                          </div>
+                      </div>
                   </div>
                   <!-- END FORM BODY -->
                   <div class="form-actions">

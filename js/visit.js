@@ -141,87 +141,39 @@ var VisitFormValidation = function () {
                 ignore: "", // validate all fields including form hidden input
                 rules: {
 					
-					txtFname: {
+					drpVisitType: {
                         required: true
                     },
-	                txtMname: {
-                        required: true
-                    },
-					txtThname: {
-                        required: true
-                    },
-	                txtLname: {
-                        required: true
-                    },
-					dpDob: {
+	                txtWeight: {
                         required: true,
-						//greaterThanSixty : true
+						digits: true
                     },
-					drpStatus: {
+					txtLength: {
                         required: true
                     },
-					drpGovernorate: {
+	                drpPlan: {
                         required: true
-                    },
-					drpRegion: {
-                        required: true
-                    },
-					drpFulladdress: {
-                        required: true
-					},
-					txtMobile: {
-						digits: true,
-						minlength: 10,
-						required: true
-                    },
-					txtPhone: {
-                       digits: true,
-						minlength: 7
-					}
+                    }
 				},
 
                messages: { // custom messages for radio buttons and checkboxes
-                txtFname: {
-                        required: "الرجاء ادخل الاسم"
+                	drpVisitType: {
+                    required: "الرجاء إختيار قيمة"
+                    
                     },
-                    txtMname: {
-                        required: "الرجاء ادخل الاسم"
-                    }
-					,
-                    txtThname: {
-                        required: "الرجاء ادخل الاسم"
-                    }
-					,
-                    txtLname: {
-                        required: "الرجاء ادخل الاسم"
-                    },
-					dpDob: {
-						required: "الرجاء إدخال تاريخ الميلاد",
-						//greaterThanSixty: "عمر العضو يجب ان يكون أكبر من 60 سنة"
-                    },
-					drpElderstatus: {
-						required: "الرجاء إختيار قيمة"
-                    },
-					drpGovernorate: {
-						required: "الرجاء إختيار قيمة"
-                    },
-					drpRegion: {
-						required: "الرجاء إختيار قيمة"
-                    },
-					drpFulladdress: {
-						required: "الرجاء إختيار قيمة"
-                    },
-					txtMobile: {
-						minlength: "رقم الجوال يجب ان يكون 10 ارقام مبدوء ب 059",
-						digits: "الرجـاء ادخـال ارقـام فقط",
-						required: "الرجـاء ادخـال رقـم الجـوال"
-                    },
-					txtPhone: {
-						minlength: "رقم الهاتف يجب ان يكون 7 ارقام",
+                    txtWeight: {
+                        required: "الرجاء ادخل الاسم",
 						digits: "الرجـاء ادخـال ارقـام فقط"
                     }
-
-					
+					,
+                    txtLength: {
+                        required: "الرجاء ادخل الاسم",
+						digits: "الرجـاء ادخـال ارقـام فقط"
+                    }
+					,
+					drpPlan: {
+						required: "الرجاء إختيار قيمة"
+                    }
                 },
 
                 errorPlacement: function (error, element) { // render error placement for each input type
