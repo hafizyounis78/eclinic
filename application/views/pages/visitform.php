@@ -10,7 +10,7 @@ date_default_timezone_set('Asia/Gaza');
 $currentDate= date("Y-m-d"); 
 $lblClass = ' font-green ';
 $lblage = '';
-if (isset($patient_info))
+if (isset($patient_info))				
 {
 	foreach($patient_info as $patient_row);
 	$page_title = "إضافة زيارة";
@@ -282,7 +282,7 @@ else if(isset($visit_info))
                                             </tr>
                                         </tbody>
          
-         							<?php    
+         							<?php  /*  
 		                              foreach($LabOrderTest as $row)
 								  	  {
 		 				
@@ -302,7 +302,7 @@ else if(isset($visit_info))
 											
 											
 										}
-									?>
+									*/?>
                                       	</table>
                         </div>          
                   
