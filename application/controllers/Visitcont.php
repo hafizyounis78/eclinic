@@ -42,7 +42,7 @@ class Visitcont extends CI_Controller
 	{
 		extract($_POST);
 		$_SESSION['update'] = $patientFileId;
-		unset($_SESSION['updateVisit']);
+		//unset($_SESSION['updateVisit']);
 		
 	}
 	
@@ -64,11 +64,11 @@ class Visitcont extends CI_Controller
 			{
 				$this->load->model('visitmodel');
 				$this->data['patient_info'] = $this->visitmodel->get_patient_by_id($_SESSION['update']);
-				unset($_SESSION['update']);
-				$this->data['labTests'] = $this->labmodel->get_lab();
+				//unset($_SESSION['update']);
+				//$this->data['labTests'] = $this->labmodel->get_lab();
 				
 			}
-		else if(isset($_SESSION['updateVisit']))
+	/*	else if(isset($_SESSION['updateVisit']))
 			{
 				$this->load->model('visitmodel');
 				
@@ -76,7 +76,7 @@ class Visitcont extends CI_Controller
 				unset($_SESSION['updateVisit']);
 				$this->data['labTests'] = $this->labmodel->get_lab();
 			}
-		
+		*/
 	}
 	/***********************************************************/
 	function visits()
