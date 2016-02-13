@@ -167,7 +167,7 @@ else if(isset($visit_info))
                       
                       <div class="form-group">
                           <label class="control-label col-md-3">الطول   &nbsp;&nbsp;&nbsp;
-                          </label>
+                          </label>;2
                           <div class="col-md-4">
                               <input type="text" id="txtLength" name="txtLength" class="form-control"
                               value="<?php if(isset($visit_row->length)) echo $visit_row->length;?>" onblur="calculat_bmi();"
@@ -213,7 +213,8 @@ else if(isset($visit_info))
                       </div>
                       <div>
                       <input id="hdnLAction" name="hdnLAction" type="hidden" value="<?php echo $Laction;?>" />
-                      <input id="hdnvisitNo" name="hdnvisitNo" type="hidden" value="<?php if(isset($visit_row->outpatient_visit_id)) echo $visit_row->outpatient_visit_id;?>" />
+                      <input id="hdnLabOrderNo" name="hdnLabOrderNo" type="hidden" value="" />
+                      
                       </div>
                                  <div class="table-scrollable" style="white-space: nowrap;">
                                         <table class="table table-striped table-hover table-bordered">
@@ -280,6 +281,28 @@ else if(isset($visit_info))
                                                 </td>
                                             </tr>
                                         </tbody>
+         
+         							<?php    
+		                              foreach($LabOrderTest as $row)
+								  	  {
+		 				
+											echo "<tr>";
+											echo '<td style="display:none;" id="lab_order_no'.$i.'">'. $row->lab_order_no. "</td>";
+											echo '<td style="display:none;" id="test_code'.$i.'">'. $row->test_code. "</td>";
+											echo '<td  id="test_desc'.$i.'">'. $row->test_desc.'</td>';
+										
+											echo '<td><button id="btnDeleteTest" name="btnDeleteTest" type="button" 
+											class="btn btn-circle red-sunglo btn-sm" 
+											onclick="deleteTestbyId('.$row->test_code.','.$row->lab_order_no.')">
+															   <i id="iConst" class="fa fa-close"></i>
+															   </td>';
+											
+											echo "</tr>";
+											
+											
+											
+										}
+									?>
                                       	</table>
                         </div>          
                   

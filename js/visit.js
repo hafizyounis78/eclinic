@@ -151,7 +151,8 @@ function addTest()
 			beforeSend: function(){},
 			complete: function(){},
 			success: function(returndb){
-				
+				alert(returndb);
+				$("#hdnLabOrderNo").val(returndb);
 				var countFM = parseInt($("#spnCountFamily").html());;
 				countFM = countFM + 1;
 				$("#spnCountFamily").html(countFM);

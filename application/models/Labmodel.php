@@ -13,6 +13,20 @@ class Labmodel extends CI_Model
 		$res = $this->db->query($myquery);
 		return $res->result();
 	}
+	function get_lab_order_by_id($labOrderNo)
+	{
+		
+		$myquery = "SELECT   t.test_code,t.test_desc,r.result,r.notes,h.lab_order_no
+					FROM 	 lab_service_tb t,lab_order_tb h,lab_order_details_tb d,lab_order_results_tb r
+					WHERE    h.lab_order_no=d.lab_order_no
+					AND 	 d.Lab_order_details_no=r.Lab_order_details_no
+					AND 	 r.item_id=t.test_code
+					AND 	 h.lab_order_no=".$labOrderNo;
+		$res = $this->db->query($myquery);
+		return $res->result();
+	}
+	
+	
 	function add_lab_order()
 	{
 		

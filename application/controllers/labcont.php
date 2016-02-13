@@ -41,8 +41,8 @@ class Labcont extends CI_Controller
 	function lab_list()
 	{
 		$this->load->model('labmodel');
-		$result=$this->data['labTests'] = $this->labmodel->get_lab();
-		echo $result;
+		$this->data['labTests'] = $this->labmodel->get_lab();
+		
 	}
 	
 }

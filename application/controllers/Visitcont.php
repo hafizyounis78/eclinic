@@ -55,6 +55,8 @@ class Visitcont extends CI_Controller
 		$this->data['visittype']= $this->constantmodel->get_sub_constant(75);
 		$this->data['plantype']= $this->visitmodel->get_nut_plan_list();
 		$this->data['labTests'] = $this->labmodel->get_lab();
+		
+		//$this->data['LabOrderTest'] = $this->labmodel->get_lab_order_by_id();
 
 //		$this->data['visittype']= $this->constantmodel->get_sub_constant(3);
 		
@@ -115,8 +117,46 @@ class Visitcont extends CI_Controller
 	function addtest()
 	{
 			$this->load->model('labmodel');
-			$this->labmodel->add_lab_order();
+			$result=$this->labmodel->add_lab_order();
+			echo $result;
+			drawTesttable();
+			
 	}
+	function drawTesttable()
+	{
+		extract($_POST);
+		$this->load->model('labmodel');
+		
+		$rec = $this->labmodel->get_lab_order_by_id($hdnLabOrderNo);
+		
+		$i=1;
+		foreach($rec as $row)
+		{
+		 				
+			echo "<tr>";
+			echo '<td style="display:none;" id="lab_order_no'.$i.'">'. $row->lab_order_no. "</td>";
+			echo '<td style="display:none;" id="test_code'.$i.'">'. $row->test_code. "</td>";
+			echo '<td  id="test_desc'.$i.'">'. $row->test_desc.'</td>';
+		
+			echo '<td><button id="btnDeleteTest" name="btnDeleteTest" type="button" 
+			class="btn btn-circle red-sunglo btn-sm" 
+			onclick="deleteTestbyId('.$row->test_code.','.$row->lab_order_no.')">
+							   <i id="iConst" class="fa fa-close"></i>
+							   </td>';
+			
+			echo "</tr>";
+			
+			
+			
+		}
+
+
+	}
+	
+			
+			
+	
+
 	function visitsgriddata()
 	{
 		$this->load->model('visitmodel');
