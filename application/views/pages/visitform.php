@@ -228,11 +228,6 @@ else if(isset($visit_info))
                                                  <span class="font-red">
                                         		* </span>
                                             </th>
-                                            <th scope="col">
-                                                 النتيجة
-                                                 <span class="font-red">
-                                        		* </span>
-                                            </th>
                                             <th scope="col">&nbsp;
                                                  
                                             </th>
@@ -256,10 +251,7 @@ else if(isset($visit_info))
                                                   </select>
                                             </th>
                                            
-                                            <th>
-                                                 <input type="text" id="txtResult" name="txtResult" 
-                                                   class="form-control input-sm input-small"/>
-                                            </th>
+                                            
                                             <th>
                                                  <button id="btnAddTest" name="btnAddTest" type="button" 
                                                  class="btn btn-circle green-turquoise btn-sm" onclick="addTest()">
@@ -267,21 +259,19 @@ else if(isset($visit_info))
                                             </th>
                                         </tr>
                                         </thead>
-                                        <tbody id="tbdTest">
+                                        <!--<tbody id="tbdTest">
                                          <tr>
-                                                <td> alex </td>
-                                                <td> Alex Nilson </td>
-                                                <td> 1234 </td>
-                                                <td class="center"> power user </td>
+                                               <td>  </td>
+                                                
                                                 <td>
-                                                    <a class="edit" href="javascript:;"> Edit </a>
-                                                </td>
+                                                <td> alex </td>
+                                                
                                                 <td>
                                                     <a class="delete" href="javascript:;"> Delete </a>
                                                 </td>
                                             </tr>
                                         </tbody>
-         
+         -->
          							<?php  /*  
 		                              foreach($LabOrderTest as $row)
 								  	  {
@@ -304,6 +294,8 @@ else if(isset($visit_info))
 										}
 									*/?>
                                       	</table>
+                                        <div id="dvOrderlab">
+                                        </div>
                         </div>          
                   
                   </div>

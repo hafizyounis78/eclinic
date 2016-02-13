@@ -9,7 +9,20 @@ class Labmodel extends CI_Model
 					FROM 	 lab_service_tb";
 	*/	
 		$myquery = "SELECT   test_code,test_desc
+					FROM 	 lab_service_tb
+					WHERE 	parent_code =0";
+		$res = $this->db->query($myquery);
+		return $res->result();
+	}
+	function get_items($parent)
+	{
+/*		$myquery = "SELECT   test_code,group_code,lab_test_code,test_desc,result_type_id,test_unit_id,
+							 result_status_id,parent_code
 					FROM 	 lab_service_tb";
+	*/	
+		$myquery = "SELECT   test_code,test_desc
+					FROM 	 lab_service_tb
+					WHERE 	parent_code = ".$parent;
 		$res = $this->db->query($myquery);
 		return $res->result();
 	}

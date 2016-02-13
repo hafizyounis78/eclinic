@@ -118,8 +118,8 @@ class Visitcont extends CI_Controller
 	{
 			$this->load->model('labmodel');
 			$result=$this->labmodel->add_lab_order();
-			echo $result;
-			drawTesttable();
+			//echo $result;
+			$this->drawTesttable();
 			
 	}
 	function drawTesttable()
@@ -127,13 +127,40 @@ class Visitcont extends CI_Controller
 		extract($_POST);
 		$this->load->model('labmodel');
 		
-		$rec = $this->labmodel->get_lab_order_by_id($hdnLabOrderNo);
+		//$rec = $this->labmodel->get_lab_order_by_id($hdnLabOrderNo);
 		
-		$i=1;
+		$rec = $this->labmodel->get_items(1);
+		echo '<div class="form-body">
+               <br/>';
 		foreach($rec as $row)
 		{
-		 				
-			echo "<tr>";
+			echo '<div class="form-group">
+					  <label class="control-label col-md-3">'.$row->test_desc.' &nbsp;&nbsp;&nbsp;
+					  </label>
+					  <div class="col-md-4">
+						  <input type="text" id="txt'.$row->test_desc.'" name="txt'.$row->test_desc.'" class="form-control"
+						   value="" />
+					  </div>
+				  </div>';
+		}
+			   
+		echo '</div>';
+		
+		echo '<div class="form-actions">
+                      <div class="row">
+                          <div class="col-md-offset-3 col-md-9">
+                              <button type="submit" class="btn blue-madison">حـفـظ</button>
+                              <button type="button" class="btn default" 
+                              onclick="">عودة</button>
+                          </div>
+                      </div>
+                  </div>';
+		
+		//$i=1;
+		
+		 	
+			
+			/*echo "<tr>";
 			echo '<td style="display:none;" id="lab_order_no'.$i.'">'. $row->lab_order_no. "</td>";
 			echo '<td style="display:none;" id="test_code'.$i.'">'. $row->test_code. "</td>";
 			echo '<td  id="test_desc'.$i.'">'. $row->test_desc.'</td>';
@@ -144,11 +171,11 @@ class Visitcont extends CI_Controller
 							   <i id="iConst" class="fa fa-close"></i>
 							   </td>';
 			
-			echo "</tr>";
+			echo "</tr>";*/
 			
 			
 			
-		}
+		
 
 
 	}

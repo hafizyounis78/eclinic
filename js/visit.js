@@ -138,6 +138,7 @@ function addTest()
 	formData.append('txtPatientFileId'		 , $("#txtPatientFileId").val()		  );
 	formData.append('dpVisitdate'		 ,  $("#dpVisitdate").val()		  );
 	formData.append('drpVisitType'	  	 ,  $("#drpVisitType").val()	  );
+	formData.append('drpTestName'	  	 ,  $("#drpTestName").val()	  );
 
 	$.ajax({
 			url: baseURL+"Visitcont/addtest",
@@ -152,13 +153,14 @@ function addTest()
 			complete: function(){},
 			success: function(returndb){
 				alert(returndb);
-				$("#hdnLabOrderNo").val(returndb);
+				$("#dvOrderlab").append(returndb);
+				/*$("#hdnLabOrderNo").val(returndb);
 				var countFM = parseInt($("#spnCountFamily").html());;
 				countFM = countFM + 1;
 				$("#spnCountFamily").html(countFM);
 				
 				$("#tbdFamilyMember").html(returndb);
-				clearFamilymemberFields();
+				clearFamilymemberFields();*/
 				/*if(returndb == '')
 				{
 					var form = $('#familyMemberTab');
