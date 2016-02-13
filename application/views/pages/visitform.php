@@ -216,7 +216,7 @@ else if(isset($visit_info))
                       <input id="hdnvisitNo" name="hdnvisitNo" type="hidden" value="<?php if(isset($visit_row->outpatient_visit_id)) echo $visit_row->outpatient_visit_id;?>" />
                       </div>
                                  <div class="table-scrollable" style="white-space: nowrap;">
-                                        <table class="table table-striped table-bordered table-hover">
+                                        <table class="table table-striped table-hover table-bordered">
                                         <thead>
                                         <tr class="bg-grey-steel">
                                             <th scope="col">
@@ -246,10 +246,10 @@ else if(isset($visit_info))
                                                  class="form-control input-sm input-small" >
                                                         <option value="">اختر...</option>
                                                         <?php
-                                                         foreach($lab_test as $row)
+                                                         foreach($labTests as $row)
                                                          {
-                                                            echo '<option value="'.$row->sub_constant_id.'">'
-                                                                    .$row->sub_constant_name.'</option>';
+                                                            echo '<option value="'.$row->test_code.'">'
+                                                                    .$row->test_desc.'</option>';
                                                          }
                                                          ?>
                                                   </select>
@@ -261,13 +261,24 @@ else if(isset($visit_info))
                                             </th>
                                             <th>
                                                  <button id="btnAddTest" name="btnAddTest" type="button" 
-                                                 class="btn btn-circle green-turquoise btn-sm" onclick="editeTest()">
+                                                 class="btn btn-circle green-turquoise btn-sm" onclick="addTest()">
                                                 <i id="iConst" class="fa fa-plus"></i></button>
                                             </th>
                                         </tr>
                                         </thead>
                                         <tbody id="tbdTest">
-                                        
+                                         <tr>
+                                                <td> alex </td>
+                                                <td> Alex Nilson </td>
+                                                <td> 1234 </td>
+                                                <td class="center"> power user </td>
+                                                <td>
+                                                    <a class="edit" href="javascript:;"> Edit </a>
+                                                </td>
+                                                <td>
+                                                    <a class="delete" href="javascript:;"> Delete </a>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                       	</table>
                         </div>          

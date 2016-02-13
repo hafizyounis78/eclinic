@@ -51,8 +51,10 @@ class Visitcont extends CI_Controller
 	{
 		$this->load->model('constantmodel');
 		$this->load->model('visitmodel');
+		$this->load->model('labmodel');
 		$this->data['visittype']= $this->constantmodel->get_sub_constant(75);
 		$this->data['plantype']= $this->visitmodel->get_nut_plan_list();
+		$this->data['labTests'] = $this->labmodel->get_lab();
 
 //		$this->data['visittype']= $this->constantmodel->get_sub_constant(3);
 		
@@ -61,6 +63,7 @@ class Visitcont extends CI_Controller
 				$this->load->model('visitmodel');
 				$this->data['patient_info'] = $this->visitmodel->get_patient_by_id($_SESSION['update']);
 				unset($_SESSION['update']);
+				$this->data['labTests'] = $this->labmodel->get_lab();
 				
 			}
 		else if(isset($_SESSION['updateVisit']))
@@ -69,6 +72,7 @@ class Visitcont extends CI_Controller
 				
 				$this->data['visit_info'] = $this->visitmodel->get_visit_data_by_id($_SESSION['updateVisit']);
 				unset($_SESSION['updateVisit']);
+				$this->data['labTests'] = $this->labmodel->get_lab();
 			}
 		
 	}
@@ -108,7 +112,11 @@ class Visitcont extends CI_Controller
 		
 	}
 	*/
-	
+	function addtest()
+	{
+			$this->load->model('labmodel');
+			$this->labmodel->add_lab_order();
+	}
 	function visitsgriddata()
 	{
 		$this->load->model('visitmodel');

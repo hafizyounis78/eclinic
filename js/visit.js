@@ -122,6 +122,51 @@ function editeVisits()
 	
 }
 
+function addTest()
+{
+	//var action = $("#hdnActionFM").val();
+	//alert(action);
+	
+	/*if ( !validateFamilymember() )
+		return;*/
+		
+	// Create a new FormData object.
+	var formData = new FormData();
+	
+	// Add the data to the request.
+	formData.append('hdnvisitNo'		 , $("#hdnvisitNo").val()		  );
+	formData.append('txtPatientFileId'		 , $("#txtPatientFileId").val()		  );
+	formData.append('dpVisitdate'		 ,  $("#dpVisitdate").val()		  );
+	formData.append('drpVisitType'	  	 ,  $("#drpVisitType").val()	  );
+
+	$.ajax({
+			url: baseURL+"Visitcont/addtest",
+			type: "POST",
+			data:  formData,
+			processData: false,
+    		contentType: false,
+			error: function(xhr, status, error) {
+  				alert(xhr.responseText);
+			},
+			beforeSend: function(){},
+			complete: function(){},
+			success: function(returndb){
+				
+				var countFM = parseInt($("#spnCountFamily").html());;
+				countFM = countFM + 1;
+				$("#spnCountFamily").html(countFM);
+				
+				$("#tbdFamilyMember").html(returndb);
+				clearFamilymemberFields();
+				/*if(returndb == '')
+				{
+					var form = $('#familyMemberTab');
+					$('.alert-success', form).show();
+					//$('#hdnAction').val('');
+				}*/
+			}
+		});//END $.ajax
+}
 
 function gotoUpdateVisit(arg)
 {//alert(arg);
