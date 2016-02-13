@@ -42,6 +42,7 @@ class Visitcont extends CI_Controller
 	{
 		extract($_POST);
 		$_SESSION['update'] = $patientFileId;
+		unset($_SESSION['updateVisit']);
 		
 	}
 	
@@ -49,15 +50,25 @@ class Visitcont extends CI_Controller
 	function visitform()
 	{
 		$this->load->model('constantmodel');
-		$this->data['visittype']= $this->constantmodel->get_sub_constant(3);
-		$this->data['plantype']= $this->constantmodel->get_sub_constant(2);
-		
+		$this->load->model('visitmodel');
+		$this->data['visittype']= $this->constantmodel->get_sub_constant(75);
+		$this->data['plantype']= $this->visitmodel->get_nut_plan_list();
+
+//		$this->data['visittype']= $this->constantmodel->get_sub_constant(3);
 		
 		if(isset($_SESSION['update']))
 			{
 				$this->load->model('visitmodel');
-				$this->data['patient_info'] = $this->visitmodel->get_patient_by_id($_SESSION['patientFileId']);
+				$this->data['patient_info'] = $this->visitmodel->get_patient_by_id($_SESSION['update']);
+				unset($_SESSION['update']);
 				
+			}
+		else if(isset($_SESSION['updateVisit']))
+			{
+				$this->load->model('visitmodel');
+				
+				$this->data['visit_info'] = $this->visitmodel->get_visit_data_by_id($_SESSION['updateVisit']);
+				unset($_SESSION['updateVisit']);
 			}
 		
 	}
@@ -65,8 +76,6 @@ class Visitcont extends CI_Controller
 	function visits()
 	{
 		$this->load->model('constantmodel');
-	//	$this->data['status']          = $this->constantmodel->get_sub_constant(2);
-		//$this->data['governorate']     = $this->constantmodel->get_sub_constant(22);
 		$this->data['visittype']          = $this->constantmodel->get_sub_constant(2);
 		
 		
@@ -92,16 +101,18 @@ class Visitcont extends CI_Controller
 	/************************************************************/
 	
 	/******************* USER DATA GRID *************************/
-	function visit()
+	/*function visit()
 	{
 		$this->load->model('constantmodel');
 
 		
 	}
+	*/
+	
 	function visitsgriddata()
 	{
 		$this->load->model('visitmodel');
-		$rec = $this->visitmodel->get_search_visit($_REQUEST);
+		$rec = $this->visitmodel->get_search_visits($_REQUEST);
 		
 		
 		$i = 1;
@@ -118,18 +129,19 @@ class Visitcont extends CI_Controller
 			/*$btn='<a href="'.base_url().'adduser/'.$row->user_name.'" class="btn default btn-xs purple">
 			  <i class="fa fa-edit"></i> تعديل </a>';*/
 			
-			$btn='<a class="btn default btn-xs purple" onclick="gotoVisit(\''.$row->outpatient_visit_id.'\')">
+			$btn='<a class="btn default btn-xs purple" onclick="gotoUpdateVisit(\''.$row->outpatient_visit_id.'\')">
 			  <i class="fa fa-edit"></i> تعديل </a>';
 			
 			$nestedData[] = $i++;
+			$nestedData[] = $row->outpatient_visit_id;
 			$nestedData[] = $row->patient_file_id;
-			$nestedData[] = $row->patient_id;
 			$nestedData[] = $row->name;
-			$nestedData[] = $row->phone;
-			$nestedData[] = $row->mobile;
-			$nestedData[] = $row->Patient_governorate;
 			$nestedData[] = $row->visit_date;
-			$nestedData[] = $row->visit_type_desc;
+			$nestedData[] = $row->weight;
+			$nestedData[] = $row->length;
+			$nestedData[] = $row->bmi;
+			$nestedData[] = $row->visit_type;
+
 			//$nestedData[] = $active;
 			$nestedData[] = $btn;
 			
@@ -150,7 +162,86 @@ class Visitcont extends CI_Controller
 		echo json_encode($json_data);  // send data as json format
 	}
 	/************************************************************/
+function getvisstdata(){
 	
+		extract($_POST);
+		$_SESSION['updateVisit'] = $VisitNo;
+		unset($_SESSION['update']);
+		
+/*
+		$this->load->model('visitmodel');
+		$rec=$this->visitmodel->get_visit_data_by_id();
+//		$SurveyId=0;
+		if (count($rec) == 0)
+		{
+			echo 0;
+			return;
+		}
+		$output = array();
+		foreach($rec as $row)
+		{
+			unset($temp); // Release the contained value of the variable from the last loop
+			$temp = array();
+
+			// It guess your client side will need the id to extract, and distinguish the ScoreCH data
+		
+		$temp['patient_file_id'] = $row->patient_file_id ;			
+		$temp['name'] = $row->name ;		
+		$temp['dob'] = $row->dob;
+		$temp['visit_date'] = $row->visit_date ;			
+		$temp['visit_time'] = $row->visit_time ;		
+		$temp['visit_type_id'] = $row->visit_type_id;
 	
+		$temp['weight'] = $row->weight ;		
+		$temp['length'] = $row->length ;			
+		$temp['bmi'] = $row->bmi;
+
+		$temp['plan_id'] = $row->plan_id ;		
+		$temp['start_date'] = $row->start_date ;		
+		$temp['end_date'] = $row->end_date;
+		$temp['breakfast'] = $row->breakfast ;			
+		$temp['lunch'] = $row->lunch ;		
+		$temp['dinner'] = $row->dinner;
+		$temp['notes'] = $row->notes;
+			array_push($output,$temp);
+		}
+		header('Access-Control-Allow-Origin: *');
+			header("Content-Type: application/json");
+			echo json_encode($output);
+			*/
+}		
+function get_nut_plan()
+
+	{
+		$this->load->model('visitmodel');
+		$rec=$this->visitmodel->get_nut_plan_by_id();
+//		$SurveyId=0;
+		if (count($rec) == 0)
+		{
+			echo 0;
+			return;
+		}
+		$output = array();
+		foreach($rec as $row)
+		{
+			unset($temp); // Release the contained value of the variable from the last loop
+			$temp = array();
+
+			// It guess your client side will need the id to extract, and distinguish the ScoreCH data
+		$temp['breakfast'] = $row->breakfast ;			
+		$temp['lunch'] = $row->lunch ;		
+		$temp['dinner'] = $row->dinner;
+
+		
+			array_push($output,$temp);
+			
+			
+			
+		}
+		header('Access-Control-Allow-Origin: *');
+			header("Content-Type: application/json");
+			echo json_encode($output);
+
+}	
 }
 ?>

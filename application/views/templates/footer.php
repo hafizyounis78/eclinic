@@ -138,6 +138,7 @@
 		UserTableAjax.init();
 		EmpTableAjax.init();
 		PatientTableAjax.init();
+		VisitTableAjax.init();
 
 
 		//********** Report **********************/

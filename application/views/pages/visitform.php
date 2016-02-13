@@ -2,19 +2,47 @@
 <!-- BEGIN PAGE CONTENT-->
 <?php
 $ction ="addvisit";
+$Laction="";
 $page_title = "إضافة زيارة";
 $readonly = '';
+$disabled = '';
+date_default_timezone_set('Asia/Gaza');
+$currentDate= date("Y-m-d"); 
+$lblClass = ' font-green ';
+$lblage = '';
 if (isset($patient_info))
 {
-	unset($_SESSION['update']);
-	//foreach($patient_info as $patient_row);
 	foreach($patient_info as $patient_row);
-	//foreach($bodysegment_info as $bodysegment_row);
-	//foreach($nutrition_plan_info as $nutrition_plan_row);
-	$ction ="updatevisit";
-	$page_title = "تعـــديل زيارة";
-	$readonly = 'readonly="readonly"';
+	$page_title = "إضافة زيارة";
+	$ction ="addvisit";
+
 }
+else if(isset($visit_info))
+{
+	foreach($visit_info as $visit_row);
+	$page_title = "تعـــديل زيارة";
+	$ction ="updatevisit";
+	$readonly = 'readonly="readonly"';
+	$disabled = 'disabled="disabled" ';
+	
+	date_default_timezone_set('Asia/Gaza');   
+		//date in yyyy-mm-dd format;
+  		$birthDate = $visit_row->dob;
+		//explode the date to get month, day and year
+		$birthDate = explode("-", $birthDate);
+		//get age from date or birthdate
+		$age = (date("md", date("U", mktime(0, 0, 0, $birthDate[2], $birthDate[1], $birthDate[0]))) > date("md")
+		  ? ((date("Y") - $birthDate[0]) - 1)
+		  : (date("Y") - $birthDate[0]));
+		
+		if ($age > 60 )
+			$lblClass = ' font-green ';
+		else
+			$lblClass = ' font-red ';
+			
+		$lblage = '<b> المريض العضو : <span id="spnAge">'.$age.'</span></b>';
+}
+
 ?>
 
 <div class="row">
@@ -33,7 +61,7 @@ if (isset($patient_info))
                   <div class="form-body">
                   	<br/>
                       <div class="alert alert-danger display-hide">
-                          <button class="close" data-close="alert"></button>
+                          <button  class="close" data-close="alert"></button>
                           <span id="spnMsg">
                           يـوجد بـعـض الادخـالات الخـاطئة، الرجـاء التأكد من القيم المدخلة
                           </span>
@@ -44,7 +72,7 @@ if (isset($patient_info))
                       </div>
                       <div>
                       <input id="hdnvAction" name="hdnvAction" type="hidden" value="<?php echo $ction;?>" />
-                      
+                      <input id="hdnvisitNo" name="hdnvisitNo" type="hidden" value="<?php if(isset($visit_row->outpatient_visit_id)) echo $visit_row->outpatient_visit_id;?>" />
                       </div>
                                            
                       <div class="form-group">
@@ -52,10 +80,10 @@ if (isset($patient_info))
                           * </span>
                           </label>
                           <div class="col-md-1">
-                              <input type="text" id="txtPatientFileId" name="txtPatientFileId" data-required="1" class="form-control input-xsmall" value="<?php if(isset($patient_row->patient_file_id)) echo $patient_row->patient_file_id;?>"/>
+                              <input type="text" id="txtPatientFileId" name="txtPatientFileId" data-required="1" class="form-control input-xsmall"  readonly="readonly" value="<?php if(isset($patient_row->patient_file_id)) echo $patient_row->patient_file_id; else if(isset($visit_row->patient_file_id)) echo $visit_row->patient_file_id;?>"/>
                           </div>
                           <div class="col-md-3">
-                           <input type="text" id="txtpatientName" name="txtpatientName" data-required="1" class="form-control" placeholder="الاسم" value="<?php if(isset($patient_row->name)) echo $patient_row->name;?>"/>
+                           <input type="text" id="txtpatientName" name="txtpatientName" data-required="1" class="form-control" placeholder="الاسم" readonly="readonly" value="<?php if(isset($patient_row->name)) echo $patient_row->name;else if(isset($visit_row->name)) echo $visit_row->name;?>"/>
                         </div>
                       </div>
                                            
@@ -66,16 +94,17 @@ if (isset($patient_info))
                           <div class="col-md-4">
                               <div class="input-group date date-picker" data-date-format="yyyy-mm-dd">
                                   <input type="text" class="form-control" readonly id="dpDob" name="dpDob"
-                                  value="<?php if(isset($patient_row->dob)) echo $patient_row->dob;?>"
+                                  value="<?php if(isset($patient_row->dob)) echo $patient_row->dob;else if(isset($visit_row->dob)) echo $visit_row->dob;?>"
                                  onchange="claculateAge();" >
                                   <span class="input-group-btn">
-                                  <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                  <button class="btn default" <?php echo $disabled ;?> type="button"><i class="fa fa-calendar"></i></button>
                                   </span>
                               </div>
                               <!-- /input-group -->
                           </div>
                           <div class="col-md-4">
-                               <label id="lblAge" class="control-label"></label>
+                               <label id="lblAge" class="control-label" <?php echo $lblClass?>>
+                                <?php echo $lblage;?></label>
                           </div>
                       </div>
                                                       
@@ -85,19 +114,19 @@ if (isset($patient_info))
                             </label>
                             <div class="col-md-2">
                               <div class="input-group date date-picker" data-date-format="yyyy-mm-dd">
-                                  <input type="text" class="form-control" readonly id="dpVisitdate" name="dpVisitdate" value="">
+                                  <input type="text" class="form-control" readonly id="dpVisitdate" name="dpVisitdate" value="<?php echo $currentDate; ?>">
                                   <span class="input-group-btn">
-                                  <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                  <button class="btn default" <?php echo $disabled ;?> type="button"><i class="fa fa-calendar"></i></button>
                                   </span>
                               </div>
                               <!-- /input-group -->
                           </div>
                           <div class="col-md-2">
                                 <div class="input-group">
-                                    <input type="text" id="txtVisittime" name="txtVisittime"  value="" 
+                                    <input type="text" id="txtVisittime" name="txtVisittime"  value="" <?php echo $readonly ;?>
                                     class="form-control timepicker timepicker-24" >
                                     <span class="input-group-btn">
-                                    <button class="btn default" type="button"><i class="fa fa-clock-o"></i></button>
+                                    <button class="btn default"   type="button" <?php echo $disabled ;?>><i class="fa fa-clock-o"></i></button>
                                     </span>
                                 </div> 
                             </div>
@@ -112,8 +141,11 @@ if (isset($patient_info))
                                   <?php 
 								  foreach ($visittype as $row)
 								  {
+									  $selected = '';
 									  
-									  echo ' <option value="'.$row->sub_constant_id.'" >'
+									  if ($visit_row->visit_type_id == $row->sub_constant_id)
+									  	$selected = 'selected="selected"';
+									  echo ' <option value="'.$row->sub_constant_id.'"'.$selected.' >'
 									  						 .$row->sub_constant_name.'</option>';
 								  }
 								  ?>
@@ -128,7 +160,7 @@ if (isset($patient_info))
                           </label>
                           <div class="col-md-4">
                               <input type="text" id="txtWeight" name="txtWeight" class="form-control"
-                               value=""
+                               value="<?php if(isset($visit_row->weight)) echo $visit_row->weight;?>" onblur="calculat_bmi();"
                               />
                           </div>
                       </div>
@@ -138,7 +170,7 @@ if (isset($patient_info))
                           </label>
                           <div class="col-md-4">
                               <input type="text" id="txtLength" name="txtLength" class="form-control"
-                              value=""
+                              value="<?php if(isset($visit_row->length)) echo $visit_row->length;?>" onblur="calculat_bmi();"
                               />
                           </div>
                       </div>
@@ -149,61 +181,109 @@ if (isset($patient_info))
                           </label>
                           <div class="col-md-4">
                               <input type="text" id="txtBmi" name="txtBmi"  readonly class="form-control"
-                              value=""
+                              value="<?php if(isset($visit_row->bmi)) echo $visit_row->bmi;?>"
                               />
                           </div>
                       </div>
-                      <div class="form-group">
-                          <label class="control-label col-md-3">الخطة الغذائية<span class="required">
-                          * </span>
-                          </label>
-                          <div class="col-md-4">
-                              <select class="form-control " id="drpPlan" name="drpPlan">
-                                  <option value="">اختر...</option>
-                                  <?php 
-								  foreach ($plantype as $row)
-								  {
-									  
-									  
-									  echo ' <option value="'.$row->sub_constant_id.'" >'
-									  						 .$row->sub_constant_name.'</option>';
-								  }
-								  ?>
-                              </select>
+                    </div>
+                  <!-- END FORM BODY -->
+                  <div class="form-actions">
+                      <div class="row">
+                          <div class="col-md-offset-3 col-md-9">
+                              <button type="submit" class="btn blue-madison">حـفـظ</button>
+                              <button type="button" class="btn default" 
+                              onclick="window.location='<?php echo base_url()?>patients/';">عودة</button>
                           </div>
                       </div>
-                       
-					<div class="form-group">
-                          <label class="control-label col-md-3">تـاريخ بدء الخطة <span class="required">
-                          * </span>
-                          </label>
-                          <div class="col-md-4">
-                              <div class="input-group date date-picker" data-date-format="yyyy-mm-dd">
-                                  <input type="text" class="form-control" readonly id="dpDob" name="dpDob"
-                                  value="<?php if(isset($patient_row->dob)) echo $patient_row->dob;?>"
-                                 onchange="claculateAge();" >
-                                  <span class="input-group-btn">
-                                  <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
-                                  </span>
-                              </div>
-                              <!-- /input-group -->
-                          </div>
-                          <div class="col-md-4">
-                               <label id="lblAge" class="control-label"></label>
-                          </div>
+                  </div>
+              </form>
+              <!-- END FORM-->
+              <form action="#" id="Lab_form" class="form-horizontal">
+                  <div class="form-body">
+                  	<br/>
+                      <div class="alert alert-danger display-hide">
+                          <button  class="close" data-close="alert"></button>
+                          <span id="spnMsg">
+                          يـوجد بـعـض الادخـالات الخـاطئة، الرجـاء التأكد من القيم المدخلة
+                          </span>
                       </div>
+                      <div class="alert alert-success display-hide">
+                          <button class="close" data-close="alert"></button>
+							تـم عملية حـفـظ البيـانات بنجـاح !
+                      </div>
+                      <div>
+                      <input id="hdnLAction" name="hdnLAction" type="hidden" value="<?php echo $Laction;?>" />
+                      <input id="hdnvisitNo" name="hdnvisitNo" type="hidden" value="<?php if(isset($visit_row->outpatient_visit_id)) echo $visit_row->outpatient_visit_id;?>" />
+                      </div>
+                                 <div class="table-scrollable" style="white-space: nowrap;">
+                                        <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                        <tr class="bg-grey-steel">
+                                            <th scope="col">
+                                                 #
+                                            </th>
+                                            <th scope="col">
+                                                 اسم الفحص	
+                                                 <span class="font-red">
+                                        		* </span>
+                                            </th>
+                                            <th scope="col">
+                                                 النتيجة
+                                                 <span class="font-red">
+                                        		* </span>
+                                            </th>
+                                            <th scope="col">&nbsp;
+                                                 
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>&nbsp;
+                                                 
+                                            </th>
+                                           
+                                            <th>
+                                                 <select id="drpTestName" name="drpTestName"
+                                                 class="form-control input-sm input-small" >
+                                                        <option value="">اختر...</option>
+                                                        <?php
+                                                         foreach($lab_test as $row)
+                                                         {
+                                                            echo '<option value="'.$row->sub_constant_id.'">'
+                                                                    .$row->sub_constant_name.'</option>';
+                                                         }
+                                                         ?>
+                                                  </select>
+                                            </th>
+                                           
+                                            <th>
+                                                 <input type="text" id="txtResult" name="txtResult" 
+                                                   class="form-control input-sm input-small"/>
+                                            </th>
+                                            <th>
+                                                 <button id="btnAddTest" name="btnAddTest" type="button" 
+                                                 class="btn btn-circle green-turquoise btn-sm" onclick="editeTest()">
+                                                <i id="iConst" class="fa fa-plus"></i></button>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tbdTest">
+                                        
+                                        </tbody>
+                                      	</table>
+                        </div>          
+                  
                   </div>
                   <!-- END FORM BODY -->
                   <div class="form-actions">
                       <div class="row">
                           <div class="col-md-offset-3 col-md-9">
                               <button type="submit" class="btn blue-madison">حـفـظ</button>
-                              <button type="button" class="btn default" onclick="window.location='<?php echo base_url()?>patients/';">عودة</button>
+                              <button type="button" class="btn default" 
+                              onclick="window.location='<?php echo base_url()?>patients/';">عودة</button>
                           </div>
                       </div>
                   </div>
               </form>
-              <!-- END FORM-->
           </div>
           <!-- END VALIDATION STATES-->
       </div>

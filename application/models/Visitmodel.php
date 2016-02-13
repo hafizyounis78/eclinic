@@ -38,6 +38,9 @@ class Visitmodel extends CI_Model
 		$nutdata['plan_id'] = $drpPlan;
 		$nutdata['start_date'] = $dpStartdate;
 		$nutdata['end_date'] = $dpEnddate;
+		$nutdata['breakfast'] = $txtbreakfast;
+		$nutdata['lunch'] = $txtlunch;
+		$nutdata['dinner'] = $txtdinner;
 		$nutdata['notes'] = $txtNotes;
 		$this->db->insert('outpatient_nutrition_plan_tb',$nutdata);
 
@@ -50,24 +53,32 @@ class Visitmodel extends CI_Model
 	{
 		extract($_POST);
 			
+		//update visit type 
+			$data['visit_type_id'] 		= $drpVisitType;
+		$this->db->where('outpatient_visit_id',$hdnvisitNo);
+		$this->db->update('outpatient_visits_tb',$data);	
 		
 		// Update body_segment_tb
 		
-		//$bodydata['outpatient_visit_id'] = $visit_id;
+		//$bodydata['outpatient_visit_id'] = $hdnvisitNo;
 		$bodydata['weight'] = $txtWeight;
 		$bodydata['length'] = $txtLength;
 		$bodydata['bmi'] = $txtBmi;
-		$this->db->where('outpatient_visit_id',$visit_id);
+		$this->db->where('outpatient_visit_id',$hdnvisitNo);
 		$this->db->update('body_segment_tb',$bodydata);
 		
 		// Update outpatient_nutrition_plan_tb
 		
-		$nutdata['outpatient_visit_id'] = $visit_id;
+	//	$nutdata['outpatient_visit_id'] = $hdnvisitNo;
 		$nutdata['plan_id'] = $drpPlan;
 		$nutdata['start_date'] = $dpStartdate;
 		$nutdata['end_date'] = $dpEnddate;
+		$nutdata['breakfast'] = $txtbreakfast;
+		$nutdata['lunch'] = $txtlunch;
+		$nutdata['dinner'] = $txtdinner;
 		$nutdata['notes'] = $txtNotes;
-		$this->db->where('outpatient_visit_id',$visit_id);
+
+		$this->db->where('outpatient_visit_id',$hdnvisitNo);
 		$this->db->update('outpatient_nutrition_plan_tb',$nutdata);
 		
 		return;
@@ -122,6 +133,35 @@ class Visitmodel extends CI_Model
 		return $res->result();
 
 	}
+function get_nut_plan_by_id($planId ='')
+	{
+		// Get elder id from POST otherwise get elder id from function arg $elderid
+		if ( !empty($_POST) )
+		{
+			extract($_POST);
+			$planId= $planCode;
+		}
+		
+		$myquery = "SELECT 	breakfast,lunch,dinner
+					 FROM 	nutrition_plan_tb 
+					 WHERE  plan_id = ".$planId;
+		
+		$res = $this->db->query($myquery);
+		//print_r($res->result());
+		return $res->result();
+	}
+function get_nut_plan_list()
+	{
+		// Get nutration plan list
+
+		$myquery = "SELECT 	plan_id,plan_desc_a,plan_desc_e
+					 FROM 	nutrition_plan_tb";
+		
+		$res = $this->db->query($myquery);
+	//	print_r($res );
+		return $res->result();
+
+	}
 
 
 	function get_patient_nutrition_info($patientid ='')
@@ -130,7 +170,7 @@ class Visitmodel extends CI_Model
 		if ( !empty($_POST) )
 		{
 			extract($_POST);
-			$elderid = $patientFileId;
+			$patientId = $patientFileId;
 		}
 		
 		$myquery = "SELECT 	p.patient_file_id,p.patient_id,p.first_name, p.middle_name, 
@@ -155,45 +195,69 @@ class Visitmodel extends CI_Model
 	function get_search_visits($requestData)
 	{
 		$columns = array( 
-			1 => 'patient_file_id',
+			1 => 'outpatient_visit_id',
 			2 => 'patient_id',
 			3 => 'name',
-			4 => 'phone', 
-			5 => 'mobile',
-			6 => 'Patient_governorate',
-			7 => 'last_visit');
+			4 => 'weight', 
+			5 => 'length',
+			6 => 'bmi',
+			7 => 'visit_type',
+			8 => 'visit_date');
 		
-		$myquery = "SELECT 	patient_file_id,patient_id,CONCAT(first_name,' ',middle_name,' ',third_name,' ',last_name) as name,
-							phone,mobile,created_on as last_visit,governconst.sub_constant_name as Patient_governorate 
- 					FROM 	patient_mr_tb ,sub_constant_tb governconst
-					WHERE 	patient_mr_tb.governorate_id=governconst.sub_constant_id";
+		$myquery = "SELECT 	 	v.outpatient_visit_id,v.patient_file_id,CONCAT(p.first_name,' ',p.middle_name,' ',p.third_name,' ',p.last_name) as name,
+							visit_date,visitconst.sub_constant_name as visit_type,b.weight,b.length,b.bmi 
+ 					FROM    outpatient_visits_tb v	
+					LEFT 	OUTER JOIN sub_constant_tb visitconst  ON v.visit_type_id= visitconst.sub_constant_id
+							,patient_mr_tb p ,body_segment_tb b
+					WHERE 	v.patient_file_id=p.patient_file_id
+					AND 	v.outpatient_visit_id=b.outpatient_visit_id";
 		
+		if(isset($requestData['txtVisitid']) && $requestData['txtVisitid'] !='')
+		{
+			$myquery = $myquery." AND v.outpatient_visit_id = ".$requestData['txtVisitid'];
+		}
 		if(isset($requestData['txtPatientFileid']) && $requestData['txtPatientFileid'] !='')
 		{
-			$myquery = $myquery." AND patient_file_id = ".$requestData['txtPatientFileid'];
+			$myquery = $myquery." AND v.patient_file_id = ".$requestData['txtPatientFileid'];
 		}
-		if(isset($requestData['txtPatientid']) && $requestData['txtPatientid'] !='')
-		{
-			$myquery = $myquery." AND patient_id = ".$requestData['txtPatientid'];
-		}
+		
 		
 		if(isset($requestData['txtName']) && $requestData['txtName'] !='')
 		{
 			$myquery = $myquery." AND CONCAT(first_name,' ',middle_name,' ',third_name,' ',last_name)
 			LIKE '%".$requestData['txtName']."%' ";
 		}
-		if(isset($requestData['txtPhone']) && $requestData['txtPhone'] !='')
+		if(isset($requestData['txtWeight']) && $requestData['txtWeight'] !='')
 		{
-			$myquery = $myquery." AND phone = ".$requestData['txtPhone'];
+			$myquery = $myquery." AND weight = ".$requestData['txtWeight'];
 		}
-		if(isset($requestData['txtMobile']) && $requestData['txtMobile'] !='')
+		if(isset($requestData['txtLength']) && $requestData['txtLength'] !='')
 		{
-			$myquery = $myquery." AND mobile= ".$requestData['txtMobile'];
+			$myquery = $myquery." AND length= ".$requestData['txtLength'];
 		}
+		if(isset($requestData['txtBmi']) && $requestData['txtBmi'] !='')
+		{
+			$myquery = $myquery." AND bmi= ".$requestData['txtBmi'];
+		}
+		/*******************************************************************/
+		if(isset($requestData['dpVisitfrom']) && $requestData['dpVisitfrom'] != ''
+		   && isset($requestData['dpVisitto']) && $requestData['dpVisitto'] != '')
+		{
+			$myquery = $myquery." AND visit_date between '".$requestData['dpVisitfrom']."' and '".$requestData['dpVisitto']."'";
+		}
+		if(isset($requestData['dpVisitfrom']) && $requestData['dpVisitfrom'] != ''
+		   && (isset($requestData['dpVisitto']) && $requestData['dpVisitto'] == ''))
+		{
+			$myquery = $myquery." AND visit_date >= '".$requestData['dpVisitfrom']."'";
+		}
+
 		
-		if(isset($requestData['drpGovernorate']) && $requestData['drpGovernorate'] !='')
+		//*****************************************************************//
+		
+		
+		if(isset($requestData['drpVisitType']) && $requestData['drpVisitType'] !='')
 		{
-			$myquery = $myquery." AND governconst.sub_constant_id = ".$requestData['drpGovernorate'];
+			$myquery = $myquery." AND visit_type_id = ".$requestData['drpVisitType'];
 		}
 		$myquery = $myquery." ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir'].
 					" LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
@@ -202,10 +266,31 @@ class Visitmodel extends CI_Model
 		return $res->result();
 		
 	}
-	function count_patients()
+	function count_visits()
 	{
-		return $this->db->count_all('patient_mr_tb');			
+		return $this->db->count_all('outpatient_visits_tb');			
 	}
+function get_visit_data_by_id($VisitNo)
+{
+	//extract($_POST);
+	//$Visitid = $VisitNo;
+	//print_r($VisitNo);
+	$myquery = "SELECT 	 	v.outpatient_visit_id,p.patient_file_id,CONCAT(p.first_name,' ',p.middle_name,' ',p.third_name,' ',p.last_name) as name,dob,
+							v.visit_date,v.visit_time,v.visit_type_id,b.weight,b.length,b.bmi,n.plan_id,n.start_date,n.end_date,n.breakfast,n.lunch,n.dinner ,n.notes
+ 					FROM    outpatient_visits_tb v
+					LEFT 	OUTER JOIN body_segment_tb b  ON v.outpatient_visit_id= b.outpatient_visit_id
+					LEFT 	OUTER JOIN outpatient_nutrition_plan_tb n ON v.outpatient_visit_id=n.outpatient_visit_id
+					,patient_mr_tb p
+					WHERE 	v.patient_file_id=p.patient_file_id
+					and     v.outpatient_visit_id=".$VisitNo;
+		
+		
+		$res = $this->db->query($myquery);
+//		print_r($res->result());
+		return $res->result();
+		
+		
+}
 
 }
 ?>

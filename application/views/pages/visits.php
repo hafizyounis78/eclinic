@@ -6,39 +6,42 @@
       <div class="portlet">
           <div class="portlet-title">
               <div class="caption">
-                  <i class="fa fa-briefcase"></i>المرضى
+                  <i class="fa fa-briefcase"></i>الزيارات
               </div>
           </div>
           <div class="portlet-body">
               <div class="table-container">
                  
-                  <table class="table table-striped table-bordered table-hover" id="Patientdatatable_ajax">
+                  <table class="table table-striped table-bordered table-hover" id="Visitdatatable_ajax">
                   <thead>
                   <tr role="row" class="heading">
                       <th width="2%">
                           <input type="checkbox" class="group-checkable">
                       </th>
+                      <th width="12%">
+                           رقـم الزيارة
+                      </th>
                        <th width="12%">
                            رقـم الملف
                       </th>
-                      <th width="12%">
-                           رقـم الهوية
-                      </th>
-                      <th width="20%">
+                     <th width="20%">
                            اســم المريض
                       </th>
                       <th width="10%">
-                           رقم الهاتف
+                           تاريخ الزيارة
                       </th>
                       <th width="12%">
-                           رقم الجوال
+                          الطول
                       </th>
                       
                       <th width="10%">
-                           المحافظة
+                           الوزن
                       </th>
-                       <th width="20%">
-                           تاريخ أخر زيارة
+                      <th width="20%">
+                           BMI
+                      </th>
+                      <th width="20%">
+                           نوع الزيارة
                       </th>
                       <th width="10%">&nbsp;
                            
@@ -48,46 +51,50 @@
                       <td>
                       </td>
                     	 <td>
+                          <input type="text" class="form-control form-filter input-sm" id="txtVisitid" name="txtVisitid">
+                      </td>
+                         <td>
                           <input type="text" class="form-control form-filter input-sm" id="txtPatientFileid" name="txtPatientFileid">
                       </td>
-                      <td>
-                          <input type="text" class="form-control form-filter input-sm" id="txtPatientid" name="txtPatientid">
-                      </td>
-                      <td>
+                     <td>
                           <input type="text" class="form-control form-filter input-sm" id="txtName" name="txtName">
                       </td>
                       <td>
-                          <input type="text" class="form-control form-filter input-sm" id="txtPhone" name="txtPhone">
+                          <div class="input-group date date-picker margin-bottom-5" data-date-format="yyyy/mm/dd">
+                            <input type="text" class="form-control form-filter input-sm dp" readonly name="dpVisitfrom" placeholder="من">
+                            <span class="input-group-btn">
+                            <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+                            </span>
+                        </div>
+                        <div class="input-group date date-picker" data-date-format="yyyy/mm/dd">
+                            <input type="text" class="form-control form-filter input-sm dp" readonly name="dpVisitto" placeholder="إلى">
+                            <span class="input-group-btn">
+                            <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+                            </span>
+                        </div>
+                      </td>
+ 
+                      <td>
+                          <input type="text" class="form-control form-filter input-sm" id="txtWeight" name="txtWeight">
                       </td>
                       <td>
-                          <input type="text" class="form-control form-filter input-sm" id="txtMobile" name="txtMobile">
+                          <input type="text" class="form-control form-filter input-sm" id="txtLength" name="txtLength">
                       </td>
-                     
+                     <td>
+                          <input type="text" class="form-control form-filter input-sm" id="txtBmi" name="txtBmi">
+                      </td>
                       <td>
-                         <select class="form-control form-filter input-sm" id="drpGovernorate" name="drpGovernorate">
+                         <select class="form-control form-filter input-sm" id="drpVisitType" name="drpVisitType">
                             <option value="">اختر...</option>
                             <?php
-							  foreach($elder_governorate as $row)
+							  foreach($visittype as $row)
 							  {
                       			echo '<option value="'.$row->sub_constant_id.'">'.$row->sub_constant_name.'</option>';
 							  }
 							  ?>
                         </select>
                       </td>
-                      <td>
-                          <div class="input-group date date-picker margin-bottom-5" data-date-format="yyyy/mm/dd">
-                            <input type="text" class="form-control form-filter input-sm dp" readonly name="dpAppfrom" placeholder="من">
-                            <span class="input-group-btn">
-                            <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
-                            </span>
-                        </div>
-                        <div class="input-group date date-picker" data-date-format="yyyy/mm/dd">
-                            <input type="text" class="form-control form-filter input-sm dp" readonly name="dpAppto" placeholder="إلى">
-                            <span class="input-group-btn">
-                            <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
-                            </span>
-                        </div>
-                      </td>
+                      
                       <td>
                          <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> </button>
                          <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> </button>

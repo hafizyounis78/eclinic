@@ -101,7 +101,7 @@ function claculateAge()
 function editePatient()
 {
 	var action = $("#hdnAction").val();
-		alert(action);
+	//	alert(action);
 						
 	$.ajax({
 			url: baseURL+"Patientcont/"+action,
@@ -114,9 +114,9 @@ function editePatient()
 			beforeSend: function(){},
 			complete: function(){},
 			success: function(returndb){
-				if(returndb != 0)
+				//if(returndb != 0)
 				{
-					alert(returndb['patient_file_id']);
+					//alert(returndb['patient_file_id']);
 					//$("#hdnSurveyId").val(returndb['survey_id']);
 					$("#hdnPatientFileId")  .val(returndb['patient_file_id']);
 					$("#hdnAction").val('updatepatient');
@@ -133,7 +133,7 @@ function editePatient()
 }
 
 function gotoPatient(arg)
-{alert(arg);
+{//alert(arg);
 	$.ajax({
 			url: baseURL+"Patientcont/senddata",
 			type: "POST",
@@ -152,7 +152,7 @@ function gotoPatient(arg)
 }
 //******************gotovisits********************//
 function gotoPatientVisit(arg)
-{alert(arg);
+{//alert(arg);
 	$.ajax({
 			url: baseURL+"Visitcont/senddata",
 			type: "POST",

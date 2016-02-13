@@ -2,29 +2,40 @@
 
 
 //************* Governate change ******************//
+function calculat_bmi()
+{
+	
+	var wieght=$('#txtWeight').val();				
+	var length=$('#txtLength').val();				
+	if (wieght != '' && length != '')
+		{
+			
+			var bmi=parseInt(wieght)/(parseInt(length)*parseInt(length));
+			
+			$('#txtBmi').val(bmi);	
+			
+		}
+				
+}
+
 function drpplan_change(){	
 
- 	var governorate_code = $('#drpGovernorate').find('option:selected').val();
-	
+ 	var plan_code = $('#drpPlan').find('option:selected').val();
+	//alert(plan_code);
 	$.ajax({
-			url: baseURL+"Surveycont/get_region",
+			url: baseURL+"Visitcont/get_nut_plan",
 			type: "POST",
-			data:  {governorateCode:governorate_code},
+			data:  {planCode:plan_code},
 			error: function(xhr, status, error) {
   				alert(xhr.responseText);
 			},
 			beforeSend: function(){},
 			complete: function(){},
 			success: function(returndb){
-				var i=0;
-				$('#drpRegion').empty();
-				$('#drpFulladdress').empty();
-//				alert(returndb[0]['sub_constant_id']+returndb[0]['sub_constant_name']);
-				$('#drpRegion').append("<option>أختر ....</option>");
-				for (i=0;i<returndb.length;++i)
-			//	alert(returndb[i]['sub_constant_id']+returndb[i]['sub_constant_name']);
-				$('#drpRegion').append('<option value= "'+ returndb[i]['sub_constant_id'] + '">' + returndb[i]['sub_constant_name'] +'</option>');
-				
+			//alert(returndb);	
+			$('#txtbreakfast').val(returndb[0]['breakfast']);				
+			$('#txtlunch').val(returndb[0]['lunch']);				
+			$('#txtdinner').val(returndb[0]['dinner']);				
 			}
 		});//END $.ajax
 }
@@ -77,7 +88,7 @@ function claculateAge()
 function editeVisits()
 {
 	var action = $("#hdnvAction").val();
-		alert(action);
+	//	alert(action);
 						
 	$.ajax({
 			url: baseURL+"Visitcont/"+action,
@@ -90,11 +101,14 @@ function editeVisits()
 			beforeSend: function(){},
 			complete: function(){},
 			success: function(returndb){
-				if(returndb != 0)
+				//if(returndb != 0)
 				{
-					alert(returndb['patient_file_id']);
+					//alert(returndb['patient_file_id']);
 					//$("#hdnSurveyId").val(returndb['survey_id']);
-					$("#hdnPatientFileId")  .val(returndb['patient_file_id']);
+					
+					
+						$("#hdnvisitNo")  .val(returndb['visit_id']);
+					
 					$("#hdnvAction").val('updatevisit');
 					
 					var form = $('#Visit_form');
@@ -108,12 +122,13 @@ function editeVisits()
 	
 }
 
-function gotoVisit(arg)
-{alert(arg);
+
+function gotoUpdateVisit(arg)
+{//alert(arg);
 	$.ajax({
-			url: baseURL+"Visitcont/senddata",
+			url: baseURL+"Visitcont/getvisstdata",
 			type: "POST",
-			data:  {patientFileId : arg},
+			data:  {VisitNo : arg},
 			error: function(xhr, status, error) {
   				//var err = eval("(" + xhr.responseText + ")");
   				alert(xhr.responseText);
@@ -121,11 +136,38 @@ function gotoVisit(arg)
 			beforeSend: function(){},
 			complete: function(){},
 			success: function(returndb){
+				//alert(111);
+				//alert(returndb);
 				window.location.href = baseURL+"visitcont/visitform";
+				
+/*				
+				//$("#txtPatientFileId").val(returndb[0]['patient_file_id']);
+
+				$("#txtpatientName").val(returndb[0]['name']);
+				$("#dpDob").val(returndb[0]['dob']);
+				$("#dpVisitdate")  .val(returndb[0]['visit_date']);
+				$("#txtVisittime")  .val(returndb[0]['visit_time']);
+				$("#drpVisitType")  .val(returndb[0]['visit_type_id']);
+
+				$("#txtLength")  .val(returndb[0]['length']);
+				$("#txtWeight")  .val(returndb[0]['weight']);
+				$("#txtBmi")  .val(returndb[0]['bmi']);
+
+				$("#drpPlan")  .val(returndb[0]['plan_id']);
+				$("#dpStartdate")  .val(returndb[0]['start_date']);
+				$("#dpEnddate")  .val(returndb[0]['end_date']);
+				$("#txtbreakfast")  .val(returndb[0]['break_fast']);
+				$("#txtlunch")  .val(returndb[0]['lunch']);
+				$("#txtdinner")  .val(returndb[0]['dinner']);
+				$("#txtNotes")  .val(returndb[0]['notes']);
+				$("#hdnvAction").val('updatevisit');
+				
+	*/			
 				//alert(returndb);
 			}
 		});//END $.ajax
 }
+
 //****************Patient Validation
 var VisitFormValidation = function () {
  var handleValidation = function() {
@@ -153,6 +195,25 @@ var VisitFormValidation = function () {
                     },
 	                drpPlan: {
                         required: true
+                    },
+                    dpStatdate: {
+						required: true
+						
+                    },
+                    dpEnddate: {
+                      required: true
+						
+                    },
+                    txtbreakfast: {
+                       required: true
+					},
+                    txtlunch: {
+                        required: true
+						
+                    },
+                    txtdinner: {
+                        required: true
+						
                     }
 				},
 
@@ -169,11 +230,28 @@ var VisitFormValidation = function () {
                     txtLength: {
                         required: "الرجاء ادخل الاسم",
 						digits: "الرجـاء ادخـال ارقـام فقط"
-                    }
-					,
+                    },
 					drpPlan: {
 						required: "الرجاء إختيار قيمة"
+                    },
+                    dpStatdate: {
+                        required: "الرجاء ادخل تاريخ"
+						
+                    },
+                    dpEnddate: {
+                        required: "الرجاء ادخل تاريخ"
+						
+                    },
+                    txtbreakfast: {
+                       required: "الرجاء ادخل قيمة"
+					},
+                    txtlunch: {
+                        required: "الرجاء ادخل قيمة"
+                    },
+                    txtdinner: {
+                        required: "الرجاء ادخل قيمة"
                     }
+					
                 },
 
                 errorPlacement: function (error, element) { // render error placement for each input type
@@ -218,7 +296,7 @@ var VisitFormValidation = function () {
 
                 submitHandler: function (form) {
                     errormsg.hide();
-					editeVisit();
+					editeVisits();
                     //form[0].submit(); // submit the form
                 }
 
