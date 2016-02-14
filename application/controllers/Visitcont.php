@@ -141,10 +141,10 @@ class Visitcont extends CI_Controller
 				  		<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse_2'.$i.'">'
 					.$row->test_desc.'</a></td>
 				</tr>';
-				$j=0;
+				//$j=0;
 		foreach($rec as $itemrow)
 		{
-				echo '<tr id="collapse_2'.$j++.'" class="panel-collapse collapse"><td>&nbsp;</td>
+				echo '<tr id="collapse_2'.$i.'" class="panel-collapse collapse"><td>&nbsp;</td>
 				  <td>
 				  <div class="col-md-2">'.$itemrow->test_desc.'</div>
 				  <div class="col-md-3">
