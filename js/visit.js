@@ -173,7 +173,11 @@ function addTest()
 			}
 		});//END $.ajax
 }
-
+function addResult(itemid)
+{
+	alert("itemid="+itemid);
+	alert("Value="+$('#txt'+itemid).val());
+}
 function gotoUpdateVisit(arg)
 {//alert(arg);
 	$.ajax({

@@ -150,10 +150,10 @@ class Visitcont extends CI_Controller
 					  echo'<div class="col-md-9">
 					  <div class="col-md-2">'.$itemrow->test_desc.'</div>
 					  <div class="col-md-4">
-					  <input type="text" id="txt'.$itemrow->test_desc.'" name="txt'.$itemrow->test_desc.'" class="form-control" value="" />
+					  <input type="text" id="txt'.$itemrow->test_code.'" name="txt'.$itemrow->test_desc.'" class="form-control" value="" />
 					  </div>
 					  <div class="col-md-2">
-						<button id="btnAddTest" name="btnAddTest" type="button" class="btn btn-circle green-turquoise btn-sm" onclick="addResult()">
+						<button id="btnAddTest" name="btnAddTest" type="button" class="btn btn-circle green-turquoise btn-sm" onclick="addResult('.$itemrow->test_code.')">
 						<i id="iConst" class="fa fa-plus"></i></button>
 					  </div>
 					  </div>';
