@@ -10,8 +10,8 @@ function calculat_bmi()
 	if (wieght != '' && length != '')
 		{
 			
-			var bmi=parseInt(wieght)/(parseInt(length)*parseInt(length));
-			
+			var bmi=parseFloat(wieght)/(parseFloat(length)*parseFloat(length));
+			bmi = Math.round(bmi * 100) / 100
 			$('#txtBmi').val(bmi);	
 			
 		}
