@@ -179,7 +179,7 @@ else if(isset($visit_info))
                                     
                                     <div class="form-group">
                                         <label class="control-label col-md-3">الطول   &nbsp;&nbsp;&nbsp;
-                                        </label>;2
+                                        </label>
                                         <div class="col-md-4">
                                             <input type="text" id="txtLength" name="txtLength" class="form-control"
                                             value="<?php if(isset($visit_row->length)) echo $visit_row->length;?>" onblur="calculat_bmi();"
