@@ -26,6 +26,18 @@ class Labmodel extends CI_Model
 		$res = $this->db->query($myquery);
 		return $res->result();
 	}
+	function get_item_desc($testCode)
+	{
+/*		$myquery = "SELECT   test_code,group_code,lab_test_code,test_desc,result_type_id,test_unit_id,
+							 result_status_id,parent_code
+					FROM 	 lab_service_tb";
+	*/	
+		$myquery = "SELECT   test_desc
+					FROM 	 lab_service_tb
+					WHERE 	test_code  = ".$testCode;
+		$res = $this->db->query($myquery);
+		return $res->result();
+	}
 	function get_lab_order_by_id($labOrderNo)
 	{
 		

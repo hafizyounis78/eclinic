@@ -131,13 +131,34 @@ class Visitcont extends CI_Controller
 		$i=$hdnCountLabOrder+1;
 		
 		$rec = $this->labmodel->get_items($drpTestName);
-		foreach($rec as $row)
+		$ItemName = $this->labmodel->get_item_desc($drpTestName);
+		foreach($ItemName as $row)
 		{
-			echo '<tr><td>'.$i.'</td>
-				  <td colspan="2">
-				  	<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse_2'.$i.'">'
+			
+			echo '<tr>
+					<td>'.$i.'</td>
+				  	<td colspan="2">
+				  		<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse_2'.$i.'">'
 					.$row->test_desc.'</a></td>
 				</tr>';
+				$j=0;
+		foreach($rec as $itemrow)
+		{
+				echo '<tr id="collapse_2'.$j++.'" class="panel-collapse collapse"><td>&nbsp;</td>
+				  <td>
+				  <div class="col-md-2">'.$itemrow->test_desc.'</div>
+				  <div class="col-md-3">
+				  <input type="text" id="txt'.$itemrow->test_desc.'" name="txt'.$itemrow->test_desc.'" class="form-control" value="" />
+				  </div>
+				  </td>
+				  <td>
+				  	<button id="btnAddTest" name="btnAddTest" type="button" class="btn btn-circle green-turquoise btn-sm" onclick="addResult()">
+                    <i id="iConst" class="fa fa-plus"></i></button>
+				  </td>
+				</tr>';
+		}
+		}
+		/*		
 			echo '<tr id="collapse_2'.$i.'" class="panel-collapse collapse"><td>&nbsp;</td>
 				  <td>
 				  <div class="col-md-2">'.$row->test_desc.'</div>
@@ -151,7 +172,7 @@ class Visitcont extends CI_Controller
 				  </td>
 				</tr>';
 		}
-			  
+			*/  
 		/*echo '<div class="form-body">
                <br/>';
 		foreach($rec as $row)
