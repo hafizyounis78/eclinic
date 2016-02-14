@@ -142,21 +142,24 @@ class Visitcont extends CI_Controller
 					.$row->test_desc.'</a></td>
 				</tr>';
 				//$j=0;
-		foreach($rec as $itemrow)
-		{
 				echo '<tr id="collapse_2'.$i.'" class="panel-collapse collapse"><td>&nbsp;</td>
-				  <td>
-				  <div class="col-md-2">'.$itemrow->test_desc.'</div>
-				  <div class="col-md-3">
-				  <input type="text" id="txt'.$itemrow->test_desc.'" name="txt'.$itemrow->test_desc.'" class="form-control" value="" />
-				  </div>
-				  </td>
-				  <td>
-				  	<button id="btnAddTest" name="btnAddTest" type="button" class="btn btn-circle green-turquoise btn-sm" onclick="addResult()">
-                    <i id="iConst" class="fa fa-plus"></i></button>
-				  </td>
-				</tr>';
-		}
+				  <td>';
+			foreach($rec as $itemrow)
+			{
+					
+					  echo'<div class="col-md-9">
+					  <div class="col-md-2">'.$itemrow->test_desc.'</div>
+					  <div class="col-md-4">
+					  <input type="text" id="txt'.$itemrow->test_desc.'" name="txt'.$itemrow->test_desc.'" class="form-control" value="" />
+					  </div>
+					  <div class="col-md-2">
+						<button id="btnAddTest" name="btnAddTest" type="button" class="btn btn-circle green-turquoise btn-sm" onclick="addResult()">
+						<i id="iConst" class="fa fa-plus"></i></button>
+					  </div>
+					  </div>';
+			}
+			echo '</td>';
+			echo '<td>&nbsp;</td>';
 		}
 		/*		
 			echo '<tr id="collapse_2'.$i.'" class="panel-collapse collapse"><td>&nbsp;</td>
