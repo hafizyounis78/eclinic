@@ -128,9 +128,31 @@ class Visitcont extends CI_Controller
 		$this->load->model('labmodel');
 		
 		//$rec = $this->labmodel->get_lab_order_by_id($hdnLabOrderNo);
+		$i=$hdnCountLabOrder+1;
 		
-		$rec = $this->labmodel->get_items(1);
-		echo '<div class="form-body">
+		$rec = $this->labmodel->get_items($drpTestName);
+		foreach($rec as $row)
+		{
+			echo '<tr><td>'.$i.'</td>
+				  <td colspan="2">
+				  	<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse_2'.$i.'">'
+					.$row->test_desc.'</a></td>
+				</tr>';
+			echo '<tr id="collapse_2'.$i.'" class="panel-collapse collapse"><td>&nbsp;</td>
+				  <td>
+				  <div class="col-md-2">'.$row->test_desc.'</div>
+				  <div class="col-md-3">
+				  <input type="text" id="txt'.$row->test_desc.'" name="txt'.$row->test_desc.'" class="form-control" value="" />
+				  </div>
+				  </td>
+				  <td>
+				  	<button id="btnAddTest" name="btnAddTest" type="button" class="btn btn-circle green-turquoise btn-sm" onclick="addResult()">
+                    <i id="iConst" class="fa fa-plus"></i></button>
+				  </td>
+				</tr>';
+		}
+			  
+		/*echo '<div class="form-body">
                <br/>';
 		foreach($rec as $row)
 		{
@@ -154,7 +176,7 @@ class Visitcont extends CI_Controller
                               onclick="">عودة</button>
                           </div>
                       </div>
-                  </div>';
+                  </div>';*/
 		
 		//$i=1;
 		

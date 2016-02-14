@@ -139,6 +139,7 @@ function addTest()
 	formData.append('dpVisitdate'		 ,  $("#dpVisitdate").val()		  );
 	formData.append('drpVisitType'	  	 ,  $("#drpVisitType").val()	  );
 	formData.append('drpTestName'	  	 ,  $("#drpTestName").val()	  );
+	formData.append('hdnCountLabOrder'	  	 ,  $("#hdnCountLabOrder").val()	  );
 
 	$.ajax({
 			url: baseURL+"Visitcont/addtest",
@@ -153,7 +154,9 @@ function addTest()
 			complete: function(){},
 			success: function(returndb){
 				alert(returndb);
-				$("#dvOrderlab").append(returndb);
+				$('#accordion2 > tbody:last-child').append(returndb);
+				var count = parseInt($("#hdnCountLabOrder").val());
+				$("#hdnCountLabOrder").val(count+1)
 				/*$("#hdnLabOrderNo").val(returndb);
 				var countFM = parseInt($("#spnCountFamily").html());;
 				countFM = countFM + 1;
