@@ -8,21 +8,21 @@ class Labmodel extends CI_Model
 							 result_status_id,parent_code
 					FROM 	 lab_service_tb";
 	*/	
-		$myquery = "SELECT   test_code,test_desc
-					FROM 	 lab_service_tb
-					WHERE 	parent_code =0";
+		$myquery = "SELECT   category_id,NAME_EN
+					FROM 	 category_tb
+					WHERE    EXIST=1";
 		$res = $this->db->query($myquery);
 		return $res->result();
 	}
-	function get_items($parent)
+	function get_items($CATEGORYID)
 	{
 /*		$myquery = "SELECT   test_code,group_code,lab_test_code,test_desc,result_type_id,test_unit_id,
 							 result_status_id,parent_code
 					FROM 	 lab_service_tb";
 	*/	
-		$myquery = "SELECT   test_code,test_desc
-					FROM 	 lab_service_tb
-					WHERE 	parent_code = ".$parent;
+		$myquery = "SELECT   C_TEST_ITEM_ID,NAME_EN
+					FROM 	 items_tb
+					WHERE 	CATEGORY_ID = ".$CATEGORYID;
 		$res = $this->db->query($myquery);
 		return $res->result();
 	}
@@ -32,9 +32,9 @@ class Labmodel extends CI_Model
 							 result_status_id,parent_code
 					FROM 	 lab_service_tb";
 	*/	
-		$myquery = "SELECT   test_desc
-					FROM 	 lab_service_tb
-					WHERE 	test_code  = ".$testCode;
+		$myquery = "SELECT   NAME_EN
+					FROM 	 category_tb
+					WHERE    category_id = ".$testCode;
 		$res = $this->db->query($myquery);
 		return $res->result();
 	}
@@ -57,6 +57,7 @@ class Labmodel extends CI_Model
 		
 		extract($_POST);
 		// Insert lab_order_tb
+		//if ()
 		$data['outpatient_visit_id 	']     	    = $hdnvisitNo;
 		$data['order_status_id'] 	= 1;
 		date_default_timezone_set('Asia/Gaza');
@@ -74,7 +75,7 @@ class Labmodel extends CI_Model
 		
 		$this->db->insert('lab_order_details_tb ',$detailsdata);
 		$lab_order_details_no = $this->db->insert_id();
-
+		$outdata['lab_order_details_no']   = $lab_order_details_no;
 		// Insert lab_order_results_tb
 		
 		//***************insert item in lab_order_results_tb
@@ -84,7 +85,7 @@ class Labmodel extends CI_Model
 		{
 			
 			$resdata['lab_order_details_no'] = $lab_order_details_no;
-			$resdata['item_id'] = $row->test_code;
+			$resdata['item_id'] = $row->C_TEST_ITEM_ID;
 			
 			$this->db->insert('lab_order_results_tb',$resdata);
 		}
@@ -94,6 +95,36 @@ class Labmodel extends CI_Model
 		return $outdata;
 		
 		
+	}
+function add_test_result()
+	{
+		
+		extract($_POST);
+		
+		//***************insert item in lab_order_results_tb
+				
+			
+			//$resdata['lab_order_details_no'] = $lab_order_details_no;
+			$resdata['result'] = $itemValue;
+			$this->db->where('lab_order_details_no',$lab_order_details_no);
+			$this->db->where('item_id',$itemid);
+			$this->db->update('lab_order_results_tb',$resdata);
+		
+		
+		//***************insert item in lab_order_results_tb
+		return $outdata;
+		
+		
+	}
+	function get_orderitems($orderDetails_no)
+	{
+
+		$myquery = "SELECT   item_id,lab_order_details_no,NAME_EN,lab_order_results_id
+					FROM 	 items_tb i,lab_order_results_tb r
+					where    i.item_id=r.C_TEST_ITEM_ID
+					WHERE 	 lab_order_details = ".$orderDetails_no;
+		$res = $this->db->query($myquery);
+		return $res->result();
 	}
 
 }

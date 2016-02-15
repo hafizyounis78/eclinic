@@ -140,6 +140,8 @@ function addTest()
 	formData.append('drpVisitType'	  	 ,  $("#drpVisitType").val()	  );
 	formData.append('drpTestName'	  	 ,  $("#drpTestName").val()	  );
 	formData.append('hdnCountLabOrder'	  	 ,  $("#hdnCountLabOrder").val()	  );
+	formData.append('hdnLabOrderNo'	  	 ,  $("#hdnLabOrderNo").val()	  );
+	
 
 	$.ajax({
 			url: baseURL+"Visitcont/addtest",
@@ -157,8 +159,8 @@ function addTest()
 				$('#accordion2 > tbody:last-child').append(returndb);
 				var count = parseInt($("#hdnCountLabOrder").val());
 				$("#hdnCountLabOrder").val(count+1)
-				/*$("#hdnLabOrderNo").val(returndb);
-				var countFM = parseInt($("#spnCountFamily").html());;
+			//	$("#hdnLabOrderNo").val(returndb);
+				/*var countFM = parseInt($("#spnCountFamily").html());;
 				countFM = countFM + 1;
 				$("#spnCountFamily").html(countFM);
 				
@@ -177,6 +179,25 @@ function addResult(itemid)
 {
 	alert("itemid="+itemid);
 	alert("Value="+$('#txt'+itemid).val());
+	var itemValue=$('#txt'+itemid).val();
+$.ajax({
+			url: baseURL+"Visitcont/addTestResult",
+			type: "POST",
+			data:  {itemid : itemValue},
+			error: function(xhr, status, error) {
+
+  				alert(xhr.responseText);
+			},
+			beforeSend: function(){},
+			complete: function(){},
+			success: function(returndb){
+				//alert(111);
+				//alert(returndb);
+				
+	
+			}
+		});//END $.ajax
+
 }
 function gotoUpdateVisit(arg)
 {//alert(arg);

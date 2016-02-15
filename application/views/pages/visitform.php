@@ -271,8 +271,8 @@ else if(isset($visit_info))
                                                                       <?php
                                                                        foreach($labTests as $row)
                                                                        {
-                                                                          echo '<option value="'.$row->test_code.'">'
-                                                                                  .$row->test_desc.'</option>';
+                                                                          echo '<option value="'.$row->category_id.'">'
+                                                                                  .$row->NAME_EN.'</option>';
                                                                        }
                                                                        ?>
                                                                 </select>

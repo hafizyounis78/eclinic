@@ -118,19 +118,28 @@ class Visitcont extends CI_Controller
 	{
 			$this->load->model('labmodel');
 			$result=$this->labmodel->add_lab_order();
-			//echo $result;
-			$this->drawTesttable();
+			
+			$this->drawTesttable($result);
 			
 	}
-	function drawTesttable()
+	function addTestResult()
+	{
+			$this->load->model('labmodel');
+			$result=$this->labmodel->add_test_result();
+		
+	}
+		
+	function drawTesttable($Orders)
 	{
 		extract($_POST);
 		$this->load->model('labmodel');
 		
 		//$rec = $this->labmodel->get_lab_order_by_id($hdnLabOrderNo);
 		$i=$hdnCountLabOrder+1;
-		
-		$rec = $this->labmodel->get_items($drpTestName);
+/*		$Orders->lab_order_details_no;
+		$Orders->lab_order_no*/
+		echo  $Orders->lab_order_no;
+		$rec = $this->labmodel->get_orderitems($Orders->lab_order_details_no);
 		$ItemName = $this->labmodel->get_item_desc($drpTestName);
 		foreach($ItemName as $row)
 		{
@@ -139,7 +148,7 @@ class Visitcont extends CI_Controller
 					<td>'.$i.'</td>
 				  	<td colspan="2">
 				  		<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse_2'.$i.'">'
-					.$row->test_desc.'</a></td>
+					.$row->NAME_EN.'</a></td>
 				</tr>';
 				//$j=0;
 				echo '<tr id="collapse_2'.$i.'" class="panel-collapse collapse"><td>&nbsp;</td>
@@ -148,12 +157,12 @@ class Visitcont extends CI_Controller
 			{
 					
 					  echo'<div class="col-md-9">
-					  <div class="col-md-2">'.$itemrow->test_desc.'</div>
+					  <div class="col-md-2">'.$itemrow->NAME_EN.'</div>
 					  <div class="col-md-4">
-					  <input type="text" id="txt'.$itemrow->test_code.'" name="txt'.$itemrow->test_desc.'" class="form-control" value="" />
+					  <input type="text" id="txt'.$itemrow->C_TEST_ITEM_ID.'" name="txt'.$itemrow->NAME_EN.'" class="form-control" value="" />
 					  </div>
 					  <div class="col-md-2">
-						<button id="btnAddTest" name="btnAddTest" type="button" class="btn btn-circle green-turquoise btn-sm" onclick="addResult('.$itemrow->test_code.')">
+						<button id="btnAddTest" name="btnAddTest" type="button" class="btn btn-circle green-turquoise btn-sm" onclick="addResult('.$itemrow->lab_order_results_id.')">
 						<i id="iConst" class="fa fa-plus"></i></button>
 					  </div>
 					  </div>';
@@ -161,69 +170,7 @@ class Visitcont extends CI_Controller
 			echo '</td>';
 			echo '<td>&nbsp;</td>';
 		}
-		/*		
-			echo '<tr id="collapse_2'.$i.'" class="panel-collapse collapse"><td>&nbsp;</td>
-				  <td>
-				  <div class="col-md-2">'.$row->test_desc.'</div>
-				  <div class="col-md-3">
-				  <input type="text" id="txt'.$row->test_desc.'" name="txt'.$row->test_desc.'" class="form-control" value="" />
-				  </div>
-				  </td>
-				  <td>
-				  	<button id="btnAddTest" name="btnAddTest" type="button" class="btn btn-circle green-turquoise btn-sm" onclick="addResult()">
-                    <i id="iConst" class="fa fa-plus"></i></button>
-				  </td>
-				</tr>';
-		}
-			*/  
-		/*echo '<div class="form-body">
-               <br/>';
-		foreach($rec as $row)
-		{
-			echo '<div class="form-group">
-					  <label class="control-label col-md-3">'.$row->test_desc.' &nbsp;&nbsp;&nbsp;
-					  </label>
-					  <div class="col-md-4">
-						  <input type="text" id="txt'.$row->test_desc.'" name="txt'.$row->test_desc.'" class="form-control"
-						   value="" />
-					  </div>
-				  </div>';
-		}
-			   
-		echo '</div>';
 		
-		echo '<div class="form-actions">
-                      <div class="row">
-                          <div class="col-md-offset-3 col-md-9">
-                              <button type="submit" class="btn blue-madison">حـفـظ</button>
-                              <button type="button" class="btn default" 
-                              onclick="">عودة</button>
-                          </div>
-                      </div>
-                  </div>';*/
-		
-		//$i=1;
-		
-		 	
-			
-			/*echo "<tr>";
-			echo '<td style="display:none;" id="lab_order_no'.$i.'">'. $row->lab_order_no. "</td>";
-			echo '<td style="display:none;" id="test_code'.$i.'">'. $row->test_code. "</td>";
-			echo '<td  id="test_desc'.$i.'">'. $row->test_desc.'</td>';
-		
-			echo '<td><button id="btnDeleteTest" name="btnDeleteTest" type="button" 
-			class="btn btn-circle red-sunglo btn-sm" 
-			onclick="deleteTestbyId('.$row->test_code.','.$row->lab_order_no.')">
-							   <i id="iConst" class="fa fa-close"></i>
-							   </td>';
-			
-			echo "</tr>";*/
-			
-			
-			
-		
-
-
 	}
 	
 			
