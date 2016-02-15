@@ -151,12 +151,14 @@ function gotoPatient(arg)
 		});//END $.ajax
 }
 //******************gotovisits********************//
-function gotoPatientVisit(arg)
-{//alert(arg);
+function gotoPatientVisit(arg1,arg2)
+{  
+	alert('visitid :'+ arg1);
+	alert('patientid :'+ arg2);
 	$.ajax({
 			url: baseURL+"Visitcont/senddata",
 			type: "POST",
-			data:  {patientFileId : arg},
+			data:  {visitId : arg1,patientFileId : arg2},
 			error: function(xhr, status, error) {
   				//var err = eval("(" + xhr.responseText + ")");
   				alert(xhr.responseText);

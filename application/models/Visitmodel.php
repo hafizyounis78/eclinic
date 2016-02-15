@@ -10,6 +10,7 @@ class Visitmodel extends CI_Model
 		$data['patient_file_id'] 	= $txtPatientFileId;
 		$data['visit_date'] 		= $dpVisitdate;
 		$data['visit_type_id'] 		= $drpVisitType;
+		$data['visit_status_id'] 		= 330;
 		date_default_timezone_set('Asia/Gaza');
 		$data['visit_time'] =date("H:i:s");
 		
@@ -129,7 +130,7 @@ class Visitmodel extends CI_Model
 					 WHERE  patient_file_id = ".$patientFileId;
 		
 		$res = $this->db->query($myquery);
-		print_r($res );
+		//print_r($res );
 		return $res->result();
 
 	}

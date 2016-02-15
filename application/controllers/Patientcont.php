@@ -193,7 +193,7 @@ class Patientcont extends CI_Controller
 			/*$btn='<a href="'.base_url().'adduser/'.$row->user_name.'" class="btn default btn-xs purple">
 			  <i class="fa fa-edit"></i> تعديل </a>';*/
 			
-			$btn='<a class="btn default btn-xs purple" onclick="gotoPatientVisit(\''.$row->patient_file_id.'\')">
+			$btn='<a class="btn default btn-xs purple" onclick="gotoPatientVisit('.$row->outpatient_visit_id.','.$row->patient_file_id.')">
 			  <i class="fa fa-edit"></i> متابعة المريض </a>';
 			
 			$nestedData[] = $i++;

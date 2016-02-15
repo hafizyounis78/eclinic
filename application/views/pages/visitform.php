@@ -17,7 +17,7 @@ if (isset($patient_info))
 	$ction ="addvisit";
 
 }
-else if(isset($visit_info))
+if(isset($visit_info))
 {
 	foreach($visit_info as $visit_row);
 	$page_title = "تعـــديل زيارة";

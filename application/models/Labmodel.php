@@ -132,6 +132,20 @@ function add_test_result()
 		$res = $this->db->query($myquery);
 		return $res->result();
 	}
+function get_allorder_by_Visit_id($visitId)
+{
+		$myquery = "	SELECT  	h.lab_order_no,h.outpatient_visit_id,d.lab_order_details_no,d.test_id,
+									r.lab_order_results_id,r.item_id,r.result,c.NAME_EN as Cat_name,i.NAME_EN as Item_name
+						FROM    	lab_order_tb h,lab_order_details_tb d,lab_order_results_tb r,category_tb c,items_tb i
+						WHERE   	h.lab_order_no=d.lab_order_no
+						and     	d.lab_order_details_no=r.lab_order_details_no
+						and     	d.test_id=c.category_id
+						and     	r.item_id=i.C_TEST_ITEM_ID
+						and         h.outpatient_visit_id=".$visitId."
+						order by    d.lab_order_details_no";
+		$res = $this->db->query($myquery);
+		return $res->result();
+}
 
 }
 ?>
