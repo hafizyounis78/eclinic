@@ -138,8 +138,8 @@ class Visitcont extends CI_Controller
 		$i=$hdnCountLabOrder+1;
 /*		$Orders->lab_order_details_no;
 		$Orders->lab_order_no*/
-		echo  $Orders->lab_order_no.'#';
-		$rec = $this->labmodel->get_orderitems($Orders->lab_order_details_no);
+		echo  $Orders['lab_order_no'].'#$#';
+		$rec = $this->labmodel->get_orderitems($Orders['lab_order_details_no']);
 		$ItemName = $this->labmodel->get_item_desc($drpTestName);
 		foreach($ItemName as $row)
 		{
@@ -159,7 +159,7 @@ class Visitcont extends CI_Controller
 					  echo'<div class="col-md-9">
 					  <div class="col-md-2">'.$itemrow->NAME_EN.'</div>
 					  <div class="col-md-4">
-					  <input type="text" id="txt'.$itemrow->C_TEST_ITEM_ID.'" name="txt'.$itemrow->NAME_EN.'" class="form-control" value="" />
+					  <input type="text" id="txt'.$itemrow->lab_order_results_id.'" name="txt'.$itemrow->NAME_EN.'" class="form-control" value="" />
 					  </div>
 					  <div class="col-md-2">
 						<button id="btnAddTest" name="btnAddTest" type="button" class="btn btn-circle green-turquoise btn-sm" onclick="addResult('.$itemrow->lab_order_results_id.')">

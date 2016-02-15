@@ -156,9 +156,9 @@ function addTest()
 			complete: function(){},
 			success: function(returndb){
 				alert(returndb);
-				var res = returndb.splt("#");
+				var res = returndb.split("#$#");
 				$('#hdnLabOrderNo').val(res[0]);
-				$('#accordion2 > tbody:last-child').append(res[0]);
+				$('#accordion2 > tbody:last-child').append(res[1]);
 				var count = parseInt($("#hdnCountLabOrder").val());
 				$("#hdnCountLabOrder").val(count+1)
 			//	$("#hdnLabOrderNo").val(returndb);
@@ -177,15 +177,16 @@ function addTest()
 			}
 		});//END $.ajax
 }
-function addResult(itemid)
+function addResult(resultid)
 {
-	alert("itemid="+itemid);
-	alert("Value="+$('#txt'+itemid).val());
-	var itemValue=$('#txt'+itemid).val();
-$.ajax({
+	//alert("resultid="+resultid);
+	//alert("Value="+$('#txt'+resultid).val());
+	var itemValue=$('#txt'+resultid).val();
+	$.ajax({
 			url: baseURL+"Visitcont/addTestResult",
 			type: "POST",
-			data:  {itemid : itemValue},
+			data:  {resultid : resultid,
+					itemValue : itemValue},
 			error: function(xhr, status, error) {
 
   				alert(xhr.responseText);

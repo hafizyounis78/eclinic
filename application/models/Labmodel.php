@@ -57,16 +57,23 @@ class Labmodel extends CI_Model
 		
 		extract($_POST);
 		// Insert lab_order_tb
-		//if ()
-		$data['outpatient_visit_id 	']     	    = $hdnvisitNo;
-		$data['order_status_id'] 	= 1;
-		date_default_timezone_set('Asia/Gaza');
-		$data['order_date'] 		= date("Y-m-d");
+		if (isset($hdnLabOrderNo) && $hdnLabOrderNo =='')
+		{
+			$data['outpatient_visit_id 	']     	    = $hdnvisitNo;
+			$data['order_status_id'] 	= 1;
+			date_default_timezone_set('Asia/Gaza');
+			$data['order_date'] 		= date("Y-m-d");
 		
 		
-		$this->db->insert('lab_order_tb  ',$data);
-		$lab_order_no = $this->db->insert_id();
-		$outdata['lab_order_no']   = $lab_order_no;
+			$this->db->insert('lab_order_tb  ',$data);
+			$lab_order_no = $this->db->insert_id();
+			$outdata['lab_order_no']   = $lab_order_no;
+		}
+		else
+		{
+			$outdata['lab_order_no']   = $hdnLabOrderNo;
+			$lab_order_no = $hdnLabOrderNo;
+		}
 		
 		// Insert lab_order_details_tb
 		
@@ -106,23 +113,22 @@ function add_test_result()
 			
 			//$resdata['lab_order_details_no'] = $lab_order_details_no;
 			$resdata['result'] = $itemValue;
-			$this->db->where('lab_order_details_no',$lab_order_details_no);
-			$this->db->where('item_id',$itemid);
+			$this->db->where('lab_order_results_id',$resultid);
 			$this->db->update('lab_order_results_tb',$resdata);
 		
 		
 		//***************insert item in lab_order_results_tb
-		return $outdata;
+		//return $outdata;
 		
 		
 	}
 	function get_orderitems($orderDetails_no)
 	{
 
-		$myquery = "SELECT   item_id,lab_order_details_no,NAME_EN,lab_order_results_id
+		$myquery = "SELECT   item_id,lab_order_details_no,NAME_EN,lab_order_results_id, i.C_TEST_ITEM_ID
 					FROM 	 items_tb i,lab_order_results_tb r
-					where    i.item_id=r.C_TEST_ITEM_ID
-					WHERE 	 lab_order_details = ".$orderDetails_no;
+					WHERE    i.C_TEST_ITEM_ID=r.item_id
+					AND		 lab_order_details_no = ".$orderDetails_no;
 		$res = $this->db->query($myquery);
 		return $res->result();
 	}
