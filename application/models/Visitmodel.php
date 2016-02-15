@@ -34,7 +34,7 @@ class Visitmodel extends CI_Model
 		
 		// Insert outpatient_nutrition_plan_tb
 		
-		$nutdata['outpatient_visit_id'] = $visit_id;
+		/*$nutdata['outpatient_visit_id'] = $visit_id;
 		$nutdata['plan_id'] = $drpPlan;
 		$nutdata['start_date'] = $dpStartdate;
 		$nutdata['end_date'] = $dpEnddate;
@@ -42,7 +42,7 @@ class Visitmodel extends CI_Model
 		$nutdata['lunch'] = $txtlunch;
 		$nutdata['dinner'] = $txtdinner;
 		$nutdata['notes'] = $txtNotes;
-		$this->db->insert('outpatient_nutrition_plan_tb',$nutdata);
+		$this->db->insert('outpatient_nutrition_plan_tb',$nutdata);*/
 
 		return $outdata;
 		
@@ -101,7 +101,7 @@ class Visitmodel extends CI_Model
 		//outpatient_nutrition_plan_tb
 		//body_segment_tb
 		//outpatient_visits_tb
-		$myquery = "SELECT 	p.patient_file_id,p.patient_id,CONCAT(first_name,' ',middle_name,' ',third_name,' ',last_name) as name,visit.sub_constant_name as visit_desc
+		$myquery = "SELECT 	p.patient_file_id,p.patient_id,CONCAT(first_name,' ',middle_name,' ',third_name,' ',last_name) as name,visit.sub_constant_name as visit_desc, dob
 					 FROM 	outpatient_visits_tb
 					 LEFT 	OUTER JOIN sub_constant_tb visit  ON outpatient_visits_tb.visit_type_id= visit.sub_constant_id
 					,patient_mr_tb p,body_segment_tb,outpatient_nutrition_plan_tb
