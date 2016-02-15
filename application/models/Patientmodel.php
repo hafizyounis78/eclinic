@@ -184,6 +184,82 @@ class Patientmodel extends CI_Model
 	{
 		return $this->db->count_all('patient_mr_tb');			
 	}
+//***********patientList**//
+
+function get_patient_list($requestData)
+	{
+		date_default_timezone_set('Asia/Gaza');   
+		$today_date = date('Y-m-d');
+
+		$columns = array( 
+			1 => 'patient_file_id',
+			2 => 'name',
+			3 => 'visit_date', 
+			4 => 'visitType',
+			5 => 'visitStatus');
+		
+		$myquery = "SELECT 	p.patient_file_id,CONCAT(first_name,' ',middle_name,' ',third_name,' ',last_name) as name,
+							visit_date,visit_time,visit_status_id,visit_type_id,outpatient_visit_id,
+							visitStatustb.sub_constant_name as visitStatus,visitTypetb.sub_constant_name as visitType
+ 					FROM 	patient_mr_tb p,outpatient_visits_tb v,sub_constant_tb visitTypetb,sub_constant_tb visitStatustb
+					WHERE 	p.patient_file_id=v.patient_file_id
+					and     v.visit_type_id=visitTypetb.sub_constant_id
+					and     v.visit_status_id=visitStatustb.sub_constant_id";
+		
+		if(isset($requestData['txtPatientFileid']) && $requestData['txtPatientFileid'] !='')
+		{
+			$myquery = $myquery." AND patient_file_id = ".$requestData['txtPatientFileid'];
+		}
+			
+		if(isset($requestData['txtName']) && $requestData['txtName'] !='')
+		{
+			$myquery = $myquery." AND CONCAT(first_name,' ',middle_name,' ',third_name,' ',last_name)
+			LIKE '%".$requestData['txtName']."%' ";
+		}
+		
+		if(isset($requestData['drpVisitType']) && $requestData['drpVisitType'] !='')
+		{
+			$myquery = $myquery." AND visit_type_id= ".$requestData['drpVisitType'];
+		}
+		
+		if(isset($requestData['drpVisitStatus']) && $requestData['drpVisitStatus'] !='')
+		{
+			$myquery = $myquery." AND visit_status_id = ".$requestData['drpVisitStatus'];
+		}
+		
+		//***************
+		
+		if(!isset($requestData['dpVistfrom'])&& !isset($requestData['dpVisitto']) )
+		{
+			$myquery = $myquery." AND DATE_FORMAT(v.visit_date,'%Y-%m-%d')>= '$today_date'";
+		}
+		if(isset($requestData['dpVistfrom']) && $requestData['dpVistfrom'] == '' 
+		&& isset($requestData['dpVisitto']) && $requestData['dpVisitto'] == '' )
+		{
+			$myquery = $myquery." AND DATE_FORMAT(v.visit_date,'%Y-%m-%d')>= '$today_date'";
+		}
+		if(isset($requestData['dpVistfrom']) && $requestData['dpVistfrom'] != ''
+		   && isset($requestData['dpVisitto']) && $requestData['dpVisitto'] != '')
+		{
+			$myquery = $myquery." AND visit_date between '".$requestData['dpVistfrom']."' and '".$requestData['dpVisitto']."'";
+		}
+		if(isset($requestData['dpVistfrom']) && $requestData['dpVistfrom'] != ''
+		   && (isset($requestData['dpVisitto']) && $requestData['dpVisitto'] == ''))
+		{
+			$myquery = $myquery." AND visit_date >= '".$requestData['dpVistfrom']."'";
+		}
+		//************
+		$myquery = $myquery." ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir'].
+					" LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+		
+		$res = $this->db->query($myquery);
+		return $res->result();
+		
+	}
+	function count_patientsList()
+	{
+		return $this->db->count_all('patient_mr_tb');			
+	}
 
 }
 ?>

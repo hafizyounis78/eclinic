@@ -72,6 +72,16 @@ class Patientcont extends CI_Controller
 		
 		
 	}
+	
+	function patientlist()
+	{
+		$this->load->model('constantmodel');
+		$this->data['visitType']     = $this->constantmodel->get_sub_constant(75);
+		$this->data['visitStatus']          = $this->constantmodel->get_sub_constant(76);
+
+		
+		
+	}
 	/******************* ADD USER ******************************/
 	function addpatient()
 	{
@@ -104,12 +114,12 @@ class Patientcont extends CI_Controller
 	/************************************************************/
 	
 	/******************* USER DATA GRID *************************/
-	function patients()
+	/*function patients()
 	{
 		$this->load->model('constantmodel');
 
 		
-	}
+	}*/
 	function patientsgriddata()
 	{
 		$this->load->model('patientmodel');
@@ -151,6 +161,56 @@ class Patientcont extends CI_Controller
 		
 		$totalFiltered = count($rec);
 		$totalData=$this->patientmodel->count_patients();
+		
+		//$records["draw"] = $sEcho;
+		$json_data = array(
+					"draw"            => intval( $_REQUEST['draw'] ),   // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 
+					"recordsTotal"    => intval( $totalData ),  // total number of records
+					"recordsFiltered" => intval( $totalFiltered ), // total number of records after searching, if there is no searching then totalFiltered = totalData
+					"data"            => $data   // total data array
+					);
+		
+		echo json_encode($json_data);  // send data as json format
+	}
+	
+	function patientsListgriddata()
+	{
+		$this->load->model('patientmodel');
+		$rec = $this->patientmodel->get_patient_list($_REQUEST);
+		
+		
+		$i = 1;
+		$data = array();
+		foreach($rec as $row)
+		{
+			$nestedData=array();
+			/*
+			if ($row->active_account == 1)
+				$active = '<i class="fa fa-user font-green"></i>';
+			else
+				$active = '<i class="fa fa-user font-red-sunglo"></i>';
+				*/
+			/*$btn='<a href="'.base_url().'adduser/'.$row->user_name.'" class="btn default btn-xs purple">
+			  <i class="fa fa-edit"></i> تعديل </a>';*/
+			
+			$btn='<a class="btn default btn-xs purple" onclick="gotoPatientVisit(\''.$row->patient_file_id.'\')">
+			  <i class="fa fa-edit"></i> متابعة المريض </a>';
+			
+			$nestedData[] = $i++;
+			$nestedData[] = $row->patient_file_id;
+			$nestedData[] = $row->name;
+			$nestedData[] = $row->visit_date;
+			$nestedData[] = $row->visitType;
+			$nestedData[] = $row->visitStatus;
+			
+			
+			$nestedData[] = $btn;
+			
+			$data[] = $nestedData;
+		} // End Foreach
+		
+		$totalFiltered = count($rec);
+		$totalData=$this->patientmodel->count_patientsList();
 		
 		//$records["draw"] = $sEcho;
 		$json_data = array(
