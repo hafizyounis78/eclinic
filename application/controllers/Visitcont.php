@@ -138,7 +138,7 @@ class Visitcont extends CI_Controller
 		$i=$hdnCountLabOrder+1;
 /*		$Orders->lab_order_details_no;
 		$Orders->lab_order_no*/
-		echo  $Orders->lab_order_no;
+		echo  $Orders->lab_order_no.'#';
 		$rec = $this->labmodel->get_orderitems($Orders->lab_order_details_no);
 		$ItemName = $this->labmodel->get_item_desc($drpTestName);
 		foreach($ItemName as $row)
