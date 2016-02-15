@@ -77,11 +77,20 @@ class Labmodel extends CI_Model
 
 		// Insert lab_order_results_tb
 		
-		$resdata['lab_order_details_no'] = $lab_order_details_no;
-		$resdata['item_id'] = $drpTestName;
+		//***************insert item in lab_order_results_tb
+	$rec=$this->get_items($drpTestName);
+				
+		foreach ($rec as $row)
+		{
+			
+			$resdata['lab_order_details_no'] = $lab_order_details_no;
+			$resdata['item_id'] = $row->test_code;
+			
+			$this->db->insert('lab_order_results_tb',$resdata);
+		}
 		
-		$this->db->insert('lab_order_results_tb',$resdata);
-
+		
+		//***************insert item in lab_order_results_tb
 		return $outdata;
 		
 		
