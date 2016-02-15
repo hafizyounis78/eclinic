@@ -156,7 +156,9 @@ function addTest()
 			complete: function(){},
 			success: function(returndb){
 				alert(returndb);
-				$('#accordion2 > tbody:last-child').append(returndb);
+				var res = returndb.splt("#");
+				$('#hdnLabOrderNo').val(res[0]);
+				$('#accordion2 > tbody:last-child').append(res[0]);
 				var count = parseInt($("#hdnCountLabOrder").val());
 				$("#hdnCountLabOrder").val(count+1)
 			//	$("#hdnLabOrderNo").val(returndb);
