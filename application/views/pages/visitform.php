@@ -204,7 +204,7 @@ if(isset($visit_info))
                                         <div class="col-md-offset-3 col-md-9">
                                             <button type="submit" class="btn blue-madison">حـفـظ</button>
                                             <button type="button" class="btn default" 
-                                            onclick="window.location='<?php echo base_url()?>patients/';">عودة</button>
+                                            onclick="window.location='<?php echo base_url()?>patientcont/patientlist';">عودة</button>
                                         </div>
                                     </div>
                                 </div>
@@ -476,7 +476,7 @@ if(isset($visit_info))
                                         <div class="col-md-offset-3 col-md-9">
                                             <button type="submit" class="btn blue-madison">حـفـظ</button>
                                             <button type="button" class="btn default" 
-                                            onclick="window.location='<?php echo base_url()?>patients/';">عودة</button>
+                                            onclick="window.location='<?php echo base_url()?>patientcont/patientlist';">عودة</button>
                                         </div>
                                     </div>
                                 </div>

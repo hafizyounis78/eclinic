@@ -6,7 +6,7 @@
       <div class="portlet">
           <div class="portlet-title">
               <div class="caption">
-                  <i class="fa fa-briefcase"></i>المرضى
+                  <i class="fa fa-briefcase"></i>عرض مرضى اليوم
               </div>
           </div>
           <div class="portlet-body">

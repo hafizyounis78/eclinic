@@ -125,7 +125,7 @@ function editePatient()
 					$('.alert-success', form).show();
 					$('.alert-danger', form).hide();
 					Metronic.scrollTo( $('.alert-danger', form), -200);
-					
+						window.location.href = baseURL+"visitcont/visitform";
 				}
 			}
 		});//END $.ajax
