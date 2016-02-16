@@ -7,7 +7,7 @@ function governorate_change(){
  	var governorate_code = $('#drpGovernorate').find('option:selected').val();
 	
 	$.ajax({
-			url: baseURL+"Surveycont/get_region",
+			url: baseURL+"Patientcont/get_region",
 			type: "POST",
 			data:  {governorateCode:governorate_code},
 			error: function(xhr, status, error) {
@@ -34,7 +34,7 @@ function region_change(){
  	var region_code = $('#drpRegion').find('option:selected').val();
 	
 	$.ajax({
-			url: baseURL+"Surveycont/get_fulladdress",
+			url: baseURL+"Patientcont/get_fulladdress",
 			type: "POST",
 			data:  {regionCode:region_code},
 			error: function(xhr, status, error) {
@@ -153,8 +153,8 @@ function gotoPatient(arg)
 //******************gotovisits********************//
 function gotoPatientVisit(arg1,arg2)
 {  
-	alert('visitid :'+ arg1);
-	alert('patientid :'+ arg2);
+	//alert('visitid :'+ arg1);
+	//alert('patientid :'+ arg2);
 	$.ajax({
 			url: baseURL+"Visitcont/senddata",
 			type: "POST",

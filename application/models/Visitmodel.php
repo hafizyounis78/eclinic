@@ -85,7 +85,14 @@ class Visitmodel extends CI_Model
 		return;
 		
 	}
-
+function end_visit()
+{		
+		extract($_POST);
+		$data['visit_status_id'] 		= 331;
+		$this->db->where('outpatient_visit_id',$hdnvisitNo);
+		$this->db->update('outpatient_visits_tb',$data);	
+	
+}
 	
 	
 	// Get vists By ID

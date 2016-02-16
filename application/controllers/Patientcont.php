@@ -142,7 +142,7 @@ class Patientcont extends CI_Controller
 			
 			$btn='<a class="btn default btn-xs purple" onclick="gotoPatient(\''.$row->patient_file_id.'\')">
 			  <i class="fa fa-edit"></i> تعديل </a>
-			  <a class="btn default btn-xs purple" onclick="gotoPatientVisit(\''.$row->patient_file_id.'\')">
+			  <a class="btn default btn-xs purple" onclick="gotoPatientVisit('.'0'.','.$row->patient_file_id.')">
 			  <i class="fa fa-edit"></i> زيارة جديدة </a>';
 			
 			$nestedData[] = $i++;
@@ -224,6 +224,65 @@ class Patientcont extends CI_Controller
 	}
 	/************************************************************/
 	
-	
+	function get_region()
+	{
+		$this->load->model('patientmodel');
+		$rec=$this->patientmodel->get_region_list();
+		$SurveyId=0;
+		if (count($rec) == 0)
+		{
+			echo 0;
+			return;
+		}
+		$output = array();
+		foreach($rec as $row)
+		{
+			unset($temp); // Release the contained value of the variable from the last loop
+			$temp = array();
+
+			// It guess your client side will need the id to extract, and distinguish the ScoreCH data
+		
+		$temp['sub_constant_id'] = $row->sub_constant_id;
+		$temp['sub_constant_name'] = $row->sub_constant_name ;
+		
+			array_push($output,$temp);
+			
+			
+			
+		}
+		header('Access-Control-Allow-Origin: *');
+			header("Content-Type: application/json");
+			echo json_encode($output);
+}
+function get_fulladdress()
+	{
+		$this->load->model('patientmodel');
+		$rec=$this->patientmodel->get_fulladress_list();
+		$SurveyId=0;
+		if (count($rec) == 0)
+		{
+			echo 0;
+			return;
+		}
+		$output = array();
+		foreach($rec as $row)
+		{
+			unset($temp); // Release the contained value of the variable from the last loop
+			$temp = array();
+
+			// It guess your client side will need the id to extract, and distinguish the ScoreCH data
+		
+		$temp['sub_constant_id'] = $row->sub_constant_id;
+		$temp['sub_constant_name'] = $row->sub_constant_name ;
+		
+			array_push($output,$temp);
+			
+			
+			
+		}
+		header('Access-Control-Allow-Origin: *');
+			header("Content-Type: application/json");
+			echo json_encode($output);
+}		
 }
 ?>

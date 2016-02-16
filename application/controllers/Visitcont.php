@@ -44,7 +44,7 @@ class Visitcont extends CI_Controller
 		$_SESSION['update'] = $patientFileId;
 		$_SESSION['updateVisit'] = $visitId;
 		
-		//unset($_SESSION['updateVisit']);
+		
 		
 	}
 	
@@ -84,6 +84,8 @@ class Visitcont extends CI_Controller
 				$this->data['labTests'] = $this->labmodel->get_lab();
 			}
 		*/
+		unset($_SESSION['update']);
+		unset($_SESSION['updateVisit']);
 	}
 	/***********************************************************/
 	function visits()
@@ -102,6 +104,11 @@ class Visitcont extends CI_Controller
 		header("Content-Type: application/json");
 		echo json_encode($output);
 		
+	}
+	function endPatientVisit()
+	{
+		$this->load->model('visitmodel');
+		$this->visitmodel->end_visit();
 	}
 	
 	

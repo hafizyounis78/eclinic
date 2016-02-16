@@ -121,7 +121,30 @@ function editeVisits()
 		});//END $.ajax
 	
 }
-
+//*************end visit
+function endVisit(){	
+	
+var visitNo=$("#hdnvisitNo").val();
+	$.ajax({
+			url: baseURL+"Visitcont/endPatientVisit",
+			type: "POST",
+			data: {hdnvisitNo:visitNo},
+			error: function(xhr, status, error) {
+  				alert(xhr.responseText);
+			},
+			beforeSend: function(){},
+			complete: function(){},
+			success: function(returndb){
+			
+					var form = $('#Patient_form');
+					$('.alert-success', form).show();
+					$('.alert-danger', form).hide();
+					Metronic.scrollTo( $('.alert-danger', form), -200);
+						window.location.href = baseURL+"patientcont/patientlist";
+			}
+		});//END $.ajax
+}
+//*************end Visit function
 function addTest()
 {
 	//var action = $("#hdnActionFM").val();
@@ -155,7 +178,7 @@ function addTest()
 			beforeSend: function(){},
 			complete: function(){},
 			success: function(returndb){
-				alert(returndb);
+			//	alert(returndb);
 				var res = returndb.split("#$#");
 				$('#hdnLabOrderNo').val(res[0]);
 				$('#accordion2 > tbody:last-child').append(res[1]);

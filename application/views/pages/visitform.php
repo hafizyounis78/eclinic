@@ -15,6 +15,26 @@ if (isset($patient_info))
 	foreach($patient_info as $patient_row);
 	$page_title = "إضافة زيارة";
 	$ction ="addvisit";
+	date_default_timezone_set('Asia/Gaza');   
+		//date in yyyy-mm-dd format;
+		if (isset($visit_row->dob))
+		{
+  			$birthDate = $patient_row->dob;
+			//explode the date to get month, day and year
+			$birthDate = explode("-", $birthDate);
+			//get age from date or birthdate
+			$age = (date("md", date("U", mktime(0, 0, 0, $birthDate[2], $birthDate[1], $birthDate[0]))) > date("md")
+		  	? ((date("Y") - $birthDate[0]) - 1)
+		  	: (date("Y") - $birthDate[0]));
+		
+			if ($age > 60 )
+				$lblClass = ' font-green ';
+			else
+				$lblClass = ' font-red ';
+			
+				$lblage = '<b> المريض العضو : <span id="spnAge">'.$age.'</span></b>';
+		}	
+
 
 }
 if(isset($visit_info))
@@ -25,23 +45,8 @@ if(isset($visit_info))
 	$readonly = 'readonly="readonly"';
 	$disabled = 'disabled="disabled" ';
 	
-	date_default_timezone_set('Asia/Gaza');   
-		//date in yyyy-mm-dd format;
-  		$birthDate = $visit_row->dob;
-		//explode the date to get month, day and year
-		$birthDate = explode("-", $birthDate);
-		//get age from date or birthdate
-		$age = (date("md", date("U", mktime(0, 0, 0, $birthDate[2], $birthDate[1], $birthDate[0]))) > date("md")
-		  ? ((date("Y") - $birthDate[0]) - 1)
-		  : (date("Y") - $birthDate[0]));
-		
-		if ($age > 60 )
-			$lblClass = ' font-green ';
-		else
-			$lblClass = ' font-red ';
-			
-		$lblage = '<b> المريض العضو : <span id="spnAge">'.$age.'</span></b>';
-}
+	}
+
 
 ?>
 
@@ -484,11 +489,17 @@ if(isset($visit_info))
                                <!-- END FORM-->
                           </div> <!-- END portlet-body -->
                           </div> <!-- END panel-body -->
+                          
                       </div>
+                      
                   </div>
                   <!---->
                   </div>
+                   <div align="center">
+                <button type="button" class="btn blue-madison" onclick="endVisit();">إنهاء الجلسة</button>    
+                </div>
               </div>
+              
           </div>
 				</div>
 			</div>

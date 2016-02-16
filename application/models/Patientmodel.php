@@ -260,6 +260,19 @@ function get_patient_list($requestData)
 	{
 		return $this->db->count_all('patient_mr_tb');			
 	}
-
+function get_region_list()
+	{	extract($_POST);
+		$this->db->where('parent_id',$governorateCode);
+		$query = $this->db->get('sub_constant_tb ');
+		return $query->result();
+		
+	}
+function get_fulladress_list()
+	{	extract($_POST);
+		$this->db->where('parent_id',$regionCode);
+		$query = $this->db->get('sub_constant_tb ');
+		return $query->result();
+		
+	}
 }
 ?>
