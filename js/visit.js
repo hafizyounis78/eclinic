@@ -122,13 +122,16 @@ function editeVisits()
 	
 }
 //*************end visit
-function endVisit(){	
+function endVisit()
+{	
 	
-var visitNo=$("#hdnvisitNo").val();
+	var visitNo=$("#hdnvisitNo").val();
+	var fileid=$("#txtPatientFileId").val();
 	$.ajax({
 			url: baseURL+"Visitcont/endPatientVisit",
 			type: "POST",
-			data: {hdnvisitNo:visitNo},
+			data: {hdnvisitNo:visitNo,
+					fileid:fileid},
 			error: function(xhr, status, error) {
   				alert(xhr.responseText);
 			},

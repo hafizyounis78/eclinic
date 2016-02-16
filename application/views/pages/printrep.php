@@ -9,7 +9,8 @@ if(isset($visit_info))
 	foreach($visit_info as $visit_row);
 }
 ?>
-<table width="100%" border="0">
+<div align="right" dir="rtl">
+<table width="100%" border="1" style="border-style:solid;border-color:#333;border-width:.1;border-collapse: collapse">
   <tr>
     <th>اسـم المـريـض</th>
     <td><?php if(isset($patient_row->name)) echo $patient_row->name;else if(isset($visit_row->name)) echo $visit_row->name;?></td>
@@ -24,21 +25,21 @@ if(isset($visit_info))
   </tr>
 </table>
 <br />
-<table width="100%" border="0">
+<table width="100%" border="1" style="border-style:solid;border-color:#333;border-width:.1;border-collapse: collapse">
   <tr>
     <th colspan="2">الخــــطــة الغــــذائيـة</th>
   </tr>
   <tr>
-    <th>الفطــــور</th>
+    <th width="10%">الفطــــور</th>
     <td><?php if(isset($visit_row->breakfast)) echo $visit_row->breakfast;?></td>
   </tr>
   <tr>
-    <th>الغـــداء</th>
+    <th width="10%">الغـــداء</th>
     <td><?php if(isset($visit_row->lunch)) echo $visit_row->lunch;?></td>
   </tr>
   <tr>
-    <th>العشـــاء</th>
+    <th width="10%">العشـــاء</th>
     <td><?php if(isset($visit_row->dinner)) echo $visit_row->dinner;?></td>
   </tr>
 </table>
-
+</div>

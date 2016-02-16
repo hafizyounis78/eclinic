@@ -109,6 +109,10 @@ class Visitcont extends CI_Controller
 	{
 		$this->load->model('visitmodel');
 		$this->visitmodel->end_visit();
+		
+		extract($_POST);
+		$_SESSION['update'] = $fileid;
+		$_SESSION['updateVisit'] = $hdnvisitNo;
 	}
 	
 	
