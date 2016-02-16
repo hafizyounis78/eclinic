@@ -55,6 +55,7 @@ $route['constant/(:any)'] = 'constant/view/$1';
 $route['user/(:any)'] = 'user/view/$1';
 $route['employee/(:any)'] = 'employee/view/$1';
 $route['patientcont/(:any)'] = 'patientcont/view/$1';
+$route['printcont/(:any)'] = 'printcont/view/$1';
 $route['visitcont/(:any)'] = 'visitcont/view/$1';
 $route['reports/(:any)'] = 'reports/view/$1';
 $route['sms/(:any)'] = 'sms/view/$1';

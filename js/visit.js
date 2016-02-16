@@ -140,7 +140,10 @@ var visitNo=$("#hdnvisitNo").val();
 					$('.alert-success', form).show();
 					$('.alert-danger', form).hide();
 					Metronic.scrollTo( $('.alert-danger', form), -200);
-						window.location.href = baseURL+"patientcont/patientlist";
+//						window.location.href = baseURL+"patientcont/patientlist";
+				//	window.open(baseURL+"printcont/printrep","width=200,height=100");
+					var targetWin = window.open(baseURL+"printcont/printrep",'mypopup','width=400,height=400,scrollbars=yes');
+  targetWin.print();
 			}
 		});//END $.ajax
 }
