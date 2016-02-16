@@ -183,6 +183,7 @@ class Visitcont extends CI_Controller
 			}
 			echo '</td>';
 			echo '<td>&nbsp;</td>';
+			echo '</tr>';
 		}
 		
 	}

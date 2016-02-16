@@ -134,8 +134,9 @@ function add_test_result()
 	}
 function get_allorder_by_Visit_id($visitId)
 {
-		$myquery = "	SELECT  	h.lab_order_no,h.outpatient_visit_id,d.lab_order_details_no,d.test_id,
-									r.lab_order_results_id,r.item_id,r.result,c.NAME_EN as Cat_name,i.NAME_EN as Item_name
+		$myquery = "	SELECT  	h.lab_order_no, h.outpatient_visit_id, d.lab_order_details_no, d.test_id,
+									r.lab_order_results_id, r.item_id, r.result, 
+									c.category_id ,c.NAME_EN as Cat_name, i.NAME_EN as Item_name
 						FROM    	lab_order_tb h,lab_order_details_tb d,lab_order_results_tb r,category_tb c,items_tb i
 						WHERE   	h.lab_order_no=d.lab_order_no
 						and     	d.lab_order_details_no=r.lab_order_details_no

@@ -246,7 +246,7 @@ if(isset($visit_info))
                                     <div>
                                     <input id="hdnLAction" name="hdnLAction" type="hidden" value="<?php echo $Laction;?>" />
                                     <input id="hdnLabOrderNo" name="hdnLabOrderNo" type="hidden" value="" />
-                                    <input id="hdnCountLabOrder" name="hdnCountLabOrder" type="hidden" value="0" />
+                                    
                                     </div>
                                                <div class="table-scrollable" style="white-space: nowrap;">
                                                       <table class="table table-striped table-hover table-bordered" id="accordion2">
@@ -292,6 +292,57 @@ if(isset($visit_info))
                                                       </tr>
                                                       </thead>
                                                       <tbody id="tbdTest">
+                                                      <?php
+													  $i=0;
+													  if(isset($lab_info))
+													  {
+														  $labCategoryId = "";
+														  $i=1;
+														  foreach($lab_info as $lab_row)
+														  {
+															  if ($labCategoryId != $lab_row->category_id)
+															  {
+																  if ($labCategoryId != '')
+																  {
+																	  echo '</td>';
+																	  echo '<td>&nbsp;</td>';
+																	  echo '</tr>';
+																  }
+																  $labCategoryId = $lab_row->category_id;
+																  
+																  echo '<tr>
+																  		<td>'.$i.'</td>
+																  		<td colspan="2">
+																	  	  <a class="accordion-toggle" data-toggle="collapse" 
+																		     data-parent="#accordion2" href="#collapse_2'.$i.'">'
+																			 .$lab_row->Cat_name.
+																		  '</a>
+																		</td>
+															  		  </tr>';
+															  
+															  		echo '<tr id="collapse_2'.$i.'" class="panel-collapse collapse">
+																			<td>&nbsp;</td>
+																			<td>';
+																	$i++;
+															  }
+															  echo'<div class="col-md-9">
+					  												<div class="col-md-2">'.$lab_row->Item_name.'</div>
+					  												<div class="col-md-4">
+					  												  <input type="text" id="txt'.$lab_row->lab_order_results_id.'" 
+																	    name="txt'.$lab_row->lab_order_results_id.'"
+																		class="form-control" value="'.$lab_row->result.'" />
+					  												</div>
+					  												<div class="col-md-2">
+																	 <button id="btnAddTest" name="btnAddTest" type="button"
+																	  class="btn btn-circle green-turquoise btn-sm" 
+																	  onclick="addResult('.$lab_row->lab_order_results_id.')">
+																	  <i id="iConst" class="fa fa-plus"></i></button>
+					  												</div>
+					  												</div>';
+													 		  
+														  }
+													  }
+													  ?>
                                                        <!--<tr>
                                                              <td>  </td>
                                                               
@@ -328,7 +379,8 @@ if(isset($visit_info))
                                                       }
                                                   */?>
                                                       </table>
-                                                     
+                                                     <input id="hdnCountLabOrder" name="hdnCountLabOrder" type="hidden"
+                                                      value="<?php echo $i;?>" />
                                       </div>          
                                 
                                 </div>
