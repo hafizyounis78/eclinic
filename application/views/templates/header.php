@@ -29,7 +29,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <style>
 	@font-face {
 		font-family:"DroidNaskh-Regular";
-  		src: url("http://localhost/estamp/font/DroidNaskh-Regular.ttf") ;	
+  		src: url("../font/DroidNaskh-Regular.ttf") ;	
 		}
 	body
 	{

@@ -47,8 +47,8 @@ class Constantmodel extends CI_Model
 		
 		$data['constant_id'] = $hdnConstantid;
 		$data['sub_constant_name'] = $txtSubConstantName;
-		$data['created_on']  = date("Y-m-d H:i:s");
-		$data['created_by']  = $sdata['userid'];
+		//$data['created_on']  = date("Y-m-d H:i:s");
+		//$data['created_by']  = $sdata['userid'];
 		
 		$this->db->insert('sub_constant_tb',$data);
 	}
