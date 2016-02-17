@@ -142,7 +142,7 @@ if (isset($plan_info))
                                           </label>
                                           <div class="col-md-2">
                                             <div class="input-group date date-picker" data-date-format="yyyy-mm-dd">
-                                                <input type="text" class="form-control" readonly id="dpVisitdate" name="dpVisitdate" value="<?php echo $currentDate; ?>">
+                                                <input type="text" class="form-control" readonly id="dpVisitdate" name="dpVisitdate" value="<?php if(isset($visit_row->visit_date)) echo $visit_row->visit_date; else echo $currentDate; ?>">
                                                 <span class="input-group-btn">
                                                 <button class="btn default" <?php echo $disabled ;?> type="button"><i class="fa fa-calendar"></i></button>
                                                 </span>
