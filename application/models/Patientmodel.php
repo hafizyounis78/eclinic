@@ -138,11 +138,11 @@ class Patientmodel extends CI_Model
 			3 => 'name',
 			4 => 'phone', 
 			5 => 'mobile',
-			6 => 'Patient_governorate',
-			7 => 'last_visit');
+			6 => 'Patient_governorate'
+			);
 		
 		$myquery = "SELECT 	patient_file_id,patient_id,CONCAT(first_name,' ',middle_name,' ',third_name,' ',last_name) as name,
-							phone,mobile,created_on as last_visit,governconst.sub_constant_name as Patient_governorate 
+							phone,mobile,governconst.sub_constant_name as Patient_governorate 
  					FROM 	patient_mr_tb ,sub_constant_tb governconst
 					WHERE 	patient_mr_tb.governorate_id=governconst.sub_constant_id";
 		

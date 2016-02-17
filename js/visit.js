@@ -88,7 +88,7 @@ function claculateAge()
 function editeVisits()
 {
 	var action = $("#hdnvAction").val();
-	alert(action);
+	//alert(action);
 						
 	$.ajax({
 			url: baseURL+"Visitcont/"+action,
@@ -105,7 +105,7 @@ function editeVisits()
 				{
 					//alert(returndb['patient_file_id']);
 					//$("#hdnSurveyId").val(returndb['survey_id']);
-					alert("visitNo inserted:"+returndb['visit_id']);
+					//alert("visitNo inserted:"+returndb['visit_id']);
 					
 						$("#hdnvisitNo")  .val(returndb['visit_id']);
 					
@@ -136,11 +136,11 @@ function editePlanVisits()
 	formData.append('txtdinner'	  	 ,  $("#txtdinner").val()	  );
 	formData.append('txtNotes'	  	 ,  $("#txtNotes").val()	  );
 	
-	var visitNo=$("#hdnvisitNo").val();
+	/*var visitNo=$("#hdnvisitNo").val();
 	var action = $("#hdnPAction").val();
 	alert("visitNo :"+visitNo);
 	alert("action :"+action);
-						
+				*/		
 	$.ajax({
 			url: baseURL+"Visitcont/"+action,
 			type: "POST",
@@ -156,7 +156,7 @@ function editePlanVisits()
 			success: function(returndb){
 
 				
-					alert(returndb);
+				//	alert(returndb);
 					
 					$("#hdnPAction").val('updatePlanVisit');
 					

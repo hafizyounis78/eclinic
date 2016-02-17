@@ -153,7 +153,7 @@ class Patientcont extends CI_Controller
 			$nestedData[] = $row->phone;
 			$nestedData[] = $row->mobile;
 			$nestedData[] = $row->Patient_governorate;
-			$nestedData[] = $row->last_visit;
+//			$nestedData[] = $row->last_visit;
 			//$nestedData[] = $active;
 			$nestedData[] = $btn;
 			

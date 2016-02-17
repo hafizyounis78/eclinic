@@ -37,10 +37,10 @@
                       <th width="10%">
                            المحافظة
                       </th>
-                       <th width="20%">
+<!--                       <th width="20%">
                            تاريخ أخر زيارة
                       </th>
-                      <th width="10%">&nbsp;
+-->                      <th width="10%">&nbsp;
                            
                       </th>
                   </tr>
@@ -74,7 +74,7 @@
 							  ?>
                         </select>
                       </td>
-                      <td>
+                      <!--<td>
                           <div class="input-group date date-picker margin-bottom-5" data-date-format="yyyy/mm/dd">
                             <input type="text" class="form-control form-filter input-sm dp" readonly name="dpAppfrom" placeholder="من">
                             <span class="input-group-btn">
@@ -87,7 +87,7 @@
                             <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
                             </span>
                         </div>
-                      </td>
+                      </td>-->
                       <td>
                          <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> </button>
                          <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> </button>

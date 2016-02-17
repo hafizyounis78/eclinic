@@ -154,9 +154,9 @@ function gotoPatient(arg)
 //******************gotovisits********************//
 function gotoPatientVisit(arg1,arg2)
 {  
-alert(11111);
-	alert('visitid :'+ arg1);
-	alert('patientid :'+ arg2);
+
+//	alert('visitid :'+ arg1);
+	//alert('patientid :'+ arg2);
 	$.ajax({
 			url: baseURL+"Visitcont/senddata",
 			type: "POST",
