@@ -21,7 +21,7 @@ if(isset($visit_info))
   </tr>
   <tr>
     <th>تاريــخ الزيارة</th>
-    <td><?php if(isset($visit_info->visit_date)) echo $visit_info->visit_date; ?></td>
+    <td><?php if(isset($visit_row->visit_date)) echo $visit_row->visit_date; ?></td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
