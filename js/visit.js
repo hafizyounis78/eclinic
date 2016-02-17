@@ -88,7 +88,7 @@ function claculateAge()
 function editeVisits()
 {
 	var action = $("#hdnvAction").val();
-	//	alert(action);
+	alert(action);
 						
 	$.ajax({
 			url: baseURL+"Visitcont/"+action,
@@ -105,7 +105,7 @@ function editeVisits()
 				{
 					//alert(returndb['patient_file_id']);
 					//$("#hdnSurveyId").val(returndb['survey_id']);
-					
+					alert("visitNo inserted:"+returndb['visit_id']);
 					
 						$("#hdnvisitNo")  .val(returndb['visit_id']);
 					
@@ -121,6 +121,57 @@ function editeVisits()
 		});//END $.ajax
 	
 }
+//*********************add plan 
+function editePlanVisits()
+{
+	var formData = new FormData();
+	
+	// Add the data to the request.
+	formData.append('hdnvisitNo'		 , $("#hdnvisitNo").val()		  );
+	formData.append('drpPlan'		 , $("#drpPlan").val()		  );
+	formData.append('dpStartdate'		 ,  $("#dpStartdate").val()		  );
+	formData.append('dpEnddate'	  	 ,  $("#dpEnddate").val()	  );
+	formData.append('txtbreakfast'	  	 ,  $("#txtbreakfast").val()	  );
+	formData.append('txtlunch'	  	 ,  $("#txtlunch").val()	  );
+	formData.append('txtdinner'	  	 ,  $("#txtdinner").val()	  );
+	formData.append('txtNotes'	  	 ,  $("#txtNotes").val()	  );
+	
+	var visitNo=$("#hdnvisitNo").val();
+	var action = $("#hdnPAction").val();
+	alert("visitNo :"+visitNo);
+	alert("action :"+action);
+						
+	$.ajax({
+			url: baseURL+"Visitcont/"+action,
+			type: "POST",
+			data:  formData,
+			processData: false,
+    		contentType: false,
+			error: function(xhr, status, error) {
+				
+				alert(xhr.responseText);
+			},
+			beforeSend: function(){},
+			complete: function(){},
+			success: function(returndb){
+
+				
+					alert(returndb);
+					
+					$("#hdnPAction").val('updatePlanVisit');
+					
+					var form = $('#Plan_form');
+					$('.alert-success', form).show();
+					$('.alert-danger', form).hide();
+					Metronic.scrollTo( $('.alert-danger', form), -200);
+					
+				
+			}
+		});//END $.ajax
+	
+}
+//***************** end plan
+
 //*************end visit
 function endVisit()
 {	
@@ -300,8 +351,98 @@ var VisitFormValidation = function () {
                     },
 					txtLength: {
                         required: true
+                    }
+				},
+
+               messages: { // custom messages for radio buttons and checkboxes
+                	drpVisitType: {
+                    required: "الرجاء إختيار قيمة"
+                    
                     },
-	                drpPlan: {
+                    txtWeight: {
+                        required: "الرجاء ادخل الاسم",
+						digits: "الرجـاء ادخـال ارقـام فقط"
+                    }
+					,
+                    txtLength: {
+                        required: "الرجاء ادخل الاسم",
+						digits: "الرجـاء ادخـال ارقـام فقط"
+                    }
+                },
+
+                errorPlacement: function (error, element) { // render error placement for each input type
+                    if (element.attr("data-error-container")) { 
+                        error.appendTo(element.attr("data-error-container"));
+                    } else if (element.parent(".input-group").size() > 0) {
+                        error.insertAfter(element.parent(".input-group"));
+                    } else if (element.parents('.radio-list').size() > 0) { 
+                        error.appendTo(element.parents('.radio-list').attr("data-error-container"));
+                    } else if (element.parents('.radio-inline').size() > 0) { 
+                        error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
+                    } else if (element.parents('.checkbox-list').size() > 0) {
+                        error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
+                    } else if (element.parents('.checkbox-inline').size() > 0) { 
+                        error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
+                    } else {
+                        error.insertAfter(element); // for other inputs, just perform default behavior
+                    }
+                },
+
+                invalidHandler: function (event, validator) { //display error alert on form submit   
+                    successmsg.hide();
+                    errormsg.show();
+					$('#spnMsg').text('يـوجد بـعـض الادخـالات الخـاطئة، الرجـاء التأكد من القيم المدخلة');
+                    Metronic.scrollTo(errormsg, -200);
+                },
+
+                highlight: function (element) { // hightlight error inputs
+                   $(element)
+                        .closest('.form-group').addClass('has-error'); // set error class to the control group
+                },
+
+                unhighlight: function (element) { // revert the change done by hightlight
+                    $(element)
+                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
+                },
+
+                success: function (label) {
+                    label
+                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
+                },
+
+                submitHandler: function (form) {
+                    errormsg.hide();
+					editeVisits();
+                    //form[0].submit(); // submit the form
+                }
+
+            });
+    }
+return {
+        //main function to initiate the module
+        init: function () {
+            handleValidation();
+
+        }
+
+    };
+
+}();
+var PlanFormValidation = function () {
+ var handleValidation = function() {
+        
+            var form = $('#Plan_form');
+            var errormsg = $('.alert-danger', form);
+            var successmsg = $('.alert-success', form);
+			
+            form.validate({
+                errorElement: 'span', //default input error message container
+                errorClass: 'help-block help-block-error', // default input error message class
+                focusInvalid: false, // do not focus the last invalid input
+                ignore: "", // validate all fields including form hidden input
+                rules: {
+					
+					drpPlan: {
                         required: true
                     },
                     dpStatdate: {
@@ -326,19 +467,7 @@ var VisitFormValidation = function () {
 				},
 
                messages: { // custom messages for radio buttons and checkboxes
-                	drpVisitType: {
-                    required: "الرجاء إختيار قيمة"
-                    
-                    },
-                    txtWeight: {
-                        required: "الرجاء ادخل الاسم",
-						digits: "الرجـاء ادخـال ارقـام فقط"
-                    }
-					,
-                    txtLength: {
-                        required: "الرجاء ادخل الاسم",
-						digits: "الرجـاء ادخـال ارقـام فقط"
-                    },
+                	
 					drpPlan: {
 						required: "الرجاء إختيار قيمة"
                     },
@@ -404,7 +533,7 @@ var VisitFormValidation = function () {
 
                 submitHandler: function (form) {
                     errormsg.hide();
-					editeVisits();
+					editePlanVisits();
                     //form[0].submit(); // submit the form
                 }
 
@@ -420,7 +549,6 @@ return {
     };
 
 }();
-
 //************* patient Ajax**************//
 var VisitTableAjax = function () {
 

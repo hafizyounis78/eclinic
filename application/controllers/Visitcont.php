@@ -66,10 +66,13 @@ class Visitcont extends CI_Controller
 			{
 				$this->load->model('visitmodel');
 				$this->data['patient_info'] = $this->visitmodel->get_patient_by_id($_SESSION['update']);
-				
-				$this->data['visit_info'] = $this->visitmodel->get_visit_data_by_id($_SESSION['updateVisit']);
-				$this->load->model('labmodel');
-				$this->data['lab_info'] = $this->labmodel->get_allorder_by_Visit_id($_SESSION['updateVisit']);
+				if ($_SESSION['updateVisit']!='0')
+				{
+					$this->data['visit_info'] = $this->visitmodel->get_visit_data_by_id($_SESSION['updateVisit']);
+					$this->data['plan_info'] = $this->visitmodel->get_plan_by_Visit_id($_SESSION['updateVisit']);
+					$this->load->model('labmodel');
+					$this->data['lab_info'] = $this->labmodel->get_allorder_by_Visit_id($_SESSION['updateVisit']);
+				}
 				
 				//unset($_SESSION['update']);
 				//$this->data['labTests'] = $this->labmodel->get_lab();
@@ -100,6 +103,7 @@ class Visitcont extends CI_Controller
 	{
 		$this->load->model('visitmodel');
 		$output=$this->visitmodel->insert_visit();
+		
 		header('Access-Control-Allow-Origin: *');
 		header("Content-Type: application/json");
 		echo json_encode($output);
@@ -115,8 +119,17 @@ class Visitcont extends CI_Controller
 		$_SESSION['updateVisit'] = $hdnvisitNo;
 	}
 	
-	
+	function updatePlanVisit()
+	{
+		$this->load->model('visitmodel');
+		$this->visitmodel->update_visit_plan();
+	}
 	/******************* Update visit ******************************/
+	function addPlanVisit()
+	{
+		$this->load->model('visitmodel');
+		$this->visitmodel->insert_visit_plan();
+	}
 	function updatevisit()
 	{
 		$this->load->model('visitmodel');

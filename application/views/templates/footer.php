@@ -130,6 +130,7 @@
 		EmpFormValidation.init();
 		PatientFormValidation.init();
 		VisitFormValidation.init();
+		PlanFormValidation.init();
 	
 		
 		

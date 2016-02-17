@@ -3,6 +3,7 @@
 <?php
 $ction ="addvisit";
 $Laction="";
+$Paction="addPlanVisit";
 $page_title = "إضافة زيارة";
 $readonly = '';
 $disabled = '';
@@ -10,6 +11,8 @@ date_default_timezone_set('Asia/Gaza');
 $currentDate= date("Y-m-d"); 
 $lblClass = ' font-green ';
 $lblage = '';
+
+
 if (isset($patient_info))				
 {
 	foreach($patient_info as $patient_row);
@@ -40,14 +43,22 @@ if (isset($patient_info))
 if(isset($visit_info))
 {
 	foreach($visit_info as $visit_row);
-	$page_title = "تعـــديل زيارة";
-	$ction ="updatevisit";
-	$readonly = 'readonly="readonly"';
-	$disabled = 'disabled="disabled" ';
-	
-	}
 
+		if (isset($visit_row->visit_date))				
+		{	
+			$ction ="updatevisit";
+			$page_title = "تعـــديل زيارة";
+			$readonly = 'readonly="readonly"';
+			$disabled = 'disabled="disabled" ';
+		}
+}
 
+if (isset($plan_info))				
+{
+	foreach($plan_info as $plan_row);
+	if (isset($plan_row->plan_id))				
+	 $Paction="updatePlanVisit";
+}
 ?>
 
 <!-- END PAGE HEADER-->
@@ -414,7 +425,7 @@ if(isset($visit_info))
                           <div class="panel-body">
                               <div class="portlet-body form">
                                 <!-- BEGIN FORM-->
-                                <form action="#" id="Lab_form" class="form-horizontal">
+                                <form action="#" id="Plan_form" class="form-horizontal">
                                 <div class="form-body">
                                   <br/>
                                     <div class="alert alert-danger display-hide">
@@ -428,9 +439,9 @@ if(isset($visit_info))
                                           تـم عملية حـفـظ البيـانات بنجـاح !
                                     </div>
                                     <div>
-                                    <input id="hdnLAction" name="hdnLAction" type="hidden" value="<?php echo $Laction;?>" />
-                                    <input id="hdnLabOrderNo" name="hdnLabOrderNo" type="hidden" value="" />
-                                    
+                                    <input id="hdnPAction" name="hdnPAction" type="hidden" value="<?php echo $Paction;?>" />
+                                <!--    <input id="hdnLabOrderNo" name="hdnLabOrderNo" type="hidden" value="" />
+                                 -->   
                                     </div>
                                     
                                     <div class="form-group">
@@ -444,7 +455,7 @@ if(isset($visit_info))
 								  foreach ($plantype as $row)
 								  {
 									   $selected = '';
-									  if ($visit_row->plan_id == $row->plan_id)
+									  if ($plan_row->plan_id == $row->plan_id)
 									  	$selected = 'selected="selected"';
 									  
 									  echo ' <option value="'.$row->plan_id.'"'.$selected.'>'
@@ -462,7 +473,7 @@ if(isset($visit_info))
                           <div class="col-md-4">
                               <div class="input-group date date-picker" data-date-format="yyyy-mm-dd">
                                   <input type="text" class="form-control" readonly id="dpStartdate" name="dpStartdate"
-                                  value="<?php if(isset($visit_row->start_date)) echo $visit_row->start_date; else echo $currentDate; ?>" >
+                                  value="<?php if(isset($plan_row->start_date)) echo $plan_row->start_date; else echo $currentDate; ?>" >
                                   <span class="input-group-btn">
                                   <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
                                   </span>
@@ -480,7 +491,7 @@ if(isset($visit_info))
                           <div class="col-md-4">
                               <div class="input-group date date-picker" data-date-format="yyyy-mm-dd">
                                   <input type="text" class="form-control" readonly id="dpEnddate" name="dpEnddate"
-                                  value="<?php if(isset($visit_row->end_date)) echo $visit_row->end_date;?>">
+                                  value="<?php if(isset($plan_row->end_date)) echo $plan_row->end_date;?>">
                                   <span class="input-group-btn">
                                   <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
                                   </span>
@@ -497,7 +508,7 @@ if(isset($visit_info))
                                                 * </span>
                                                 </label>
                                                 <div class="col-md-4">
-                                                    <textarea name="txtbreakfast" id="txtbreakfast" cols="70" rows="5" class="form-control"><?php if(isset($visit_row->breakfast)) echo $visit_row->breakfast;?></textarea>
+                                                    <textarea name="txtbreakfast" id="txtbreakfast" cols="70" rows="5" class="form-control"><?php if(isset($plan_row->breakfast)) echo $plan_row->breakfast;?></textarea>
                                                 </div>
                                             </div>
                               <div class="form-group">
@@ -505,7 +516,7 @@ if(isset($visit_info))
                                                     * </span>
                                                     </label>
                                                     <div class="col-md-4">
-                                                        <textarea name="txtlunch" id="txtlunch" cols="70" rows="5" class="form-control"><?php if(isset($visit_row->lunch)) echo $visit_row->lunch;?></textarea>
+                                                        <textarea name="txtlunch" id="txtlunch" cols="70" rows="5" class="form-control"><?php if(isset($plan_row->lunch)) echo $plan_row->lunch;?></textarea>
                                                     </div>
                                                 </div>
                             <div class="form-group">
@@ -513,7 +524,7 @@ if(isset($visit_info))
                                 * </span>
                                 </label>
                                 <div class="col-md-4">
-                                    <textarea name="txtdinner" id="txtdinner" cols="70" rows="5" class="form-control"><?php if(isset($visit_row->dinner)) echo $visit_row->dinner;?></textarea>
+                                    <textarea name="txtdinner" id="txtdinner" cols="70" rows="5" class="form-control"><?php if(isset($plan_row->dinner)) echo $plan_row->dinner;?></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -521,7 +532,7 @@ if(isset($visit_info))
                                 * </span>
                                 </label>
                                 <div class="col-md-4">
-                                    <textarea name="txtNotes" id="txtNotes" cols="70" rows="2" class="form-control"><?php if(isset($visit_row->notes)) echo $visit_row->notes;?></textarea>
+                                    <textarea name="txtNotes" id="txtNotes" cols="70" rows="2" class="form-control"><?php if(isset($plan_row->notes)) echo $plan_row->notes;?></textarea>
                                 </div>
                             </div>
                      

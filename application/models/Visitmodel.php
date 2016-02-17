@@ -71,6 +71,45 @@ class Visitmodel extends CI_Model
 		// Update outpatient_nutrition_plan_tb
 		
 	//	$nutdata['outpatient_visit_id'] = $hdnvisitNo;
+		/*$nutdata['plan_id'] = $drpPlan;
+		$nutdata['start_date'] = $dpStartdate;
+		$nutdata['end_date'] = $dpEnddate;
+		$nutdata['breakfast'] = $txtbreakfast;
+		$nutdata['lunch'] = $txtlunch;
+		$nutdata['dinner'] = $txtdinner;
+		$nutdata['notes'] = $txtNotes;
+
+		$this->db->where('outpatient_visit_id',$hdnvisitNo);
+		$this->db->update('outpatient_nutrition_plan_tb',$nutdata);
+		*/
+		return;
+		
+	}
+//********** Plan function	
+	function insert_visit_plan()
+	{
+		extract($_POST);
+		
+		$nutdata['outpatient_visit_id'] = $hdnvisitNo;
+		$nutdata['plan_id'] = $drpPlan;
+		$nutdata['start_date'] = $dpStartdate;
+		$nutdata['end_date'] = $dpEnddate;
+		$nutdata['breakfast'] = $txtbreakfast;
+		$nutdata['lunch'] = $txtlunch;
+		$nutdata['dinner'] = $txtdinner;
+		$nutdata['notes'] = $txtNotes;
+
+		//$this->db->where('outpatient_visit_id',$hdnvisitNo);
+		$this->db->insert('outpatient_nutrition_plan_tb',$nutdata);
+		
+		return;
+		
+	}
+	function update_visit_plan()
+	{
+		extract($_POST);
+		
+		//$nutdata['outpatient_visit_id'] = $hdnvisitNo;
 		$nutdata['plan_id'] = $drpPlan;
 		$nutdata['start_date'] = $dpStartdate;
 		$nutdata['end_date'] = $dpEnddate;
@@ -85,6 +124,9 @@ class Visitmodel extends CI_Model
 		return;
 		
 	}
+//*********** end plan function
+
+
 function end_visit()
 {		
 		extract($_POST);
@@ -117,6 +159,25 @@ function end_visit()
 					 and 	outpatient_visits_tb.outpatient_visit_id=body_segment_tb.outpatient_visit_id
 					 and 	outpatient_visits_tb.outpatient_visit_id=outpatient_nutrition_plan_tb.outpatient_visit_id
 					 and 	outpatient_visits_tb.outpatient_visit_id=".$visitId;
+		
+		$res = $this->db->query($myquery);
+		return $res->result();
+		
+	}
+	function get_plan_by_Visit_id($visitId ='')
+	{
+		// Get elder id from POST otherwise get elder id from function arg $elderid
+		if ( !empty($_POST) )
+		{
+			extract($_POST);
+			$visitId= $visitId;
+		}
+		//outpatient_nutrition_plan_tb
+		//body_segment_tb
+		//outpatient_visits_tb
+		$myquery = "SELECT 	plan_id,start_date,end_date,breakfast, 	lunch,dinner,notes
+					 FROM 	outpatient_nutrition_plan_tb
+					 WHERE 	outpatient_nutrition_plan_tb.outpatient_visit_id=".$visitId;
 		
 		$res = $this->db->query($myquery);
 		return $res->result();

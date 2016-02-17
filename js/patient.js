@@ -116,6 +116,7 @@ function editePatient()
 			success: function(returndb){
 				//if(returndb != 0)
 				{
+					gotoPatientVisit(0,returndb['patient_file_id'])
 					//alert(returndb['patient_file_id']);
 					//$("#hdnSurveyId").val(returndb['survey_id']);
 					$("#hdnPatientFileId")  .val(returndb['patient_file_id']);
@@ -125,7 +126,7 @@ function editePatient()
 					$('.alert-success', form).show();
 					$('.alert-danger', form).hide();
 					Metronic.scrollTo( $('.alert-danger', form), -200);
-						window.location.href = baseURL+"visitcont/visitform";
+					//window.location.href = baseURL+"visitcont/visitform";
 				}
 			}
 		});//END $.ajax
@@ -153,8 +154,9 @@ function gotoPatient(arg)
 //******************gotovisits********************//
 function gotoPatientVisit(arg1,arg2)
 {  
-	//alert('visitid :'+ arg1);
-	//alert('patientid :'+ arg2);
+alert(11111);
+	alert('visitid :'+ arg1);
+	alert('patientid :'+ arg2);
 	$.ajax({
 			url: baseURL+"Visitcont/senddata",
 			type: "POST",

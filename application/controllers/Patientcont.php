@@ -87,6 +87,7 @@ class Patientcont extends CI_Controller
 	{
 		$this->load->model('patientmodel');
 		$output=$this->patientmodel->insert_patient();
+		
 		header('Access-Control-Allow-Origin: *');
 		header("Content-Type: application/json");
 		echo json_encode($output);
