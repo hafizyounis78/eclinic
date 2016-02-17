@@ -9,6 +9,8 @@ if(isset($visit_info))
 	foreach($visit_info as $visit_row);
 }
 ?>
+<div style="background-image:url(<?php echo base_url();?>assets/admin/layout/img/prescription.jpg);background-repeat:no-repeat;height:1280px">
+<div style="height:220px"></div>
 <div align="right" dir="rtl">
 <table width="100%" border="1" style="border-style:solid;border-color:#333;border-width:.1;border-collapse: collapse">
   <tr>
@@ -50,4 +52,5 @@ if(isset($visit_info))
 	<b>الدكتور/</b>  
 	 <?php $sdata = $this->session->userdata('logged_in');
                        echo $sdata['name'];?>
+</div>
 </div>
