@@ -86,12 +86,14 @@ class Visitmodel extends CI_Model
 		
 	}
 //********** Plan function	
+	
 	function insert_visit_plan()
 	{
 		extract($_POST);
 		
 		$nutdata['outpatient_visit_id'] = $hdnvisitNo;
 		$nutdata['plan_id'] = $drpPlan;
+		$nutdata['model_num'] = $drpModel;
 		$nutdata['start_date'] = $dpStartdate;
 		$nutdata['end_date'] = $dpEnddate;
 		$nutdata['notes'] = $txtNotes;
@@ -120,7 +122,7 @@ class Visitmodel extends CI_Model
 		//$this->db->where('outpatient_visit_id',$hdnvisitNo);
 		
 		
-		return;
+		return $nutrition_plan_id;
 		
 	}
 	function update_visit_plan()
@@ -129,17 +131,45 @@ class Visitmodel extends CI_Model
 		
 		//$nutdata['outpatient_visit_id'] = $hdnvisitNo;
 		$nutdata['plan_id'] = $drpPlan;
+		$nutdata['model_num'] = $drpModel;
 		$nutdata['start_date'] = $dpStartdate;
 		$nutdata['end_date'] = $dpEnddate;
-		$nutdata['breakfast'] = $txtbreakfast;
-		$nutdata['lunch'] = $txtlunch;
-		$nutdata['dinner'] = $txtdinner;
 		$nutdata['notes'] = $txtNotes;
 
 		$this->db->where('outpatient_visit_id',$hdnvisitNo);
 		$this->db->update('outpatient_nutrition_plan_tb',$nutdata);
 		
-		return;
+		for($i=1; $i<=7; $i++)
+		{
+			$breakfast= "txtbreakfast".$i;
+			$lunch= "txtlunch".$i;
+			$dinner= "txtdinner".$i;
+			
+			$nutdetdata['outpatientnutrition_id'] = $hdnNutritionplanid;
+			$nutdetdata['plan_day_id'] = $i;
+			$nutdetdata['breakfast'] = $$breakfast;
+			$nutdetdata['lunch'] = $$lunch;
+			$nutdetdata['dinner'] = $$dinner;
+			
+			$this->db->where('outpatientnutrition_id',$hdnNutritionplanid);
+			$this->db->where('plan_day_id',$i);
+			$this->db->update('outpatient_nutrition_plan_details_tb',$nutdetdata);
+			
+		}
+		
+		return $hdnNutritionplanid;
+		
+	}
+	
+	function get_plan_model()
+	{
+		extract($_POST);
+		$myquery = "SELECT DISTINCT (model_num)
+					  FROM nutrition_plan_tb
+					 WHERE plan_type_id = ".$drpPlan;
+		
+		$res = $this->db->query($myquery);
+		return $res->result();
 		
 	}
 //*********** end plan function
@@ -227,15 +257,17 @@ function get_nut_plan_by_id($planId ='')
 		{
 			extract($_POST);
 			$planId= $planCode;
+			$modelNum= $modelnum;
 		}
 		
 		/*$myquery = "SELECT 	breakfast,lunch,dinner
 					 FROM 	nutrition_plan_tb 
 					 WHERE  plan_id = ".$planId;*/
 		
-		$myquery = "SELECT plan_id, plan_day_id, plan_type_id, plan_desc_a, plan_desc_e, breakfast, lunch, dinner
+		$myquery = "SELECT plan_id, model_num, plan_day_id, plan_type_id, plan_desc_a, plan_desc_e, breakfast, lunch, dinner
 					 FROM 	nutrition_plan_tb 
 					 WHERE  plan_type_id = ".$planId.
+				   " AND   model_num =  ".$modelNum.
 				   " ORDER BY plan_day_id";
 					 
 		$res = $this->db->query($myquery);

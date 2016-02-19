@@ -123,13 +123,17 @@ class Visitcont extends CI_Controller
 	function updatePlanVisit()
 	{
 		$this->load->model('visitmodel');
-		$this->visitmodel->update_visit_plan();
+		$nutrition_plan_id = $this->visitmodel->update_visit_plan();
+		echo $nutrition_plan_id;
+		
 	}
 	/******************* Update visit ******************************/
 	function addPlanVisit()
 	{
 		$this->load->model('visitmodel');
-		$this->visitmodel->insert_visit_plan();
+		$nutrition_plan_id = $this->visitmodel->insert_visit_plan();
+		
+		echo $nutrition_plan_id;
 	}
 	function updatevisit()
 	{
@@ -367,6 +371,31 @@ function get_nut_plan()
 		echo ' </tbody>
         </table>';
 		
-}	
+	}
+	
+	function get_plan_model()
+	{
+		$this->load->model('visitmodel');
+		$rec=$this->visitmodel->get_plan_model();
+		
+		$output = array();
+		foreach($rec as $row)
+		{
+			unset($temp); // Release the contained value of the variable from the last loop
+			$temp = array();
+
+			// It guess your client side will need the id to extract, and distinguish the ScoreCH data
+		
+			$temp['model_num'] = $row->model_num;
+		
+			array_push($output,$temp);
+			
+			
+			
+		}
+		header('Access-Control-Allow-Origin: *');
+			header("Content-Type: application/json");
+			echo json_encode($output);
+	}
 }
 ?>

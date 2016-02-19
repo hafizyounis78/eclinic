@@ -440,8 +440,8 @@ if (isset($plan_info))
                                     </div>
                                     <div>
                                     <input id="hdnPAction" name="hdnPAction" type="hidden" value="<?php echo $Paction;?>" />
-                                <!--    <input id="hdnLabOrderNo" name="hdnLabOrderNo" type="hidden" value="" />
-                                 -->   
+                                    <input id="hdnNutritionplanid" name="hdnNutritionplanid" type="hidden" value="" />
+                                    
                                     </div>
                                     
                                     <div class="form-group">
@@ -452,6 +452,7 @@ if (isset($plan_info))
                               <select class="form-control " id="drpPlan" name="drpPlan" onchange="drpplan_change();">
                                   <option value="">اختر...</option>
                                   <?php 
+								 
 								  foreach ($plantype as $row)
 								  {
 									   $selected = '';
@@ -461,11 +462,32 @@ if (isset($plan_info))
 									  echo ' <option value="'.$row->sub_constant_id.'"'.$selected.'>'
 									  						 .$row->sub_constant_name.'</option>';
 								  }
+								  
 								  ?>
                               </select>
                           </div>
                       </div>
-                       
+                      <div class="form-group">
+                          <label class="control-label col-md-3">نموذج رقم<span class="required">
+                          * </span>
+                          </label>
+                       <div class="col-md-4">
+                              <select class="form-control " id="drpModel" name="drpModel" onchange="drpmodel_change();">
+                                  
+                                  <?php 
+								 /* foreach ($plantype as $row)
+								  {
+									   $selected = '';
+									  if ($plan_row->plan_id == $row->sub_constant_id)
+									  	$selected = 'selected="selected"';
+									  
+									  echo ' <option value="'.$row->sub_constant_id.'"'.$selected.'>'
+									  						 .$row->sub_constant_name.'</option>';
+								  }*/
+								  ?>
+                              </select>
+                          </div>
+                      </div> 
 					<div class="form-group">
                           <label class="control-label col-md-3">تـاريخ بدء الخطة <span class="required">
                           * </span>
