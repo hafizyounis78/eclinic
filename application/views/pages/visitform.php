@@ -455,11 +455,11 @@ if (isset($plan_info))
 								  foreach ($plantype as $row)
 								  {
 									   $selected = '';
-									  if ($plan_row->plan_id == $row->plan_id)
+									  if ($plan_row->plan_id == $row->sub_constant_id)
 									  	$selected = 'selected="selected"';
 									  
-									  echo ' <option value="'.$row->plan_id.'"'.$selected.'>'
-									  						 .$row->plan_desc_a.'</option>';
+									  echo ' <option value="'.$row->sub_constant_id.'"'.$selected.'>'
+									  						 .$row->sub_constant_name.'</option>';
 								  }
 								  ?>
                               </select>
@@ -502,32 +502,7 @@ if (isset($plan_info))
                                    <label id="lblAge" class="control-label"></label>
                               </div>
                           </div>
-                         <!--               Nutration plan              --> 
-                             <div class="form-group">
-                                                <label class="control-label col-md-3">وجبة الفطور <span class="required">
-                                                * </span>
-                                                </label>
-                                                <div class="col-md-4">
-                                                    <textarea name="txtbreakfast" id="txtbreakfast" cols="70" rows="5" class="form-control"><?php if(isset($plan_row->breakfast)) echo $plan_row->breakfast;?></textarea>
-                                                </div>
-                                            </div>
-                              <div class="form-group">
-                                                    <label class="control-label col-md-3">وجبة الغداء <span class="required">
-                                                    * </span>
-                                                    </label>
-                                                    <div class="col-md-4">
-                                                        <textarea name="txtlunch" id="txtlunch" cols="70" rows="5" class="form-control"><?php if(isset($plan_row->lunch)) echo $plan_row->lunch;?></textarea>
-                                                    </div>
-                                                </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3">وجبة العشاء <span class="required">
-                                * </span>
-                                </label>
-                                <div class="col-md-4">
-                                    <textarea name="txtdinner" id="txtdinner" cols="70" rows="5" class="form-control"><?php if(isset($plan_row->dinner)) echo $plan_row->dinner;?></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
+                          <div class="form-group">
                                 <label class="control-label col-md-3">ملاحظات <span class="required">
                                 * </span>
                                 </label>
@@ -535,19 +510,19 @@ if (isset($plan_info))
                                     <textarea name="txtNotes" id="txtNotes" cols="70" rows="2" class="form-control"><?php if(isset($plan_row->notes)) echo $plan_row->notes;?></textarea>
                                 </div>
                             </div>
-                     
-                                
-                                </div>
-                                <!-- END FORM BODY -->
-                                <div class="form-actions">
-                                    <div class="row">
-                                        <div class="col-md-offset-3 col-md-9">
-                                            <button type="submit" class="btn blue-madison">حـفـظ</button>
-                                            <button type="button" class="btn default" 
-                                            onclick="window.location='<?php echo base_url()?>patientcont/patientlist';">عودة</button>
-                                        </div>
-                                    </div>
-                                </div>
+                         <!--               Nutration plan              --> 
+                         <div id="dvNutrationplan"></div>
+                         </div>
+                          <!-- END FORM BODY -->
+                          <div class="form-actions">
+                              <div class="row">
+                                  <div class="col-md-offset-3 col-md-9">
+                                      <button type="submit" class="btn blue-madison">حـفـظ</button>
+                                      <button type="button" class="btn default" 
+                                      onclick="window.location='<?php echo base_url()?>patientcont/patientlist';">عودة</button>
+                                  </div>
+                              </div>
+                          </div>
                             </form>
                                <!-- END FORM-->
                           </div> <!-- END portlet-body -->

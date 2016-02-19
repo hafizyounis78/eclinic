@@ -32,10 +32,9 @@ function drpplan_change(){
 			beforeSend: function(){},
 			complete: function(){},
 			success: function(returndb){
-			//alert(returndb);	
-			$('#txtbreakfast').val(returndb[0]['breakfast']);				
-			$('#txtlunch').val(returndb[0]['lunch']);				
-			$('#txtdinner').val(returndb[0]['dinner']);				
+			//alert(returndb);
+			$('#dvNutrationplan').html(returndb);
+			
 			}
 		});//END $.ajax
 }
@@ -124,17 +123,17 @@ function editeVisits()
 //*********************add plan 
 function editePlanVisits()
 {
-	var formData = new FormData();
+	//var formData = new FormData();
 	
 	// Add the data to the request.
-	formData.append('hdnvisitNo'		 , $("#hdnvisitNo").val()		  );
+	/*formData.append('hdnvisitNo'		 , $("#hdnvisitNo").val()		  );
 	formData.append('drpPlan'		 , $("#drpPlan").val()		  );
 	formData.append('dpStartdate'		 ,  $("#dpStartdate").val()		  );
 	formData.append('dpEnddate'	  	 ,  $("#dpEnddate").val()	  );
 	formData.append('txtbreakfast'	  	 ,  $("#txtbreakfast").val()	  );
 	formData.append('txtlunch'	  	 ,  $("#txtlunch").val()	  );
 	formData.append('txtdinner'	  	 ,  $("#txtdinner").val()	  );
-	formData.append('txtNotes'	  	 ,  $("#txtNotes").val()	  );
+	formData.append('txtNotes'	  	 ,  $("#txtNotes").val()	  );*/
 	
 	/*var visitNo=$("#hdnvisitNo").val();
 	var action = $("#hdnPAction").val();
@@ -142,11 +141,9 @@ function editePlanVisits()
 	alert("action :"+action);
 				*/		
 	$.ajax({
-			url: baseURL+"Visitcont/"+action,
+			url: baseURL+"Visitcont/addPlanVisit",//+action,
 			type: "POST",
-			data:  formData,
-			processData: false,
-    		contentType: false,
+			data:  $("#Plan_form").serialize()+"&hdnvisitNo="+$("#hdnvisitNo").val(),
 			error: function(xhr, status, error) {
 				
 				alert(xhr.responseText);

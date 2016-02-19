@@ -94,13 +94,31 @@ class Visitmodel extends CI_Model
 		$nutdata['plan_id'] = $drpPlan;
 		$nutdata['start_date'] = $dpStartdate;
 		$nutdata['end_date'] = $dpEnddate;
-		$nutdata['breakfast'] = $txtbreakfast;
-		$nutdata['lunch'] = $txtlunch;
-		$nutdata['dinner'] = $txtdinner;
 		$nutdata['notes'] = $txtNotes;
+		$this->db->insert('outpatient_nutrition_plan_tb',$nutdata);
+		$nutrition_plan_id = $this->db->insert_id();
+		
+		for($i=1; $i<=7; $i++)
+		{
+			$breakfast= "txtbreakfast".$i;
+			$lunch= "txtlunch".$i;
+			$dinner= "txtdinner".$i;
+			
+			$nutdetdata['outpatientnutrition_id'] = $nutrition_plan_id;
+			$nutdetdata['plan_day_id'] = $i;
+			$nutdetdata['breakfast'] = $$breakfast;
+			$nutdetdata['lunch'] = $$lunch;
+			$nutdetdata['dinner'] = $$dinner;
+			$this->db->insert('outpatient_nutrition_plan_details_tb',$nutdetdata);
+			
+		}
+		/*$nutdata['breakfast'] = $txtbreakfast;
+		$nutdata['lunch'] = $txtlunch;
+		$nutdata['dinner'] = $txtdinner;*/
+		
 
 		//$this->db->where('outpatient_visit_id',$hdnvisitNo);
-		$this->db->insert('outpatient_nutrition_plan_tb',$nutdata);
+		
 		
 		return;
 		
@@ -211,10 +229,15 @@ function get_nut_plan_by_id($planId ='')
 			$planId= $planCode;
 		}
 		
-		$myquery = "SELECT 	breakfast,lunch,dinner
+		/*$myquery = "SELECT 	breakfast,lunch,dinner
 					 FROM 	nutrition_plan_tb 
-					 WHERE  plan_id = ".$planId;
+					 WHERE  plan_id = ".$planId;*/
 		
+		$myquery = "SELECT plan_id, plan_day_id, plan_type_id, plan_desc_a, plan_desc_e, breakfast, lunch, dinner
+					 FROM 	nutrition_plan_tb 
+					 WHERE  plan_type_id = ".$planId.
+				   " ORDER BY plan_day_id";
+					 
 		$res = $this->db->query($myquery);
 		//print_r($res->result());
 		return $res->result();
@@ -223,8 +246,8 @@ function get_nut_plan_list()
 	{
 		// Get nutration plan list
 
-		$myquery = "SELECT 	plan_id,plan_desc_a,plan_desc_e
-					 FROM 	nutrition_plan_tb";
+		/*$myquery = "SELECT 	plan_id,plan_desc_a,plan_desc_e
+					 FROM 	nutrition_plan_tb";*/
 		
 		$res = $this->db->query($myquery);
 	//	print_r($res );
