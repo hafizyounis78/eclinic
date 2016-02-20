@@ -161,12 +161,16 @@ class Visitmodel extends CI_Model
 		
 	}
 	
-	function get_plan_model()
+	function get_plan_model($planid='')
 	{
-		extract($_POST);
+		if ( !empty($_POST) )
+		{
+			extract($_POST);
+			$planid = $drpPlan;
+		}
 		$myquery = "SELECT DISTINCT (model_num)
 					  FROM nutrition_plan_tb
-					 WHERE plan_type_id = ".$drpPlan;
+					 WHERE plan_type_id = ".$planid;
 		
 		$res = $this->db->query($myquery);
 		return $res->result();
@@ -223,9 +227,12 @@ function end_visit()
 		//outpatient_nutrition_plan_tb
 		//body_segment_tb
 		//outpatient_visits_tb
-		$myquery = "SELECT 	plan_id,start_date,end_date,breakfast, 	lunch,dinner,notes
-					 FROM 	outpatient_nutrition_plan_tb
-					 WHERE 	outpatient_nutrition_plan_tb.outpatient_visit_id=".$visitId;
+		$myquery = "SELECT p.outpatientnutrition_id, p.outpatient_visit_id, plan_id, p.model_num, p.start_date, p.end_date, p.notes,
+							det.outpatient_nutrition_plan_details_id, det.outpatientnutrition_id, det.plan_day_id,
+							det.breakfast, det.lunch, det.dinner
+					  FROM outpatient_nutrition_plan_tb p, outpatient_nutrition_plan_details_tb det
+					 WHERE p.outpatientnutrition_id = det.outpatientnutrition_id
+					   AND p.outpatient_visit_id=".$visitId;
 		
 		$res = $this->db->query($myquery);
 		return $res->result();
@@ -400,10 +407,9 @@ function get_visit_data_by_id($VisitNo)
 	//$Visitid = $VisitNo;
 	//print_r($VisitNo);
 	$myquery = "SELECT 	 	v.outpatient_visit_id,p.patient_file_id,CONCAT(p.first_name,' ',p.middle_name,' ',p.third_name,' ',p.last_name) as name,dob,
-							v.visit_date,v.visit_time,v.visit_type_id,b.weight,b.length,b.bmi,n.plan_id,n.start_date,n.end_date,n.breakfast,n.lunch,n.dinner ,n.notes
+							v.visit_date,v.visit_time,v.visit_type_id,b.weight,b.length,b.bmi
  					FROM    outpatient_visits_tb v
 					LEFT 	OUTER JOIN body_segment_tb b  ON v.outpatient_visit_id= b.outpatient_visit_id
-					LEFT 	OUTER JOIN outpatient_nutrition_plan_tb n ON v.outpatient_visit_id=n.outpatient_visit_id
 					,patient_mr_tb p
 					WHERE 	v.patient_file_id=p.patient_file_id
 					and     v.outpatient_visit_id=".$VisitNo;

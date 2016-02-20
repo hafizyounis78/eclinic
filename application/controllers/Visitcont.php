@@ -71,6 +71,9 @@ class Visitcont extends CI_Controller
 				{
 					$this->data['visit_info'] = $this->visitmodel->get_visit_data_by_id($_SESSION['updateVisit']);
 					$this->data['plan_info'] = $this->visitmodel->get_plan_by_Visit_id($_SESSION['updateVisit']);
+					foreach($this->data['plan_info'] as $row);
+					if(isset($row->plan_id))
+						$this->data['plan_model'] = $this->visitmodel->get_plan_model($row->plan_id);								  
 					$this->load->model('labmodel');
 					$this->data['lab_info'] = $this->labmodel->get_allorder_by_Visit_id($_SESSION['updateVisit']);
 				}

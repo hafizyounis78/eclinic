@@ -52,12 +52,67 @@ if(isset($visit_info))
 			$disabled = 'disabled="disabled" ';
 		}
 }
-
+$plan_table = "";
+$plan_id = "";
+$model_num = "";
+$outpatientnutritionId = "";
+$startdate= "";
+$enddate= "";
+$notes = "";
 if (isset($plan_info))				
 {
-	foreach($plan_info as $plan_row);
-	if (isset($plan_row->plan_id))				
-	 $Paction="updatePlanVisit";
+	$days = array( 
+			1 => 'اليوم الأول',
+			2 => 'اليوم الثاني',
+			3 => 'اليوم الثالث', 
+			4 => 'اليوم الرابع',
+			5 => 'اليوم الخامس',
+			6 => 'اليوم السادس',
+			7 => 'اليوم السابع');
+		
+	$plan_table = '<table class="table table-striped table-hover table-bordered" id="accordion2">
+			<thead>
+			  <tr class="bg-grey-steel">
+				  <th scope="col">
+					   &nbsp;
+				  </th>
+				  <th scope="col">
+					الفـطــــور
+				  </th>
+				  <th scope="col">
+					الغـــــداء
+				  </th>
+				  <th scope="col">
+					العشـــــاء
+				  </th>
+			  </tr>
+			</thead>
+			<tbody>';
+		foreach($plan_info as $row)
+		{
+			
+			$plan_table = $plan_table.
+					'<tr>
+					  <td>'.$days[$row->plan_day_id].'</td>
+					  <td>
+						<textarea name="txtbreakfast'.$row->plan_day_id.'" id="txtbreakfast'.$row->plan_day_id.'" cols="70" rows="5" class="form-control">'.$row->breakfast.'</textarea></td>
+					<td>
+						<textarea name="txtlunch'.$row->plan_day_id.'" id="txtlunch'.$row->plan_day_id.'" cols="70" rows="5" class="form-control">'.$row->lunch.'</textarea></td>
+					<td>
+						<textarea name="txtdinner'.$row->plan_day_id.'" id="txtdinner'.$row->plan_day_id.'" cols="70" rows="5" class="form-control">'.$row->dinner.'</textarea></td>
+				 </tr>';
+	
+		}
+		$plan_table = $plan_table.' </tbody>
+        </table>';
+	
+	$plan_id = $row->plan_id;
+	$model_num = $row->model_num;
+	$outpatientnutritionId = $row->outpatientnutrition_id;
+	$startdate= $row->start_date;
+	$enddate= $row->end_date;
+	$notes = $row->notes;
+	$Paction="updatePlanVisit";
 }
 ?>
 
@@ -440,7 +495,8 @@ if (isset($plan_info))
                                     </div>
                                     <div>
                                     <input id="hdnPAction" name="hdnPAction" type="hidden" value="<?php echo $Paction;?>" />
-                                    <input id="hdnNutritionplanid" name="hdnNutritionplanid" type="hidden" value="" />
+                                    <input id="hdnNutritionplanid" name="hdnNutritionplanid" type="hidden" 
+                                    value="<?php echo $outpatientnutritionId;?>" />
                                     
                                     </div>
                                     
@@ -456,7 +512,7 @@ if (isset($plan_info))
 								  foreach ($plantype as $row)
 								  {
 									   $selected = '';
-									  if ($plan_row->plan_id == $row->sub_constant_id)
+									  if ($row->sub_constant_id == $plan_id)
 									  	$selected = 'selected="selected"';
 									  
 									  echo ' <option value="'.$row->sub_constant_id.'"'.$selected.'>'
@@ -475,15 +531,15 @@ if (isset($plan_info))
                               <select class="form-control " id="drpModel" name="drpModel" onchange="drpmodel_change();">
                                   
                                   <?php 
-								 /* foreach ($plantype as $row)
+								  foreach ($plan_model as $row)
 								  {
 									   $selected = '';
-									  if ($plan_row->plan_id == $row->sub_constant_id)
+									  if ($model_num == $row->model_num)
 									  	$selected = 'selected="selected"';
 									  
-									  echo ' <option value="'.$row->sub_constant_id.'"'.$selected.'>'
-									  						 .$row->sub_constant_name.'</option>';
-								  }*/
+									  echo ' <option value="'.$row->model_num.'"'.$selected.'>'
+									  						 .$row->model_num.'</option>';
+								  }
 								  ?>
                               </select>
                           </div>
@@ -495,7 +551,7 @@ if (isset($plan_info))
                           <div class="col-md-4">
                               <div class="input-group date date-picker" data-date-format="yyyy-mm-dd">
                                   <input type="text" class="form-control" readonly id="dpStartdate" name="dpStartdate"
-                                  value="<?php if(isset($plan_row->start_date)) echo $plan_row->start_date; else echo $currentDate; ?>" >
+                                  value="<?php if(isset($startdate)) echo $startdate; else echo $currentDate; ?>" >
                                   <span class="input-group-btn">
                                   <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
                                   </span>
@@ -513,7 +569,7 @@ if (isset($plan_info))
                           <div class="col-md-4">
                               <div class="input-group date date-picker" data-date-format="yyyy-mm-dd">
                                   <input type="text" class="form-control" readonly id="dpEnddate" name="dpEnddate"
-                                  value="<?php if(isset($plan_row->end_date)) echo $plan_row->end_date;?>">
+                                  value="<?php if(isset($enddate)) echo $enddate;?>">
                                   <span class="input-group-btn">
                                   <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
                                   </span>
@@ -529,11 +585,11 @@ if (isset($plan_info))
                                 * </span>
                                 </label>
                                 <div class="col-md-4">
-                                    <textarea name="txtNotes" id="txtNotes" cols="70" rows="2" class="form-control"><?php if(isset($plan_row->notes)) echo $plan_row->notes;?></textarea>
+                                    <textarea name="txtNotes" id="txtNotes" cols="70" rows="2" class="form-control"><?php if(isset($notes)) echo $notes;?></textarea>
                                 </div>
                             </div>
                          <!--               Nutration plan              --> 
-                         <div id="dvNutrationplan"></div>
+                         <div id="dvNutrationplan"><?php if(isset($plan_table)) echo $plan_table;?></div>
                          </div>
                           <!-- END FORM BODY -->
                           <div class="form-actions">
