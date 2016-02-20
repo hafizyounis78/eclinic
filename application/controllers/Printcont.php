@@ -43,8 +43,8 @@ class Printcont extends CI_Controller
 		$this->load->model('visitmodel');
 		$this->load->model('labmodel');
 		$this->data['visittype']= $this->constantmodel->get_sub_constant(75);
-		$this->data['plantype']= $this->visitmodel->get_nut_plan_list();
-		$this->data['labTests'] = $this->labmodel->get_lab();
+		//$this->data['plantype']= $this->visitmodel->get_nut_plan_list();
+		//$this->data['labTests'] = $this->labmodel->get_lab();
 		
 		//$this->data['LabOrderTest'] = $this->labmodel->get_lab_order_by_id();
 
@@ -56,6 +56,10 @@ class Printcont extends CI_Controller
 				$this->data['patient_info'] = $this->visitmodel->get_patient_by_id($_SESSION['update']);
 				
 				$this->data['visit_info'] = $this->visitmodel->get_visit_data_by_id($_SESSION['updateVisit']);
+				$this->data['plan_info'] = $this->visitmodel->get_plan_by_Visit_id($_SESSION['updateVisit']);
+				foreach($this->data['plan_info'] as $row);
+					if(isset($row->plan_id))
+						$this->data['plan_model'] = $this->visitmodel->get_plan_model($row->plan_id);
 				$this->load->model('labmodel');
 				$this->data['lab_info'] = $this->labmodel->get_allorder_by_Visit_id($_SESSION['updateVisit']);
 				

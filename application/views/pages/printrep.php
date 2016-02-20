@@ -8,6 +8,58 @@ if(isset($visit_info))
 {
 	foreach($visit_info as $visit_row);
 }
+$plan_table = "";
+if (isset($plan_info))				
+{
+	$days = array( 
+			1 => 'اليوم الأول',
+			2 => 'اليوم الثاني',
+			3 => 'اليوم الثالث', 
+			4 => 'اليوم الرابع',
+			5 => 'اليوم الخامس',
+			6 => 'اليوم السادس',
+			7 => 'اليوم السابع');
+		
+	$plan_table = '<table width="100%" border="1" style="border-style:solid;border-color:#666;border-width:.1;border-collapse: collapse">
+			<thead>
+			  <tr class="bg-grey-steel">
+				  <th scope="col">
+					   &nbsp;
+				  </th>
+				  <th scope="col">
+					الفـطــــور
+				  </th>
+				  <th scope="col">
+					الغـــــداء
+				  </th>
+				  <th scope="col">
+					العشـــــاء
+				  </th>
+			  </tr>
+			</thead>
+			<tbody>';
+		foreach($plan_info as $row)
+		{
+			
+			$plan_table = $plan_table.
+					'<tr>
+					  <td><b>'.$days[$row->plan_day_id].'</b></td>
+					  <td>'.$row->breakfast.'</td>
+					  <td>'.$row->lunch.'</td>
+					  <td>'.$row->dinner.'</td>
+				 </tr>';
+	
+		}
+		$plan_table = $plan_table.
+					'<tr>
+					  <td><b>ملاحظــات</b></td>
+					  <td colspan="3">'.$row->notes.'</td>
+					</tr>';
+		$plan_table = $plan_table.' </tbody>
+        </table>';
+	
+}
+
 ?>
 <div style="background-image:url(<?php echo base_url();?>assets/admin/layout/img/prescription.jpg);background-repeat:no-repeat;height:1280px">
 <div style="height:220px"></div>
@@ -27,23 +79,7 @@ if(isset($visit_info))
   </tr>
 </table>
 <br />
-<table width="100%" border="1" style="border-style:solid;border-color:#666;border-width:.1;border-collapse: collapse">
-  <tr>
-    <th colspan="2">الخــــطــة الغــــذائيـة</th>
-  </tr>
-  <tr>
-    <th width="10%">الفطــــور</th>
-    <td><?php if(isset($visit_row->breakfast)) echo $visit_row->breakfast;?></td>
-  </tr>
-  <tr>
-    <th width="10%">الغـــداء</th>
-    <td><?php if(isset($visit_row->lunch)) echo $visit_row->lunch;?></td>
-  </tr>
-  <tr>
-    <th width="10%">العشـــاء</th>
-    <td><?php if(isset($visit_row->dinner)) echo $visit_row->dinner;?></td>
-  </tr>
-</table>
+<?php if(isset($plan_table)) echo $plan_table;?>
 <br />
 <br />
 <br />
