@@ -32,8 +32,8 @@ class Constantmodel extends CI_Model
 		$sdata = $this->session->userdata('logged_in');
 		
 		$data['constant_name'] = $txtConstantName;
-		$data['created_on']  = date("Y-m-d H:i:s");
-		$data['created_by']  = $sdata['userid'];
+		/*$data['created_on']  = date("Y-m-d H:i:s");
+		$data['created_by']  = $sdata['userid'];*/
 		
 		$this->db->insert('constant_tb',$data);
 	}

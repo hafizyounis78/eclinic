@@ -55,7 +55,8 @@ class Visitcont extends CI_Controller
 		$this->load->model('visitmodel');
 		$this->load->model('labmodel');
 		$this->data['visittype']= $this->constantmodel->get_sub_constant(75);
-		$this->data['plantype']= $this->visitmodel->get_nut_plan_list();
+		//$this->data['plantype']= $this->visitmodel->get_nut_plan_list();
+		$this->data['plantype']= $this->constantmodel->get_sub_constant(77);
 		$this->data['labTests'] = $this->labmodel->get_lab();
 		
 		//$this->data['LabOrderTest'] = $this->labmodel->get_lab_order_by_id();
@@ -122,13 +123,17 @@ class Visitcont extends CI_Controller
 	function updatePlanVisit()
 	{
 		$this->load->model('visitmodel');
-		$this->visitmodel->update_visit_plan();
+		$nutrition_plan_id = $this->visitmodel->update_visit_plan();
+		echo $nutrition_plan_id;
+		
 	}
 	/******************* Update visit ******************************/
 	function addPlanVisit()
 	{
 		$this->load->model('visitmodel');
-		$this->visitmodel->insert_visit_plan();
+		$nutrition_plan_id = $this->visitmodel->insert_visit_plan();
+		
+		echo $nutrition_plan_id;
 	}
 	function updatevisit()
 	{
@@ -321,6 +326,58 @@ function get_nut_plan()
 			echo 0;
 			return;
 		}
+		$days = array( 
+			1 => 'اليوم الأول',
+			2 => 'اليوم الثاني',
+			3 => 'اليوم الثالث', 
+			4 => 'اليوم الرابع',
+			5 => 'اليوم الخامس',
+			6 => 'اليوم السادس',
+			7 => 'اليوم السابع');
+		
+		echo '<table class="table table-striped table-hover table-bordered" id="accordion2">
+				<thead>
+				  <tr class="bg-grey-steel">
+					  <th scope="col">
+						   &nbsp;
+					  </th>
+					  <th scope="col">
+						الفـطــــور
+					  </th>
+					  <th scope="col">
+						الغـــــداء
+					  </th>
+					  <th scope="col">
+						العشـــــاء
+					  </th>
+				  </tr>
+				</thead>
+				<tbody>';
+		foreach($rec as $row)
+		{
+			
+			echo '<tr>';
+			echo '<td>'.$days[$row->plan_day_id].'</td>';
+			echo '<td>
+					<textarea name="txtbreakfast'.$row->plan_day_id.'" id="txtbreakfast'.$row->plan_day_id.'" cols="70" rows="5" class="form-control">'.$row->breakfast.'</textarea></td>';
+			echo '<td>
+					<textarea name="txtlunch'.$row->plan_day_id.'" id="txtlunch'.$row->plan_day_id.'" cols="70" rows="5" class="form-control">'.$row->lunch.'</textarea></td>';
+			echo '<td>
+					<textarea name="txtdinner'.$row->plan_day_id.'" id="txtdinner'.$row->plan_day_id.'" cols="70" rows="5" class="form-control">'.$row->dinner.'</textarea></td>';
+			
+			echo '</tr>';
+	
+		}
+		echo ' </tbody>
+        </table>';
+		
+	}
+	
+	function get_plan_model()
+	{
+		$this->load->model('visitmodel');
+		$rec=$this->visitmodel->get_plan_model();
+		
 		$output = array();
 		foreach($rec as $row)
 		{
@@ -328,10 +385,8 @@ function get_nut_plan()
 			$temp = array();
 
 			// It guess your client side will need the id to extract, and distinguish the ScoreCH data
-		$temp['breakfast'] = $row->breakfast ;			
-		$temp['lunch'] = $row->lunch ;		
-		$temp['dinner'] = $row->dinner;
-
+		
+			$temp['model_num'] = $row->model_num;
 		
 			array_push($output,$temp);
 			
@@ -341,7 +396,6 @@ function get_nut_plan()
 		header('Access-Control-Allow-Origin: *');
 			header("Content-Type: application/json");
 			echo json_encode($output);
-
-}	
+	}
 }
 ?>

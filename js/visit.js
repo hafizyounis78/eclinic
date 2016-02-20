@@ -17,25 +17,51 @@ function calculat_bmi()
 		}
 				
 }
-
-function drpplan_change(){	
-
- 	var plan_code = $('#drpPlan').find('option:selected').val();
+function drpplan_change()
+{
+	var drpPlan = $('#drpPlan').find('option:selected').val();
 	//alert(plan_code);
 	$.ajax({
-			url: baseURL+"Visitcont/get_nut_plan",
+			url: baseURL+"Visitcont/get_plan_model",
 			type: "POST",
-			data:  {planCode:plan_code},
+			data:  {drpPlan:drpPlan},
 			error: function(xhr, status, error) {
   				alert(xhr.responseText);
 			},
 			beforeSend: function(){},
 			complete: function(){},
 			success: function(returndb){
-			//alert(returndb);	
-			$('#txtbreakfast').val(returndb[0]['breakfast']);				
-			$('#txtlunch').val(returndb[0]['lunch']);				
-			$('#txtdinner').val(returndb[0]['dinner']);				
+			//alert(returndb);
+			$('#drpModel').empty();
+			$('#drpModel').append("<option>أختر ....</option>");
+				for (i=0;i<returndb.length;++i)
+			//	alert(returndb[i]['sub_constant_id']+returndb[i]['sub_constant_name']);
+				$('#drpModel').append('<option value= "'+ returndb[i]['model_num'] + '">' + returndb[i]['model_num'] +'</option>');
+			
+			}
+		});//END $.ajax
+	
+}
+function drpmodel_change()
+{	
+
+ 	var plan_code = $('#drpPlan').find('option:selected').val();
+	var model_num = $('#drpModel').find('option:selected').val();
+	//alert(plan_code);
+	$.ajax({
+			url: baseURL+"Visitcont/get_nut_plan",
+			type: "POST",
+			data:  {planCode:plan_code,
+					modelnum:model_num},
+			error: function(xhr, status, error) {
+  				alert(xhr.responseText);
+			},
+			beforeSend: function(){},
+			complete: function(){},
+			success: function(returndb){
+			//alert(returndb);
+			$('#dvNutrationplan').html(returndb);
+			
 			}
 		});//END $.ajax
 }
@@ -124,29 +150,28 @@ function editeVisits()
 //*********************add plan 
 function editePlanVisits()
 {
-	var formData = new FormData();
+	//var formData = new FormData();
 	
 	// Add the data to the request.
-	formData.append('hdnvisitNo'		 , $("#hdnvisitNo").val()		  );
+	/*formData.append('hdnvisitNo'		 , $("#hdnvisitNo").val()		  );
 	formData.append('drpPlan'		 , $("#drpPlan").val()		  );
 	formData.append('dpStartdate'		 ,  $("#dpStartdate").val()		  );
 	formData.append('dpEnddate'	  	 ,  $("#dpEnddate").val()	  );
 	formData.append('txtbreakfast'	  	 ,  $("#txtbreakfast").val()	  );
 	formData.append('txtlunch'	  	 ,  $("#txtlunch").val()	  );
 	formData.append('txtdinner'	  	 ,  $("#txtdinner").val()	  );
-	formData.append('txtNotes'	  	 ,  $("#txtNotes").val()	  );
+	formData.append('txtNotes'	  	 ,  $("#txtNotes").val()	  );*/
 	
 	/*var visitNo=$("#hdnvisitNo").val();
-	var action = $("#hdnPAction").val();
+	
 	alert("visitNo :"+visitNo);
 	alert("action :"+action);
-				*/		
+				*/	
+	var action = $("#hdnPAction").val();	
 	$.ajax({
 			url: baseURL+"Visitcont/"+action,
 			type: "POST",
-			data:  formData,
-			processData: false,
-    		contentType: false,
+			data:  $("#Plan_form").serialize()+"&hdnvisitNo="+$("#hdnvisitNo").val(),
 			error: function(xhr, status, error) {
 				
 				alert(xhr.responseText);
@@ -157,6 +182,7 @@ function editePlanVisits()
 
 				
 				//	alert(returndb);
+				$("#hdnNutritionplanid").val(returndb)
 					
 					$("#hdnPAction").val('updatePlanVisit');
 					
