@@ -411,7 +411,7 @@ function get_visit_data_by_id($VisitNo)
  					FROM    outpatient_visits_tb v
 					LEFT 	OUTER JOIN body_segment_tb b  ON v.outpatient_visit_id= b.outpatient_visit_id
 					,patient_mr_tb p
-					WHERE 	v.patient_file_id=p.patient_file_id
+					WHERE 	v.patient_file_id=p.patient_file_id 
 					and     v.outpatient_visit_id=".$VisitNo;
 		
 		

@@ -132,7 +132,7 @@ function editeVisits()
 					//alert(returndb['patient_file_id']);
 					//$("#hdnSurveyId").val(returndb['survey_id']);
 					//alert("visitNo inserted:"+returndb['visit_id']);
-					
+					if (action == "addvisit")
 						$("#hdnvisitNo")  .val(returndb['visit_id']);
 					
 					$("#hdnvAction").val('updatevisit');
