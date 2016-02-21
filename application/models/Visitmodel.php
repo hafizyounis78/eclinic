@@ -401,26 +401,46 @@ function get_nut_plan_list()
 	{
 		return $this->db->count_all('outpatient_visits_tb');			
 	}
-function get_visit_data_by_id($VisitNo)
-{
-	//extract($_POST);
-	//$Visitid = $VisitNo;
-	//print_r($VisitNo);
-	$myquery = "SELECT 	 	v.outpatient_visit_id,p.patient_file_id,CONCAT(p.first_name,' ',p.middle_name,' ',p.third_name,' ',p.last_name) as name,dob,
-							v.visit_date,v.visit_time,v.visit_type_id,b.weight,b.length,b.bmi
- 					FROM    outpatient_visits_tb v
-					LEFT 	OUTER JOIN body_segment_tb b  ON v.outpatient_visit_id= b.outpatient_visit_id
-					,patient_mr_tb p
-					WHERE 	v.patient_file_id=p.patient_file_id 
-					and     v.outpatient_visit_id=".$VisitNo;
-		
-		
-		$res = $this->db->query($myquery);
-//		print_r($res->result());
-		return $res->result();
-		
-		
-}
+	function get_visit_data_by_id($VisitNo)
+	{
+	  //extract($_POST);
+	  //$Visitid = $VisitNo;
+	  //print_r($VisitNo);
+	  $myquery = "SELECT 	 v.outpatient_visit_id,p.patient_file_id,CONCAT(p.first_name,' ',p.middle_name,' ',p.third_name,' ',p.last_name) as name,dob,
+							  v.visit_date,v.visit_time,v.visit_type_id,b.weight,b.length,b.bmi
+					  FROM    outpatient_visits_tb v
+					  LEFT 	OUTER JOIN body_segment_tb b  ON v.outpatient_visit_id= b.outpatient_visit_id
+					  ,patient_mr_tb p
+					  WHERE 	v.patient_file_id=p.patient_file_id 
+					  and     v.outpatient_visit_id=".$VisitNo;
+		  
+		  
+		  $res = $this->db->query($myquery);
+	//		print_r($res->result());
+		  return $res->result();
+		  
+		  
+	}
+	function get_bmi_history($fileid)
+	{
+		//extract($_POST);
+		//$Visitid = $VisitNo;
+		//print_r($VisitNo);
+		$myquery = "SELECT 	v.outpatient_visit_id, p.patient_file_id, v.visit_date,b.bmi
+					  FROM  outpatient_visits_tb v
+					  LEFT 	OUTER JOIN body_segment_tb b  ON v.outpatient_visit_id = b.outpatient_visit_id
+							,patient_mr_tb p
+					 WHERE 	v.patient_file_id = p.patient_file_id 
+					   AND  p.patient_file_id = ".$fileid." 
+				  ORDER BY  v.visit_date DESC";
+			
+			
+			$res = $this->db->query($myquery);
+	//		print_r($res->result());
+			return $res->result();
+			
+			
+	}
 
 }
 ?>

@@ -114,6 +114,26 @@ if (isset($plan_info))
 	$notes = $row->notes;
 	$Paction="updatePlanVisit";
 }
+$bmi_table = "";
+if (isset($bmi_history))
+{
+	$header = "";
+	$body   = "";
+	foreach($bmi_history as $bmi_row)
+	{
+		$header = $header.'<th scope="col">'.$bmi_row->visit_date.'</th>';
+		$body   = $body.'<td>'.$bmi_row->bmi.'</td>';
+	}
+	if(count($bmi_history) > 0)
+	{
+		$bmi_table = '<table class="table table-striped table-hover table-bordered" id="accordion2">
+						<thead>
+						<tr class="bg-grey-steel">'.$header.'</tr></thead>
+						<tbody><tr>'.$body.'</tr></tbody>
+        			 </table>';
+		
+	}
+}
 ?>
 
 <!-- END PAGE HEADER-->
@@ -266,6 +286,14 @@ if (isset($plan_info))
                                             <input type="text" id="txtBmi" name="txtBmi"  readonly class="form-control"
                                             value="<?php if(isset($visit_row->bmi)) echo $visit_row->bmi;?>"
                                             />
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3"> BMI History  &nbsp;&nbsp;&nbsp;
+                                        </label>
+                                        <div class="col-md-4">
+                                            <?php if(isset($bmi_table)) echo $bmi_table;?>
                                         </div>
                                     </div>
                                   </div>

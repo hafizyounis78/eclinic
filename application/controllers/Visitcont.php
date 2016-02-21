@@ -67,9 +67,13 @@ class Visitcont extends CI_Controller
 			{
 				$this->load->model('visitmodel');
 				$this->data['patient_info'] = $this->visitmodel->get_patient_by_id($_SESSION['update']);
+				foreach($this->data['patient_info'] as $row);
+					$this->data['bmi_history'] = $this->visitmodel->get_bmi_history($row->patient_file_id);
+					
 				if ($_SESSION['updateVisit']!='0')
 				{
 					$this->data['visit_info'] = $this->visitmodel->get_visit_data_by_id($_SESSION['updateVisit']);
+					
 					$this->data['plan_info'] = $this->visitmodel->get_plan_by_Visit_id($_SESSION['updateVisit']);
 					foreach($this->data['plan_info'] as $row);
 					if(isset($row->plan_id))
