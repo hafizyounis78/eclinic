@@ -62,6 +62,7 @@ class Patientcont extends CI_Controller
 				}
 			
 		}
+		unset($_SESSION['update']);
 	}
 	/***********************************************************/
 	function patient()
