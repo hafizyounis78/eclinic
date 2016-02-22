@@ -61,58 +61,62 @@ $enddate= "";
 $notes = "";
 if (isset($plan_info))				
 {
-	$days = array( 
-			1 => 'اليوم الأول',
-			2 => 'اليوم الثاني',
-			3 => 'اليوم الثالث', 
-			4 => 'اليوم الرابع',
-			5 => 'اليوم الخامس',
-			6 => 'اليوم السادس',
-			7 => 'اليوم السابع');
-		
-	$plan_table = '<table class="table table-striped table-hover table-bordered" id="accordion2">
-			<thead>
-			  <tr class="bg-grey-steel">
-				  <th scope="col">
-					   &nbsp;
-				  </th>
-				  <th scope="col">
-					الفـطــــور
-				  </th>
-				  <th scope="col">
-					الغـــــداء
-				  </th>
-				  <th scope="col">
-					العشـــــاء
-				  </th>
-			  </tr>
-			</thead>
-			<tbody>';
-		foreach($plan_info as $row)
-		{
+	if (isset($row->plan_id))
+	{
+		$days = array( 
+				1 => 'اليوم الأول',
+				2 => 'اليوم الثاني',
+				3 => 'اليوم الثالث', 
+				4 => 'اليوم الرابع',
+				5 => 'اليوم الخامس',
+				6 => 'اليوم السادس',
+				7 => 'اليوم السابع');
 			
-			$plan_table = $plan_table.
-					'<tr>
-					  <td>'.$days[$row->plan_day_id].'</td>
-					  <td>
-						<textarea name="txtbreakfast'.$row->plan_day_id.'" id="txtbreakfast'.$row->plan_day_id.'" cols="70" rows="5" class="form-control">'.$row->breakfast.'</textarea></td>
-					<td>
-						<textarea name="txtlunch'.$row->plan_day_id.'" id="txtlunch'.$row->plan_day_id.'" cols="70" rows="5" class="form-control">'.$row->lunch.'</textarea></td>
-					<td>
-						<textarea name="txtdinner'.$row->plan_day_id.'" id="txtdinner'.$row->plan_day_id.'" cols="70" rows="5" class="form-control">'.$row->dinner.'</textarea></td>
-				 </tr>';
-	
+		$plan_table = '<table class="table table-striped table-hover table-bordered" id="accordion2">
+				<thead>
+				  <tr class="bg-grey-steel">
+					  <th scope="col">
+						   &nbsp;
+					  </th>
+					  <th scope="col">
+						الفـطــــور
+					  </th>
+					  <th scope="col">
+						الغـــــداء
+					  </th>
+					  <th scope="col">
+						العشـــــاء
+					  </th>
+				  </tr>
+				</thead>
+				<tbody>';
+			foreach($plan_info as $row)
+			{
+				
+				$plan_table = $plan_table.
+						'<tr>
+						  <td>'.$days[$row->plan_day_id].'</td>
+						  <td>
+							<textarea name="txtbreakfast'.$row->plan_day_id.'" id="txtbreakfast'.$row->plan_day_id.'" cols="70" rows="5" class="form-control">'.$row->breakfast.'</textarea></td>
+						<td>
+							<textarea name="txtlunch'.$row->plan_day_id.'" id="txtlunch'.$row->plan_day_id.'" cols="70" rows="5" class="form-control">'.$row->lunch.'</textarea></td>
+						<td>
+							<textarea name="txtdinner'.$row->plan_day_id.'" id="txtdinner'.$row->plan_day_id.'" cols="70" rows="5" class="form-control">'.$row->dinner.'</textarea></td>
+					 </tr>';
+		
+			}
+			$plan_table = $plan_table.' </tbody>
+			</table>';
+
+		
+			$plan_id = $row->plan_id;
+			$model_num = $row->model_num;
+			$outpatientnutritionId = $row->outpatientnutrition_id;
+			$startdate= $row->start_date;
+			$enddate= $row->end_date;
+			$notes = $row->notes;
+			$Paction="updatePlanVisit";
 		}
-		$plan_table = $plan_table.' </tbody>
-        </table>';
-	
-	$plan_id = $row->plan_id;
-	$model_num = $row->model_num;
-	$outpatientnutritionId = $row->outpatientnutrition_id;
-	$startdate= $row->start_date;
-	$enddate= $row->end_date;
-	$notes = $row->notes;
-	$Paction="updatePlanVisit";
 }
 $bmi_table = "";
 if (isset($bmi_history))
