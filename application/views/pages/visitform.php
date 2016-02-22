@@ -61,8 +61,7 @@ $enddate= "";
 $notes = "";
 if (isset($plan_info))				
 {
-	if (isset($row->plan_id))
-	{
+
 		$days = array( 
 				1 => 'اليوم الأول',
 				2 => 'اليوم الثاني',
@@ -107,7 +106,8 @@ if (isset($plan_info))
 			}
 			$plan_table = $plan_table.' </tbody>
 			</table>';
-
+	if (isset($row->plan_id))
+	{
 		
 			$plan_id = $row->plan_id;
 			$model_num = $row->model_num;
